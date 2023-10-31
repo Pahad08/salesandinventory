@@ -16,34 +16,27 @@ if (isset($_GET['page_number'])) {
     $page_number = 1;
 }
 
+
 $number_per_page = 5;
 $offset = ($page_number - 1) * $number_per_page;
 $nextpage = $page_number + 1;
 $previouspage = $page_number - 1;
 
-$sql = "SELECT sales.sale_id,sales.product_id ,sales.sale_date, products.name, sales.quantity * products.price as sale, sales.quantity
-from sales join products on sales.product_id = products.product_id
-LIMIT $number_per_page OFFSET $offset;";
+$sql = "SELECT * from accounts LIMIT $number_per_page OFFSET $offset;";
 $stmt = mysqli_prepare($conn, $sql);
 mysqli_stmt_execute($stmt);
 $result = mysqli_stmt_get_result($stmt);
 $row = mysqli_fetch_array($result);
 
-$sql2 = "SELECT count(sale_id) as total from sales;";
+$sql2 = "SELECT count(account_id) as total from accounts;";
 $stmt2 = mysqli_prepare($conn, $sql2);
 mysqli_stmt_execute($stmt2);
 $result2 = mysqli_stmt_get_result($stmt2);
 $Row = mysqli_fetch_array($result2);
+mysqli_close($conn);
 
 $total_records = $Row['total'];
 $total_pages = ceil($total_records / $number_per_page);
-
-$prod_sql = "SELECT product_id, `name` from products;";
-$stmt_prod = mysqli_prepare($conn, $prod_sql);
-mysqli_stmt_execute($stmt_prod);
-$result_prod = mysqli_stmt_get_result($stmt_prod);
-$row_prod = mysqli_fetch_array($result_prod);
-mysqli_close($conn);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -53,7 +46,7 @@ mysqli_close($conn);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/admin.css">
     <link rel="shortcut icon" href="images/logo.png" type="image/x-icon">
-    <title>Sales</title>
+    <title>Accounts</title>
 </head>
 
 <body>
@@ -93,7 +86,7 @@ mysqli_close($conn);
                     <p>Products</p>
                     <li><a href="inventory.php">Inventory</a></li>
                     <li><a href="products.php">Product List</a></li>
-                    <li><a href="">Sales</a></li>
+                    <li><a href="sales.php">Sales</a></li>
                     <li><a href="expense.php">Expenses</a></li>
                 </ul>
 
@@ -125,35 +118,33 @@ mysqli_close($conn);
                 <div class="form-container">
 
                     <div class="header-form">
-                        <h2>Add Sales</h2>
+                        <h2>Add Account</h2>
                         <p id="closebtn">&#10006;</p>
                     </div>
 
-                    <form action="add/addsales.php" method="post" id="form-body">
+                    <form action="add/addaccount.php" method="post" id="form-body">
 
                         <div class="input-body">
-                            <label for="selectprod">Product Name</label>
-                            <select name="prodid" id="selectprod">
-                                <option value="">Select Product</option>
-                                <?php while ($row_prod) { ?>
-                                    <option value="<?php echo $row_prod['product_id']; ?>">
-                                        <?php echo $row_prod['name']; ?></option>
-                                <?php $row_prod = mysqli_fetch_array($result_prod);
-                                } ?>
+                            <label for="username">Username</label>
+                            <input type="text" id="username" name="username">
+                            <p class="emptyinput" id="usernameerr">Username cannot be blank</p>
+                        </div>
+
+                        <div class="input-body">
+                            <label for="password">Password</label>
+                            <input type="text" id="password" name="password">
+                            <p class="emptyinput" id="passworderr">Password cannot be blank</p>
+                        </div>
+
+                        <div class="input-body">
+                            <label for="role">Role</label>
+                            <select name="role" id="role">
+                                <option value="">Select Role</option>
+                                <option value="1">Admin</option>
+                                <option value="2">Worker</option>
+                                <option value="3">Worker</option>
                             </select>
-                            <p class="emptyinput" id="proderr">Product cannot be blank</p>
-                        </div>
-
-                        <div class="input-body">
-                            <label for="date">Date</label>
-                            <input type="date" id="date" name="date">
-                            <p class="emptyinput" id="dateerr">Date cannot be blank</p>
-                        </div>
-
-                        <div class="input-body">
-                            <label for="quantity">Quantity</label>
-                            <input type="number" id="quantity" name="quantity">
-                            <p class="emptyinput" id="quantityerr">Quantity cannot be blank</p>
+                            <p class="emptyinput" id="roleerr">Role cannot be blank</p>
                         </div>
 
                         <div class="buttons">
@@ -173,8 +164,8 @@ mysqli_close($conn);
                 <div class="table-header">
 
                     <div class="header-info">
-                        <h2>Sales</h2>
-                        <button id="saleadd" class="add">Add Sales</button>
+                        <h2>Accounts</h2>
+                        <button id="accadd" class="add">Add Account</button>
                         <button id="selectall">Select All</button>
                         <button id="delete">Delete</button>
                     </div>
@@ -203,53 +194,35 @@ mysqli_close($conn);
                         <p id="alert-close">&#10006;</p>
                     </div>
                 <?php unset($_SESSION['updated']);
-                } else if (isset($_SESSION['emptystocks'])) { ?>
-                    <div class="emptystocks">
-                        <p><span>&#10003;</span> <?php echo $_SESSION['emptystocks']; ?></p>
-                        <p id="alert-close">&#10006;</p>
-                    </div>
-                <?php unset($_SESSION['emptystocks']);
-                } else if (isset($_SESSION['lessquantity'])) { ?>
-                    <div class="lessquantity">
-                        <p><span>&#10003;</span> <?php echo $_SESSION['lessquantity']; ?></p>
-                        <p id="alert-close">&#10006;</p>
-                    </div>
-                <?php }
-                unset($_SESSION['lessquantity']); ?>
-
-
+                } ?>
 
                 <table id="table">
                     <tr id="head">
                         <th></th>
-                        <th>Name</th>
-                        <th>Date</th>
-                        <th>Quantity</th>
-                        <th>Income</th>
+                        <th>Username</th>
+                        <th>Password</th>
+                        <th>Role</th>
                         <th>Action</th>
                     </tr>
-                    <form action="delete/deletesales.php" id="deletesales" method="post">
+                    <form action="delete/deleteacc.php" id="deleteacc" method="post">
                         <?php while ($row) { ?>
                             <tr>
-                                <td><input type="checkbox" name="sale_id[]" value="<?php echo $row['sale_id']; ?>" class="checkbox"></td>
-                                <td><?php echo $row['name']; ?></td>
-                                <td><?php echo $row['sale_date']; ?></td>
-                                <td><?php echo $row['quantity']; ?></td>
-                                <td><?php echo $row['sale']; ?></td>
-                                <td id="action"> <button class="edit" data-id="<?php echo $row['sale_id'];  ?>" data-date="<?php echo $row['sale_date']; ?>" data-quantity="<?php echo $row['quantity']; ?>" data-currquantity="<?php echo $row['quantity']; ?>" data-prodid="<?php echo $row['product_id']; ?>" data-prodname="<?php echo $row['name']; ?>">Edit</button>
+                                <td><input type="checkbox" name="account_id[]" value="<?php echo $row['account_id']; ?>" class="checkbox"></td>
+                                <td><?php echo $row['username']; ?></td>
+                                <td><?php echo password_hash($row['password'], PASSWORD_BCRYPT); ?></td>
+                                <td><?php echo $row['role']; ?></td>
+                                <td id="action"> <button class="edit" data-accid="<?php echo $row['account_id']; ?>" data-username="<?php echo $row['username']; ?>" data-password="<?php echo password_hash($row['password'], PASSWORD_BCRYPT); ?>" data-role="<?php echo $row['role']; ?>">Edit</button>
                                 </td>
 
                             <?php $row = mysqli_fetch_array($result);
                         } ?>
-
                             </tr>
                     </form>
-
                     <div class="alert-body" id="alert-body">
                         <div class="alert-container">
-                            <img src="images/warning.png" alt="dsadadsa">
+                            <img src="images/warning.png">
                             <div class="text-warning">
-                                <p>Are you sure you want to delete?
+                                <p>Are you sure you want to delete?</p>
                             </div>
                             <div class="buttons-alert">
                                 <button id="del">Delete</button>
@@ -257,28 +230,29 @@ mysqli_close($conn);
                             </div>
                         </div>
                     </div>
+
                 </table>
 
                 <ul class="page">
                     <li><a <?php if ($page_number != 1) {
-                                echo "href=sales.php?page_number=" . $previouspage;
+                                echo "href=users.php?page_number=" . $previouspage;
                             } ?>>&laquo;</a></li>
 
                     <?php for ($i = 0; $i < $total_pages; $i++) { ?>
-                        <li><a href="<?php echo "sales.php?page_number=" . $i + 1; ?>"><?php echo $i + 1; ?></a>
+                        <li><a href="<?php echo "users.php?page_number=" . $i + 1; ?>"><?php echo $i + 1; ?></a>
                         </li>
                     <?php } ?>
 
 
                     <li><a <?php if ($page_number != $total_pages && $total_pages != 0) {
-                                echo "href=sales.php?page_number=" . $nextpage;
+                                echo "href=users.php?page_number=" . $nextpage;
                             } ?>>&raquo;</a></li>
                 </ul>
 
             </div>
 
-            <div class="modal-sales">
-                <?php include 'modal/sale_modal.php'; ?>
+            <div class="modal-account">
+                <?php include 'modal/account_modal.php'; ?>
             </div>
 
         </div>
@@ -290,7 +264,7 @@ mysqli_close($conn);
 <script src="javascript/admin.js"></script>
 <script>
     let form = document.getElementById("form");
-    let openform = document.getElementById("saleadd");
+    let openform = document.getElementById("accadd");
     let closebtn = document.getElementById("closebtn");
     let closealert = document.getElementById("alert-close");
     let reset = document.getElementById("reset");
@@ -298,18 +272,16 @@ mysqli_close($conn);
     let canceldelete = document.getElementById("close-deletion");
     let alertbody = document.getElementById("alert-body");
     let add = document.getElementById("add");
-    let selectprod = document.getElementById("selectprod");
-    let quantity = document.getElementById("quantity");
-    let date = document.getElementById("date");
-    let proderr = document.getElementById("proderr");
-    let quantityerr = document.getElementById("quantityerr");
-    let loc = document.getElementById("location");
-    let locerr = document.getElementById("locerr");
-    let dateerr = document.getElementById("dateerr");
-    const edit = document.querySelectorAll(".edit");
-    let modal = document.querySelector(".modal-sales");
-    let cancel = document.getElementById("cancel");
+    let username = document.getElementById("username");
+    let password = document.getElementById("password");
+    let role = document.getElementById("role");
+    let usernameerr = document.getElementById("usernameerr");
+    let passworderr = document.getElementById("passworderr");
+    let roleerr = document.getElementById("roleerr");
     let del = document.getElementById("del");
+    const edit = document.querySelectorAll(".edit");
+    let modal = document.querySelector(".modal-account");
+    let cancel = document.getElementById("cancel");
     let update = document.getElementById("update");
     let selectall = document.getElementById('selectall');
     let checkboxes = document.querySelectorAll(".checkbox")
@@ -332,36 +304,40 @@ mysqli_close($conn);
 
     cancel.addEventListener("click", (event) => {
         event.preventDefault();
-        modal.classList.toggle("modal-sales-show");
-        modal.classList.toggle("modal-sales");
+        modal.classList.toggle("modal-account-show");
+        modal.classList.toggle("modal-account");
     })
 
     edit.forEach((element) => {
         element.addEventListener("click", (event) => {
             event.preventDefault();
-            let id = element.getAttribute("data-id");
-            let data_date = element.getAttribute("data-date");
-            let data_quantity = element.getAttribute("data-quantity");
-            let data_currquantity = element.getAttribute("data-currquantity");
-            let prodid = element.getAttribute("data-prodid");
-            let prodname = element.getAttribute("data-prodname");
+            let data_id = element.getAttribute("data-accid");
+            let data_username = element.getAttribute("data-username");
+            let data_password = element.getAttribute("data-password");
+            let data_role = element.getAttribute("data-role");
 
-            let name = document.getElementById("select-value");
-            let date = document.getElementById("date-value");
-            let quantity = document.getElementById("quantity-value");
-            let sale_id = document.getElementById("sale-id");
-            let currquantity = document.getElementById("curr-quantity");
-            let selected = document.getElementById("selected");
+            let username = document.getElementById("curr_username");
+            let password = document.getElementById("curr_password");
+            let role = document.getElementById("curr_role");
+            let id = document.getElementById("acc-id");
+            let role_description;
 
-            sale_id.value = id;
-            date.value = data_date;
-            quantity.value = data_quantity;
-            currquantity.value = data_currquantity;
-            selected.value = prodid
-            selected.innerHTML = prodname;
+            if (data_role == 1) {
+                role_description = "Admin";
+            } else if (data_role == 2) {
+                role_description = "Worker";
+            } else {
+                role_description = "Supplier";
+            }
 
-            modal.classList.toggle("modal-sales");
-            modal.classList.toggle("modal-sales-show");
+            id.value = data_id;
+            username.value = data_username;
+            password.value = data_password;
+            role.value = data_role;
+            role.innerHTML = role_description;
+
+            modal.classList.toggle("modal-account");
+            modal.classList.toggle("modal-account-show");
         })
     })
 
@@ -372,8 +348,8 @@ mysqli_close($conn);
     })
 
     del.addEventListener("click", () => {
-        const deletesales = document.getElementById("deletesales");
-        deletesales.submit();
+        const deleteprod = document.getElementById("deleteproduct");
+        deleteprod.submit();
     })
 
     if (closealert) {
@@ -389,26 +365,17 @@ mysqli_close($conn);
             if (document.querySelector(".produpdated")) {
                 document.querySelector(".produpdated").style.display = "none";
             }
-
-            if (document.querySelector(".emptystocks")) {
-                document.querySelector(".emptystocks").style.display = "none";
-            }
-
-
-            if (document.querySelector(".lessquantity")) {
-                document.querySelector(".lessquantity").style.display = "none";
-            }
         })
     }
 
     reset.addEventListener("click", (event) => {
         event.preventDefault();
-        selectprod.value = "";
-        date.value = "";
-        quantity.value = "";
+        name.value = "";
+        kilogram.value = "";
+        price.value = "";
         proderr.style.display = "none";
-        quantityerr.style.display = "none";
-        dateerr.style.display = "none";
+        kilogramerr.style.display = "none";
+        priceerr.style.display = "none";
     })
 
 
@@ -425,6 +392,7 @@ mysqli_close($conn);
     })
 
     window.addEventListener("click", (event) => {
+
         if (event.target.id == "form" && form.classList.contains("show-form")) {
             form.classList.toggle("show-form");
             form.classList.toggle("form");
@@ -435,9 +403,9 @@ mysqli_close($conn);
             alertbbody.classList.toggle("alert-body");
         }
 
-        if (event.target.classList == "modal-sales-show") {
-            modal.classList.toggle("modal-sales-show");
-            modal.classList.toggle("modal-sales");
+        if (event.target.classList == "modal-product-show") {
+            modal.classList.toggle("modal-product-show");
+            modal.classList.toggle("modal-product");
         }
     })
 
@@ -448,71 +416,71 @@ mysqli_close($conn);
 
     add.addEventListener("click", (event) => {
 
-        if (selectprod.value == "" && quantity.value == "" && date.value == "") {
+        if (name.value == "" && kilogram.value == "" && price.value == "") {
             event.preventDefault();
             proderr.style.display = "block";
-            quantityerr.style.display = "block";
-            dateerr.style.display = "block";
+            kilogramerr.style.display = "block";
+            kilogramerr.style.display = "block";
         }
 
-        if (selectprod.value == "") {
+        if (name.value == "") {
             event.preventDefault();
             proderr.style.display = "block";
         } else {
             proderr.style.display = "none";
         }
 
-        if (quantity.value == "") {
+        if (kilogram.value == "") {
             event.preventDefault();
-            quantityerr.style.display = "block";
+            kilogramerr.style.display = "block";
         } else {
-            quantityerr.style.display = "none";
+            kilogramerr.style.display = "none";
         }
 
-        if (date.value == "") {
+        if (price.value == "") {
             event.preventDefault();
-            dateerr.style.display = "block";
+            priceerr.style.display = "block";
         } else {
-            dateerr.style.display = "none";
+            priceerr.style.display = "none";
         }
+
     })
 
     update.addEventListener("click", (event) => {
 
-        let iderr = document.getElementById("iderr");
-        let daterror = document.getElementById("dateerror");
-        let quantityerr = document.getElementById("quanterr");
+        let proderr = document.getElementById("nameerr");
+        let kilogramerr = document.getElementById("kiloerr");
+        let priceerr = document.getElementById("Priceerr");
+        let name = document.getElementById("prod-name");
+        let kilogram = document.getElementById("prod-kilo");
+        let price = document.getElementById("prod-price");
 
-        let name = document.getElementById("prodselect");
-        let date = document.getElementById("date-value");
-        let quantity = document.getElementById("quantity-value");
-
-        if (name.value == "" && date.value == "" && quantity.value == "") {
+        if (name.value == "" && kilogram.value == "" && price.value == "") {
             event.preventDefault();
-            iderr.style.display = "block";
-            daterror.style.display = "block";
-            quantityerr.style.display = "block";
+            proderr.style.display = "block";
+            kilogramerr.style.display = "block";
+            kilogramerr.style.display = "block";
         }
 
         if (name.value == "") {
             event.preventDefault();
-            iderr.style.display = "block";
+            proderr.style.display = "block";
         } else {
-            iderr.style.display = "none";
+            proderr.style.display = "none";
         }
 
-        if (quantity.value == "") {
+        if (kilogram.value == "") {
             event.preventDefault();
-            quantityerr.style.display = "block";
+            kilogramerr.style.display = "block";
         } else {
-            quantityerr.style.display = "none";
+            kilogramerr.style.display = "none";
         }
 
-        if (date.value == "") {
+        if (price.value == "") {
             event.preventDefault();
-            daterror.style.display = "block";
+            priceerr.style.display = "block";
         } else {
-            daterror.style.display = "none";
+            priceerr.style.display = "none";
         }
 
     })

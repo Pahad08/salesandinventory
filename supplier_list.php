@@ -44,8 +44,7 @@ $acc_sql = "SELECT accounts.username, accounts.account_id
 FROM accounts
 left join suppliers on accounts.account_id = suppliers.account_id
 left join workers on accounts.account_id = workers.account_id
-left join admins on accounts.account_id = admins.account_id
-where suppliers.account_id is null and admins.account_id is null and workers.account_id is null;";
+where suppliers.account_id is null and workers.account_id is null;";
 $stmt_acc = mysqli_prepare($conn, $acc_sql);
 mysqli_stmt_execute($stmt_acc);
 $result_acc = mysqli_stmt_get_result($stmt_acc);
@@ -185,7 +184,6 @@ mysqli_close($conn);
 
                     </div>
 
-
                 </div>
 
                 <div class="product-list">
@@ -273,7 +271,6 @@ mysqli_close($conn);
                             </div>
                         </div>
 
-
                     </table>
 
                     <ul class="page">
@@ -299,7 +296,6 @@ mysqli_close($conn);
                 </div>
 
             </div>
-
 
         </div>
     </body>
@@ -330,10 +326,10 @@ mysqli_close($conn);
     let cancel = document.getElementById("cancel");
     let update = document.getElementById("update");
     let checkboxes = document.querySelectorAll(".checkbox");
+    let selectall = document.getElementById('selectall');
 
     selectall.addEventListener("click", () => {
         checkboxes.forEach((element) => {
-
             if (element.checked == false) {
                 element.checked = true;
             }
