@@ -1,0 +1,249 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: #EDEDED;
+}
+
+.container {
+    display: flex;
+    height: 400px;
+    box-shadow: 0px 0px 7px rgba(0, 0, 0, 0.9);
+    border-radius: 5px;
+    width: 70%;
+}
+
+.picture {
+    background: #DA0037;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-basis: 50%;
+    border-bottom-left-radius: 5px;
+    border-top-left-radius: 5px;
+}
+
+.picture img {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+}
+
+.login-body {
+    background: #444444;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    font-size: 0.8em;
+    flex-basis: 50%;
+    border-bottom-right-radius: 5px;
+    border-top-right-radius: 5px;
+}
+
+.login-body h1 {
+    text-align: center;
+    color: #171717;
+    font-size: 1.8em;
+}
+
+#incorrect {
+    background: rgba(254, 0, 0, 0.5);
+    width: 410px;
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid #DA0037;
+    display: none;
+}
+
+.login-form {
+    border-radius: 5px;
+    margin-top: 20px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.username-body input,
+.password-body input {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    outline: none;
+    border: none;
+    border-radius: 2px;
+}
+
+#username-error,
+#password-error {
+    margin-top: 5px;
+    display: none;
+    color: #FE0000;
+}
+
+input:focus {
+    border: 2px solid #7D7463;
+}
+
+.username-body,
+.password-body {
+    width: 90%;
+}
+
+.username-body {
+    margin-top: 10px;
+}
+
+.password-body {
+    margin-top: 20px;
+}
+
+.checkbox-body {
+    align-self: flex-start;
+    margin-left: 25px;
+    margin-top: 20px;
+    font-size: 1.5em;
+    color: #171717;
+}
+
+#submit {
+    margin-top: 20px;
+    margin-bottom: 5px;
+    padding: 7px 40px;
+    border-radius: 10px;
+    background: #DA0037;
+    color: #F4E0B9;
+    cursor: pointer;
+    border: none;
+    font-size: 1.5em;
+    transition: color 300ms, background 300ms;
+}
+
+
+#submit:disabled {
+    opacity: 0.5;
+    cursor: default;
+}
+
+#submit:disabled:hover {
+    background: #DA0037;
+    color: #F4E0B9;
+}
+
+#submit:hover {
+    background: #FE0000;
+    color: #000000;
+}
+
+/* tablet */
+@media (min-width: 768px) and (max-width: 900px) {
+    .container {
+        flex-direction: column;
+        background: #7D7463;
+        min-height: 550px;
+    }
+
+    .picture {
+        background: none;
+        flex-basis: 0%;
+        padding-top: 20px;
+        border-bottom-left-radius: 0px;
+        border-top-left-radius: 0px;
+    }
+
+    .picture img {
+        border-radius: 50%;
+    }
+
+    .login-body {
+        background: none;
+        padding: 20px;
+        flex-basis: 100%;
+        display: flex;
+        border-bottom-right-radius: 0px;
+        border-top-right-radius: 0px;
+    }
+
+    .login-body h1 {
+        font-size: 2.9em;
+    }
+
+    .username-body,
+    .password-body {
+        width: 95%;
+        margin-top: 10px;
+    }
+
+    .username-body input,
+    .password-body input {
+        padding: 10px;
+    }
+
+    .checkbox-body {
+        margin-left: 15px;
+        margin-top: 10px;
+    }
+
+    .login-form {
+        margin-top: 10px;
+    }
+}
+
+/* phone */
+@media (max-width: 770px) {
+    .container {
+        flex-direction: column;
+        background: #7D7463;
+        height: 490px;
+    }
+
+    .picture {
+        background: none;
+        flex-basis: 0%;
+        padding-top: 20px;
+        border-bottom-left-radius: 0px;
+        border-top-left-radius: 0px;
+    }
+
+    .picture img {
+        height: 150px;
+        width: 150px;
+        border-radius: 50%;
+    }
+
+    .login-body h1 {
+        font-size: 2em;
+    }
+
+    .login-body {
+        background: none;
+        flex-basis: 100%;
+        display: flex;
+        border-bottom-right-radius: 0px;
+        border-top-right-radius: 0px;
+    }
+
+    .username-body input,
+    .password-body input {
+        padding: 10px;
+    }
+
+    .checkbox-body {
+        margin-left: 15px;
+        margin-top: 10px;
+    }
+}
+
+@media (max-width: 535px) {}
+
+@media (max-width: 767px) {}
