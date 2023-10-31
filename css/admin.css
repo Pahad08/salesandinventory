@@ -403,11 +403,13 @@ select {
 
 /* delete product */
 
-.alert-body {
+.alert-body,
+.receive-body {
     display: none;
 }
 
-.alert-body-show {
+.alert-body-show,
+.receive-body-show {
     display: block;
     position: fixed;
     background: rgba(0, 0, 0, 0.5);
@@ -554,7 +556,8 @@ select {
 }
 
 .prodadded,
-.produpdated {
+.produpdated,
+.prodreceive {
     margin-top: 5px;
     background: #42d146;
     border-radius: 5px;
@@ -580,13 +583,15 @@ select {
 .proddeleted p:nth-child(1),
 .produpdated p:nth-child(1),
 .emptystocks p:nth-child(1),
-.lessquantity p:nth-child(1) {
+.lessquantity p:nth-child(1),
+.prodreceive p:nth-child(1) {
     float: left;
     font-weight: bold;
 }
 
 .prodadded p:nth-child(1) span,
-.produpdated p:nth-child(1) span {
+.produpdated p:nth-child(1) span,
+.prodreceive p:nth-child(1) span {
     background: #034e06;
     color: #EDEDED;
     border-radius: 50%;
@@ -606,7 +611,8 @@ select {
 .proddeleted p:nth-child(2),
 .produpdated p:nth-child(2),
 .emptystocks p:nth-child(2),
-.lessquantity p:nth-child(2) {
+.lessquantity p:nth-child(2),
+.prodreceive p:nth-child(2) {
     float: right;
     cursor: pointer;
     margin-right: 10px;
@@ -616,7 +622,8 @@ select {
 .produpdated p:nth-child(2):hover,
 .proddeleted p:nth-child(2):hover,
 .emptystocks p:nth-child(2):hover,
-.lessquantity p:nth-child(2):hover {
+.lessquantity p:nth-child(2):hover,
+.prodreceive p:nth-child(2):hover {
     color: #736f6f;
 }
 
@@ -649,6 +656,21 @@ tr:nth-of-type(odd) {
     display: flex;
     justify-content: center;
     gap: 5px;
+}
+
+#receive {
+    background: #034e06;
+    border: none;
+    border-radius: 5px;
+    padding: 5px;
+    border-radius: 5px;
+    font-size: 1em;
+    color: #000;
+    cursor: pointer;
+}
+
+#receive:hover {
+    background: #0ca911;
 }
 
 .edit {

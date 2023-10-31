@@ -55,255 +55,288 @@ mysqli_close($conn);
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/admin.css">
-    <link rel="shortcut icon" href="images/logo.png" type="image/x-icon">
-    <title>Schedules</title>
-</head>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="css/admin.css">
+        <link rel="shortcut icon" href="images/logo.png" type="image/x-icon">
+        <title>Schedules</title>
+    </head>
 
-<body>
+    <body>
 
-    <div class="header">
+        <div class="header">
 
-        <div class="left">
+            <div class="left">
 
-            <div id="menu-icon">
-                <div></div>
-                <div></div>
-                <div></div>
+                <div id="menu-icon">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
+
+                <img src="images/logo.png" alt="logo">
+                <h2> Badong Lechon Manok</h2>
             </div>
 
-            <img src="images/logo.png" alt="logo">
-            <h2> Badong Lechon Manok</h2>
+            <div class="right">
+                <h3><?php echo strtoupper($_SESSION["admin_username"]); ?> </h3>
+                <a href="logout.php">Logout</a>
+            </div>
+
         </div>
 
-        <div class="right">
-            <h3><?php echo strtoupper($_SESSION["admin_username"]); ?> </h3>
-            <a href="logout.php">Logout</a>
+
+        <div id="nav-body" class="nav">
+            <nav id="nav">
+                <div id="list-container">
+
+                    <ul class="menu">
+                        <p>Data Dashboard</p>
+                        <li><a href="admin.php">Dashboard</a></li>
+                    </ul>
+
+                    <ul class="menu">
+                        <p>Products</p>
+                        <li><a href="inventory.php">Inventory</a></li>
+                        <li><a href="products.php">Product List</a></li>
+                        <li><a href="sales.php">Sales</a></li>
+                        <li><a href="expense.php">Expenses</a></li>
+                    </ul>
+
+                    <ul class="menu">
+                        <p>Suppliers/Workers</p>
+                        <li><a href="supplier_list.php">List of Suppliers</a></li>
+                        <li><a href="workers_list.php">List of Workers</a></li>
+                        <li><a href="schedules.php">Schedule of Deliveries</a></li>
+                    </ul>
+
+                    <ul class="menu">
+                        <p>Users</p>
+                        <li><a href="users.php">Users List</a></li>
+                    </ul>
+                </div>
+
+                <div class="nav-footer">
+                    <p>User Role: Admin</p>
+                </div>
+            </nav>
         </div>
 
-    </div>
+        <div class="body">
 
+            <div class="body-content">
 
-    <div id="nav-body" class="nav">
-        <nav id="nav">
-            <div id="list-container">
+                <div class="form" id="form">
 
-                <ul class="menu">
-                    <p>Data Dashboard</p>
-                    <li><a href="admin.php">Dashboard</a></li>
-                </ul>
+                    <div class="form-container">
 
-                <ul class="menu">
-                    <p>Products</p>
-                    <li><a href="inventory.php">Inventory</a></li>
-                    <li><a href="products.php">Product List</a></li>
-                    <li><a href="sales.php">Sales</a></li>
-                    <li><a href="expense.php">Expenses</a></li>
-                </ul>
-
-                <ul class="menu">
-                    <p>Suppliers/Workers</p>
-                    <li><a href="supplier_list.php">List of Suppliers</a></li>
-                    <li><a href="workers_list.php">List of Workers</a></li>
-                    <li><a href="schedules.php">Schedule of Deliveries</a></li>
-                </ul>
-
-                <ul class="menu">
-                    <p>Users</p>
-                    <li><a href="users.php">Users List</a></li>
-                </ul>
-            </div>
-
-            <div class="nav-footer">
-                <p>User Role: Admin</p>
-            </div>
-        </nav>
-    </div>
-
-    <div class="body">
-
-        <div class="body-content">
-
-            <div class="form" id="form">
-
-                <div class="form-container">
-
-                    <div class="header-form">
-                        <h2>Add Delivery Schedule</h2>
-                        <p id="closebtn">&#10006;</p>
-                    </div>
-
-                    <form action="add/addtransaction.php" method="post" id="form-body" class="schedule_add">
-
-                        <div class="input-body">
-                            <label for="transaction-date">Transaction Date</label>
-                            <input type="date" id="transaction-date" name="transaction_date">
-                            <p class="emptyinput" id="transactionerr">Transaction Date cannot be blank</p>
+                        <div class="header-form">
+                            <h2>Add Delivery Schedule</h2>
+                            <p id="closebtn">&#10006;</p>
                         </div>
 
-                        <div class="input-body">
-                            <label for="delivery-date">Delivery Date</label>
-                            <input type="date" id="delivery-date" name="delivery_date">
-                            <p class="emptyinput" id="deliveryerr">Delivery Date cannot be blank</p>
-                        </div>
+                        <form action="add/addtransaction.php" method="post" id="form-body" class="schedule_add">
 
-                        <div class="input-body">
-                            <label for="quantity">Quantity</label>
-                            <input type="number" id="quantity" name="quantity">
-                            <p class="emptyinput" id="quantityerr">Quantity cannot be blank</p>
-                        </div>
+                            <div class="input-body">
+                                <label for="transaction-date">Transaction Date</label>
+                                <input type="date" id="transaction-date" name="transaction_date">
+                                <p class="emptyinput" id="transactionerr">Transaction Date cannot be blank</p>
+                            </div>
 
-                        <div class="input-body">
-                            <label for="supplier">Supplier</label>
-                            <select name="supplier_id" id="supplier">
-                                <option value="">Select Supplier</option>
-                                <?php while ($row_suppliers) { ?>
+                            <div class="input-body">
+                                <label for="delivery-date">Delivery Date</label>
+                                <input type="date" id="delivery-date" name="delivery_date">
+                                <p class="emptyinput" id="deliveryerr">Delivery Date cannot be blank</p>
+                            </div>
+
+                            <div class="input-body">
+                                <label for="quantity">Quantity</label>
+                                <input type="number" id="quantity" name="quantity">
+                                <p class="emptyinput" id="quantityerr">Quantity cannot be blank</p>
+                            </div>
+
+                            <div class="input-body">
+                                <label for="supplier">Supplier</label>
+                                <select name="supplier_id" id="supplier">
+                                    <option value="">Select Supplier</option>
+                                    <?php while ($row_suppliers) { ?>
                                     <option value="<?php echo $row_suppliers['supplier_id']; ?>">
                                         <?php echo $row_suppliers['f_name'] . " " . $row_suppliers['l_name']; ?>
                                     </option>
-                                <?php $row_suppliers = mysqli_fetch_array($result_suppliers);
+                                    <?php $row_suppliers = mysqli_fetch_array($result_suppliers);
                                 } ?>
-                            </select>
-                            <p class="emptyinput" id="suppliererr">Supplier cannot be blank</p>
-                        </div>
+                                </select>
+                                <p class="emptyinput" id="suppliererr">Supplier cannot be blank</p>
+                            </div>
 
-                        <div class="input-body">
-                            <label for="product">Products</label>
-                            <select name="product_id" id="product">
-                                <option value="">Select Product</option>
-                                <?php while ($row_products) { ?>
+                            <div class="input-body">
+                                <label for="product">Products</label>
+                                <select name="product_id" id="product">
+                                    <option value="">Select Product</option>
+                                    <?php while ($row_products) { ?>
                                     <option value="<?php echo $row_products['product_id']; ?>">
                                         <?php echo $row_products['name']; ?>
                                     </option>
-                                <?php $row_products = mysqli_fetch_array($result_products);
+                                    <?php $row_products = mysqli_fetch_array($result_products);
                                 } ?>
-                            </select>
-                            <p class="emptyinput" id="producterr">Product cannot be blank</p>
-                        </div>
+                                </select>
+                                <p class="emptyinput" id="producterr">Product cannot be blank</p>
+                            </div>
 
-                        <div class="buttons">
-                            <button type="submit" id="add" name="add">Add</button>
-                            <button id="reset">Reset</button>
-                        </div>
+                            <div class="buttons">
+                                <button type="submit" id="add" name="add">Add</button>
+                                <button id="reset">Reset</button>
+                            </div>
 
-                    </form>
+                        </form>
+
+                    </div>
+
 
                 </div>
 
+                <div class="product-list">
 
-            </div>
+                    <div class="table-header">
 
-            <div class="product-list">
+                        <div class="header-info">
+                            <h2>Delivery Schedule</h2>
+                            <button id="schedadd" class="add">Add Delivery Schedule</button>
+                            <button id="selectall">Select All</button>
+                            <button id="delete">Delete</button>
+                        </div>
 
-                <div class="table-header">
+                        <div class="search">
+                            <input type="text" id="search" placeholder="Search">
+                        </div>
 
-                    <div class="header-info">
-                        <h2>Delivery Schedule</h2>
-                        <button id="schedadd" class="add">Add Delivery Schedule</button>
-                        <button id="selectall">Select All</button>
-                        <button id="delete">Delete</button>
                     </div>
 
-                    <div class="search">
-                        <input type="text" id="search" placeholder="Search">
-                    </div>
-
-                </div>
-
-                <?php if (isset($_SESSION['added'])) { ?>
+                    <?php if (isset($_SESSION['added'])) { ?>
                     <div class="prodadded">
                         <p><span>&#10003;</span> <?php echo $_SESSION['added']; ?></p>
                         <p id="alert-close">&#10006;</p>
                     </div>
-                <?php unset($_SESSION['added']);
+                    <?php unset($_SESSION['added']);
                 } else if (isset($_SESSION['deleted'])) { ?>
                     <div class="proddeleted">
                         <p><span>&#10003;</span> <?php echo $_SESSION['deleted']; ?></p>
                         <p id="alert-close">&#10006;</p>
                     </div>
-                <?php unset($_SESSION['deleted']);
+                    <?php unset($_SESSION['deleted']);
                 } else if (isset($_SESSION['updated'])) { ?>
                     <div class="produpdated">
                         <p><span>&#10003;</span> <?php echo $_SESSION['updated']; ?></p>
                         <p id="alert-close">&#10006;</p>
                     </div>
-                <?php unset($_SESSION['updated']);
+                    <?php unset($_SESSION['updated']);
+                } else if (isset($_SESSION['receive'])) { ?>
+                    <div class="prodreceive">
+                        <p><span>&#10003;</span> <?php echo $_SESSION['receive']; ?></p>
+                        <p id="alert-close">&#10006;</p>
+                    </div>
+                    <?php unset($_SESSION['receive']);
                 } ?>
 
-                <table id="table">
-                    <tr id="head">
-                        <th></th>
-                        <th>Supplier Name</th>
-                        <th>Transaction Date</th>
-                        <th>Delivery Schedule</th>
-                        <th>Product Name</th>
-                        <th>Quantity</th>
-                        <th>Action</th>
-                    </tr>
-                    <form action="delete/deletesched.php" id="deletesched" method="post">
-                        <?php while ($row) { ?>
+                    <table id="table">
+                        <tr id="head">
+                            <th></th>
+                            <th>Supplier Name</th>
+                            <th>Transaction Date</th>
+                            <th>Delivery Schedule</th>
+                            <th>Product Name</th>
+                            <th>Quantity</th>
+                            <th>Action</th>
+                        </tr>
+                        <form action="delete/deletesched.php" id="deletesched" method="post">
+                            <?php while ($row) { ?>
                             <tr>
-                                <td><input type="checkbox" name="transaction_id[]" value="<?php echo $row['transaction_id']; ?>" class="checkbox"></td>
+                                <td><input type="checkbox" name="transaction_id[]"
+                                        value="<?php echo $row['transaction_id']; ?>" class="checkbox"></td>
                                 <td><?php echo $row['f_name'] . " " . $row['l_name']; ?></td>
                                 <td><?php echo $row['transaction_date']; ?></td>
                                 <td><?php echo $row['delivery_schedule']; ?></td>
                                 <td><?php echo $row['name']; ?></td>
                                 <td><?php echo $row['quantity']; ?></td>
-                                <td id="action"> <button class="edit" data-transactionid="<?php echo $row['transaction_id']; ?>" data-fname="<?php echo $row['f_name']; ?>" data-lname="<?php echo $row['l_name']; ?>" data-supplierid="<?php echo $row['supplier_id']; ?>" data-quantity="<?php echo $row['quantity']; ?>" data-prodid="<?php echo $row['product_id']; ?>" data-prodname="<?php echo $row['name']; ?>" data-transaction="<?php echo $row['transaction_date']; ?>" data-delivery="<?php echo $row['delivery_schedule']; ?>">Edit</button>
+                                <td id="action"> <button class="edit"
+                                        data-transactionid="<?php echo $row['transaction_id']; ?>"
+                                        data-fname="<?php echo $row['f_name']; ?>"
+                                        data-lname="<?php echo $row['l_name']; ?>"
+                                        data-supplierid="<?php echo $row['supplier_id']; ?>"
+                                        data-quantity="<?php echo $row['quantity']; ?>"
+                                        data-prodid="<?php echo $row['product_id']; ?>"
+                                        data-prodname="<?php echo $row['name']; ?>"
+                                        data-transaction="<?php echo $row['transaction_date']; ?>"
+                                        data-delivery="<?php echo $row['delivery_schedule']; ?>">Edit</button>
+                                    <button id="receive" class="receive"
+                                        data-id="<?php echo $row['transaction_id']; ?>">Receive</button>
                                 </td>
 
-                            <?php $row = mysqli_fetch_array($result);
+                                <div class="receive-body" id="receive-body">
+                                    <div class="alert-container">
+                                        <img src="images/warning.png">
+                                        <div class="text-warning">
+                                            <p>Are you sure you want to receive the item?<br>
+                                                (Schedule will also be deleted)
+                                        </div>
+                                        <div class="buttons-alert">
+                                            <a href="" id="del-sched">Receive</a>
+                                            <button id="close-receive">Cancel</button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <?php $row = mysqli_fetch_array($result);
                         } ?>
                             </tr>
-                    </form>
-                    <div class="alert-body" id="alert-body">
-                        <div class="alert-container">
-                            <img src="images/warning.png">
-                            <div class="text-warning">
-                                <p>Are you sure you want to delete all selected items?
-                            </div>
-                            <div class="buttons-alert">
-                                <button id="del">Delete</button>
-                                <button id="close-deletion">Cancel</button>
+                        </form>
+
+                        <div class="alert-body" id="alert-body">
+                            <div class="alert-container">
+                                <img src="images/warning.png">
+                                <div class="text-warning">
+                                    <p>Are you sure you want to delete all selected items?
+                                </div>
+                                <div class="buttons-alert">
+                                    <button id="del">Delete</button>
+                                    <button id="close-deletion">Cancel</button>
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                </table>
+                    </table>
 
-                <ul class="page">
-                    <li><a <?php if ($page_number != 1) {
+                    <ul class="page">
+                        <li><a <?php if ($page_number != 1) {
                                 echo "href=schedules.php?page_number=" . $previouspage;
                             } ?>>&laquo;</a></li>
 
-                    <?php for ($i = 0; $i < $total_pages; $i++) { ?>
+                        <?php for ($i = 0; $i < $total_pages; $i++) { ?>
                         <li><a href="<?php echo "schedules.php?page_number=" . $i + 1; ?>"><?php echo $i + 1; ?></a>
                         </li>
-                    <?php } ?>
+                        <?php } ?>
 
 
-                    <li><a <?php if ($page_number != $total_pages && $total_pages != 0) {
+                        <li><a <?php if ($page_number != $total_pages && $total_pages != 0) {
                                 echo "href=schedules.php?page_number=" . $nextpage;
                             } ?>>&raquo;</a></li>
-                </ul>
+                    </ul>
+
+                </div>
+
+                <div class="modal-transaction">
+                    <?php include 'modal/transaction_modal.php'; ?>
+                </div>
 
             </div>
 
-            <div class="modal-transaction">
-                <?php include 'modal/transaction_modal.php'; ?>
-            </div>
 
         </div>
+    </body>
 
-
-    </div>
-</body>
-
-<script src="javascript/admin.js"></script>
-<script>
+    <script src="javascript/admin.js"></script>
+    <script>
     let form = document.getElementById("form");
     let openform = document.getElementById("schedadd");
     let closebtn = document.getElementById("closebtn");
@@ -330,6 +363,20 @@ mysqli_close($conn);
     let update = document.getElementById("update");
     let selectall = document.getElementById('selectall');
     let checkboxes = document.querySelectorAll(".checkbox")
+    let receivebtns = document.querySelectorAll(".receive");
+    let cancelreceive = document.getElementById("close-receive");
+    let receivebody = document.getElementById("receive-body");
+    let delsched = document.getElementById("del-sched");
+
+    receivebtns.forEach((element) => {
+        element.addEventListener("click", (event) => {
+            event.preventDefault();
+            receivebody.classList.toggle("receive-body");
+            receivebody.classList.toggle("receive-body-show");
+            let url = element.getAttribute("data-id");
+            delsched.href = "receive.php?id=" + url;
+        })
+    })
 
     selectall.addEventListener("click", () => {
         checkboxes.forEach((element) => {
@@ -339,6 +386,14 @@ mysqli_close($conn);
             }
         })
     })
+
+    if (cancelreceive) {
+        cancelreceive.addEventListener("click", (event) => {
+            event.preventDefault();
+            receivebody.classList.toggle("receive-body-show");
+            receivebody.classList.toggle("receive-body");
+        })
+    }
 
     if (canceldelete) {
         canceldelete.addEventListener("click", () => {
@@ -412,6 +467,10 @@ mysqli_close($conn);
 
             if (document.querySelector(".produpdated")) {
                 document.querySelector(".produpdated").style.display = "none";
+            }
+
+            if (document.querySelector(".prodreceive")) {
+                document.querySelector(".prodreceive").style.display = "none";
             }
         })
     }
@@ -565,6 +624,6 @@ mysqli_close($conn);
         }
 
     })
-</script>
+    </script>
 
 </html>

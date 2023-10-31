@@ -1,6 +1,5 @@
 <?php
 session_start();
-include '../openconn.php';
 
 if (isset($_SESSION["admin"]) && isset($_SESSION["admin_username"])) {
     $admin_id = $_SESSION["admin"];
@@ -18,7 +17,7 @@ function CleanData($data)
 
 
 if (isset($_POST['edit'])) {
-
+    include '../openconn.php';
     $saleid = CleanData($_POST['saleid']);
     $prodid = CleanData($_POST['prodid']);
     $date = date("Y-m-d", strtotime($_POST['date']));
