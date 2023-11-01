@@ -103,9 +103,6 @@ $total_pages = ceil($total_records / $number_per_page);
                 </ul>
             </div>
 
-            <div class="nav-footer">
-                <p>User Role: Admin</p>
-            </div>
         </nav>
     </div>
 
@@ -132,7 +129,7 @@ $total_pages = ceil($total_records / $number_per_page);
 
                         <div class="input-body">
                             <label for="password">Password</label>
-                            <input type="password" id="password" name="password">
+                            <input type="text" id="password" name="password">
                             <p class="emptyinput" id="passworderr">Password cannot be blank</p>
                         </div>
 
@@ -215,7 +212,7 @@ $total_pages = ceil($total_records / $number_per_page);
                             <tr>
                                 <td><input type="checkbox" name="account_id[]" value="<?php echo $row['account_id']; ?>" class="checkbox"></td>
                                 <td><?php echo $row['username']; ?></td>
-                                <td><?php echo $row['password']; ?></td>
+                                <td><?php echo password_hash($row['password'], PASSWORD_BCRYPT); ?></td>
                                 <td><?php echo $row['role']; ?></td>
                                 <td id="action"> <button class="edit" data-accid="<?php echo $row['account_id']; ?>" data-username="<?php echo $row['username']; ?>" data-password="<?php echo password_hash($row['password'], PASSWORD_BCRYPT); ?>" data-role="<?php echo $row['role']; ?>">Edit</button>
                                 </td>
@@ -228,8 +225,7 @@ $total_pages = ceil($total_records / $number_per_page);
                         <div class="alert-container">
                             <img src="images/warning.png">
                             <div class="text-warning">
-                                <p>Are you sure you want to delete?<br>(User connected to the account will also be
-                                    deleted)</p>
+                                <p>Are you sure you want to delete?</p>
                             </div>
                             <div class="buttons-alert">
                                 <button id="del">Delete</button>
@@ -381,12 +377,12 @@ $total_pages = ceil($total_records / $number_per_page);
 
     reset.addEventListener("click", (event) => {
         event.preventDefault();
-        name.value = "";
-        kilogram.value = "";
-        price.value = "";
-        proderr.style.display = "none";
-        kilogramerr.style.display = "none";
-        priceerr.style.display = "none";
+        username.value = "";
+        password.value = "";
+        role.value = "";
+        usernameerr.style.display = "none";
+        passworderr.style.display = "none";
+        roleerr.style.display = "none";
     })
 
 
@@ -427,71 +423,61 @@ $total_pages = ceil($total_records / $number_per_page);
 
     add.addEventListener("click", (event) => {
 
-        if (name.value == "" && kilogram.value == "" && price.value == "") {
+        if (username.value == "" && password.value == "" && role.value == "") {
             event.preventDefault();
-            proderr.style.display = "block";
-            kilogramerr.style.display = "block";
-            kilogramerr.style.display = "block";
+            usernameerr.style.display = "block";
+            passworderr.style.display = "block";
+            roleerr.style.display = "block";
         }
 
-        if (name.value == "") {
+        if (username.value == "") {
             event.preventDefault();
-            proderr.style.display = "block";
+            usernameerr.style.display = "block";
         } else {
-            proderr.style.display = "none";
+            usernameerr.style.display = "none";
         }
 
-        if (kilogram.value == "") {
+        if (password.value == "") {
             event.preventDefault();
-            kilogramerr.style.display = "block";
+            passworderr.style.display = "block";
         } else {
-            kilogramerr.style.display = "none";
+            passworderr.style.display = "none";
         }
 
-        if (price.value == "") {
+        if (role.value == "") {
             event.preventDefault();
-            priceerr.style.display = "block";
+            roleerr.style.display = "block";
         } else {
-            priceerr.style.display = "none";
+            roleerr.style.display = "none";
         }
 
     })
 
     update.addEventListener("click", (event) => {
 
-        let proderr = document.getElementById("nameerr");
-        let kilogramerr = document.getElementById("kiloerr");
-        let priceerr = document.getElementById("Priceerr");
-        let name = document.getElementById("prod-name");
-        let kilogram = document.getElementById("prod-kilo");
-        let price = document.getElementById("prod-price");
+        let usernameerr = document.getElementById("usernameerror");
+        let passworderror = document.getElementById("passworderror");
+        let username = document.getElementById("curr_username");
+        let password = document.getElementById("curr_password");
 
-        if (name.value == "" && kilogram.value == "" && price.value == "") {
+        if (username.value == "" && password.value == "" && role.value == "") {
             event.preventDefault();
-            proderr.style.display = "block";
-            kilogramerr.style.display = "block";
-            kilogramerr.style.display = "block";
+            usernameerr.style.display = "block";
+            passworderror.style.display = "block";
         }
 
-        if (name.value == "") {
+        if (username.value == "") {
             event.preventDefault();
-            proderr.style.display = "block";
+            usernameerr.style.display = "block";
         } else {
-            proderr.style.display = "none";
+            usernameerr.style.display = "none";
         }
 
-        if (kilogram.value == "") {
+        if (password.value == "") {
             event.preventDefault();
-            kilogramerr.style.display = "block";
+            passworderror.style.display = "block";
         } else {
-            kilogramerr.style.display = "none";
-        }
-
-        if (price.value == "") {
-            event.preventDefault();
-            priceerr.style.display = "block";
-        } else {
-            priceerr.style.display = "none";
+            passworderror.style.display = "none";
         }
 
     })

@@ -43,7 +43,6 @@ if (isset($_SESSION["admin"]) && isset($_SESSION["admin_username"])) {
                     <option value="2">Worker</option>
                     <option value="3">Supplier</option>
                 </select>
-                <p class="empty" id="roleerror">Role cannot be blank</p>
             </div>
 
             <div class="buttons">

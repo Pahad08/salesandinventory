@@ -117,9 +117,6 @@ mysqli_close($conn);
                 </ul>
             </div>
 
-            <div class="nav-footer">
-                <p>User Role: Admin</p>
-            </div>
         </nav>
     </div>
 

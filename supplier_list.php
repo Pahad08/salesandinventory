@@ -116,9 +116,6 @@ mysqli_close($conn);
                 </ul>
             </div>
 
-            <div class="nav-footer">
-                <p>User Role: Admin</p>
-            </div>
         </nav>
     </div>
 
@@ -167,8 +164,8 @@ mysqli_close($conn);
                             <select name="account-id" id="account-id">
                                 <option value="">Select An Account</option>
                                 <?php while ($row_acc) { ?>
-                                <option value="<?php echo $row_acc['account_id']; ?>">
-                                    <?php echo $row_acc['username']; ?></option>
+                                    <option value="<?php echo $row_acc['account_id']; ?>">
+                                        <?php echo $row_acc['username']; ?></option>
                                 <?php $row_acc = mysqli_fetch_array($result_acc);
                                 } ?>
                             </select>
@@ -204,22 +201,22 @@ mysqli_close($conn);
                 </div>
 
                 <?php if (isset($_SESSION['added'])) { ?>
-                <div class="added">
-                    <p><span>&#10003;</span> <?php echo $_SESSION['added']; ?></p>
-                    <p id="alert-close">&#10006;</p>
-                </div>
+                    <div class="added">
+                        <p><span>&#10003;</span> <?php echo $_SESSION['added']; ?></p>
+                        <p id="alert-close">&#10006;</p>
+                    </div>
                 <?php unset($_SESSION['added']);
                 } else if (isset($_SESSION['deleted'])) { ?>
-                <div class="deleted">
-                    <p><span>&#10003;</span> <?php echo $_SESSION['deleted']; ?></p>
-                    <p id="alert-close">&#10006;</p>
-                </div>
+                    <div class="deleted">
+                        <p><span>&#10003;</span> <?php echo $_SESSION['deleted']; ?></p>
+                        <p id="alert-close">&#10006;</p>
+                    </div>
                 <?php unset($_SESSION['deleted']);
                 } else if (isset($_SESSION['updated'])) { ?>
-                <div class="updated">
-                    <p><span>&#10003;</span> <?php echo $_SESSION['updated']; ?></p>
-                    <p id="alert-close">&#10006;</p>
-                </div>
+                    <div class="updated">
+                        <p><span>&#10003;</span> <?php echo $_SESSION['updated']; ?></p>
+                        <p id="alert-close">&#10006;</p>
+                    </div>
                 <?php unset($_SESSION['updated']);
                 } ?>
 
@@ -234,26 +231,19 @@ mysqli_close($conn);
                     </tr>
                     <form action="delete/deletesupplier.php" id="deletesupplier" method="post">
                         <?php while ($row) { ?>
-                        <tr>
-                            <td><input type="checkbox" name="supplier_id[]" value="<?php echo $row['supplier_id']; ?>"
-                                    class="checkbox"></td>
-                            <td><?php echo $row['f_name'] . " " . $row['l_name']; ?></td>
-                            <td><?php echo $row['contact_number']; ?></td>
-                            <td><?php echo $row['company_name']; ?></td>
-                            <td><?php echo $row['account_id']; ?></td>
-                            <td id="action"> <button class="edit" data-supplierid="<?php echo $row['supplier_id']; ?>"
-                                    data-fname="<?php echo $row['f_name']; ?>"
-                                    data-lname="<?php echo $row['l_name']; ?>"
-                                    data-number="<?php echo $row['contact_number']; ?>"
-                                    data-company="<?php echo $row['company_name']; ?>"
-                                    data-accid="<?php echo $row['account_id']; ?>"
-                                    data-username="<?php echo $row['username']; ?>">Edit</button>
+                            <tr>
+                                <td><input type="checkbox" name="supplier_id[]" value="<?php echo $row['supplier_id']; ?>" class="checkbox"></td>
+                                <td><?php echo $row['f_name'] . " " . $row['l_name']; ?></td>
+                                <td><?php echo $row['contact_number']; ?></td>
+                                <td><?php echo $row['company_name']; ?></td>
+                                <td><?php echo $row['account_id']; ?></td>
+                                <td id="action"> <button class="edit" data-supplierid="<?php echo $row['supplier_id']; ?>" data-fname="<?php echo $row['f_name']; ?>" data-lname="<?php echo $row['l_name']; ?>" data-number="<?php echo $row['contact_number']; ?>" data-company="<?php echo $row['company_name']; ?>" data-accid="<?php echo $row['account_id']; ?>" data-username="<?php echo $row['username']; ?>">Edit</button>
 
-                            </td>
+                                </td>
 
                             <?php $row = mysqli_fetch_array($result);
                         } ?>
-                        </tr>
+                            </tr>
                     </form>
 
                     <div class="alert-body" id="alert-body">
@@ -278,8 +268,8 @@ mysqli_close($conn);
                             } ?>>&laquo;</a></li>
 
                     <?php for ($i = 0; $i < $total_pages; $i++) { ?>
-                    <li><a href="<?php echo "supplier_list.php?page_number=" . $i + 1; ?>"><?php echo $i + 1; ?></a>
-                    </li>
+                        <li><a href="<?php echo "supplier_list.php?page_number=" . $i + 1; ?>"><?php echo $i + 1; ?></a>
+                        </li>
                     <?php } ?>
 
 
@@ -301,260 +291,260 @@ mysqli_close($conn);
 
 <script src="javascript/admin.js"></script>
 <script>
-let form = document.getElementById("form");
-let openform = document.getElementById("supplieradd");
-let closebtn = document.getElementById("closebtn");
-let closealert = document.getElementById("alert-close");
-let reset = document.getElementById("reset");
-let deletebtn = document.querySelector("#delete");
-let canceldelete = document.getElementById("close-deletion");
-let alertbody = document.getElementById("alert-body");
-let add = document.getElementById("add");
-let fname = document.getElementById("fname");
-let lname = document.getElementById("lname");
-let number = document.getElementById("number");
-let company = document.getElementById("company");
-let accid = document.getElementById("account-id");
-let fnameerr = document.getElementById("fnameerr");
-let lnameerr = document.getElementById("lnameerr");
-let numbererr = document.getElementById("numbererr");
-let companyerr = document.getElementById("companyerr");
-let del = document.getElementById("del");
-const edit = document.querySelectorAll(".edit");
-let modal = document.querySelector(".modal-supplier");
-let cancel = document.getElementById("cancel");
-let update = document.getElementById("update");
-let checkboxes = document.querySelectorAll(".checkbox");
-let selectall = document.getElementById('selectall');
+    let form = document.getElementById("form");
+    let openform = document.getElementById("supplieradd");
+    let closebtn = document.getElementById("closebtn");
+    let closealert = document.getElementById("alert-close");
+    let reset = document.getElementById("reset");
+    let deletebtn = document.querySelector("#delete");
+    let canceldelete = document.getElementById("close-deletion");
+    let alertbody = document.getElementById("alert-body");
+    let add = document.getElementById("add");
+    let fname = document.getElementById("fname");
+    let lname = document.getElementById("lname");
+    let number = document.getElementById("number");
+    let company = document.getElementById("company");
+    let accid = document.getElementById("account-id");
+    let fnameerr = document.getElementById("fnameerr");
+    let lnameerr = document.getElementById("lnameerr");
+    let numbererr = document.getElementById("numbererr");
+    let companyerr = document.getElementById("companyerr");
+    let del = document.getElementById("del");
+    const edit = document.querySelectorAll(".edit");
+    let modal = document.querySelector(".modal-supplier");
+    let cancel = document.getElementById("cancel");
+    let update = document.getElementById("update");
+    let checkboxes = document.querySelectorAll(".checkbox");
+    let selectall = document.getElementById('selectall');
 
-selectall.addEventListener("click", () => {
-    checkboxes.forEach((element) => {
-        if (element.checked == false) {
-            element.checked = true;
+    selectall.addEventListener("click", () => {
+        checkboxes.forEach((element) => {
+            if (element.checked == false) {
+                element.checked = true;
+            }
+        })
+    })
+
+
+    if (canceldelete) {
+        canceldelete.addEventListener("click", () => {
+            alertbody.classList.toggle("alert-body-show");
+            alertbody.classList.toggle("alert-body");
+        })
+    }
+
+    cancel.addEventListener("click", (event) => {
+        event.preventDefault();
+        modal.classList.toggle("modal-supplier-show");
+        modal.classList.toggle("modal-supplier");
+    })
+
+    edit.forEach((element) => {
+        element.addEventListener("click", (event) => {
+            event.preventDefault();
+            let supplierid = element.getAttribute("data-supplierid");
+            let f_name = element.getAttribute("data-fname");
+            let l_name = element.getAttribute("data-lname");
+            let number = element.getAttribute("data-number");
+            let company = element.getAttribute("data-company");
+            let username = element.getAttribute("data-username");
+            let acc_id = element.getAttribute("data-accid");
+
+            let suppid = document.getElementById("supplier-id");
+            let fname = document.getElementById("supplier-fname");
+            let lname = document.getElementById("supplier-lname");
+            let supplier_num = document.getElementById("supplier-number");
+            let supplier_company = document.getElementById("supplier-company");
+            let selected = document.getElementById("selected");
+
+            suppid.value = supplierid;
+            fname.value = f_name;
+            lname.value = l_name;
+            supplier_num.value = number;
+            supplier_company.value = company;
+            selected.value = acc_id;
+            selected.innerHTML = username;
+
+            modal.classList.toggle("modal-supplier");
+            modal.classList.toggle("modal-supplier-show");
+        })
+    })
+
+    del.addEventListener("click", () => {
+        const deletesupplier = document.getElementById("deletesupplier");
+        deletesupplier.submit();
+    })
+
+    deletebtn.addEventListener("click", (event) => {
+        event.preventDefault();
+        alertbody.classList.toggle("alert-body");
+        alertbody.classList.toggle("alert-body-show");
+    })
+
+    if (closealert) {
+        closealert.addEventListener("click", () => {
+            if (document.querySelector(".added")) {
+                document.querySelector(".added").style.display = "none";
+            }
+
+            if (document.querySelector(".deleted")) {
+                document.querySelector(".deleted").style.display = "none";
+            }
+
+            if (document.querySelector(".updated")) {
+                document.querySelector(".updated").style.display = "none";
+            }
+        })
+    }
+
+    reset.addEventListener("click", (event) => {
+        event.preventDefault();
+        fname.value = "";
+        lname.value = "";
+        number.value = "";
+        company.value = "";
+        accid.value = "";
+        fnameerrstyle.display = "none";
+        lnameerr.style.display = "none";
+        numbererr.style.display = "none";
+        companyerr.style.display = "none";
+    })
+
+
+    openform.addEventListener("click", () => {
+        form.classList.toggle("form");
+        form.classList.toggle("show-form");
+    })
+
+    window.addEventListener("resize", () => {
+        if (window.innerWidth > 1022 && form.classList.contains("show-form")) {
+            form.classList.toggle("show-form");
+            form.classList.toggle("form");
         }
     })
-})
 
+    window.addEventListener("click", (event) => {
 
-if (canceldelete) {
-    canceldelete.addEventListener("click", () => {
-        alertbody.classList.toggle("alert-body-show");
-        alertbody.classList.toggle("alert-body");
+        if (event.target.id == "form" && form.classList.contains("show-form")) {
+            form.classList.toggle("show-form");
+            form.classList.toggle("form");
+        }
+
+        if (event.target.id == "alert-body" && alertbody.classList.contains("alert-body-show")) {
+            alertbody.classList.toggle("alert-body-show");
+            alertbody.classList.toggle("alert-body");
+        }
+
+        if (event.target.classList == "modal-supplier-show") {
+            modal.classList.toggle("modal-supplier-show");
+            modal.classList.toggle("modal-supplier");
+        }
     })
-}
 
-cancel.addEventListener("click", (event) => {
-    event.preventDefault();
-    modal.classList.toggle("modal-supplier-show");
-    modal.classList.toggle("modal-supplier");
-})
+    closebtn.addEventListener("click", () => {
+        form.classList.toggle("show-form");
+        form.classList.toggle("form");
+    })
 
-edit.forEach((element) => {
-    element.addEventListener("click", (event) => {
-        event.preventDefault();
-        let supplierid = element.getAttribute("data-supplierid");
-        let f_name = element.getAttribute("data-fname");
-        let l_name = element.getAttribute("data-lname");
-        let number = element.getAttribute("data-number");
-        let company = element.getAttribute("data-company");
-        let username = element.getAttribute("data-username");
-        let acc_id = element.getAttribute("data-accid");
+    add.addEventListener("click", (event) => {
 
-        let suppid = document.getElementById("supplier-id");
+        if (fname.value == "" && lname.value == "" && company.value == "" && number.value == "") {
+            event.preventDefault();
+            fnameerr.style.display = "block";
+            lnameerr.style.display = "block";
+            companyerr.style.display = "block";
+            numbererr.style.display = "block";
+        }
+
+        if (fname.value == "") {
+            event.preventDefault();
+            fnameerr.style.display = "block";
+        } else {
+            fnameerr.style.display = "none";
+        }
+
+        if (lname.value == "") {
+            event.preventDefault();
+            lnameerr.style.display = "block";
+        } else {
+            lnameerr.style.display = "none";
+        }
+
+        if (number.value == "") {
+            event.preventDefault();
+            numbererr.style.display = "block";
+        } else if (number.value.length <
+            11) {
+            event.preventDefault();
+            numbererr.innerHTML = "Number length must not be below 11";
+            numbererr.style.display = "block";
+        } else if (number.value.length > 11) {
+            event.preventDefault();
+            numbererr.innerHTML = "Number length must not exceed to 11";
+            numbererr.style.display = "block";
+        } else {
+            numbererr.style.display = "none";
+        }
+
+        if (company.value == "") {
+            event.preventDefault();
+            companyerr.style.display = "block";
+        } else {
+            companyerr.style.display = "none";
+        }
+
+    })
+
+    update.addEventListener("click", (event) => {
+
+        let fnameerr = document.getElementById("fnameerror");
+        let lnameerr = document.getElementById("lnameerror");
+        let numbererr = document.getElementById("numerr");
+        let companyerr = document.getElementById("companyerror");
+
         let fname = document.getElementById("supplier-fname");
         let lname = document.getElementById("supplier-lname");
         let supplier_num = document.getElementById("supplier-number");
         let supplier_company = document.getElementById("supplier-company");
-        let selected = document.getElementById("selected");
 
-        suppid.value = supplierid;
-        fname.value = f_name;
-        lname.value = l_name;
-        supplier_num.value = number;
-        supplier_company.value = company;
-        selected.value = acc_id;
-        selected.innerHTML = username;
+        if (fname.value == "" && lname.value == "" && supplier_num.value == "" && supplier_company.value ==
+            "") {
+            event.preventDefault();
+            fnameerr.style.display = "block";
+            lnameerr.style.display = "block";
+            companyerr.style.display = "block";
+            numbererr.style.display = "block";
+        }
 
-        modal.classList.toggle("modal-supplier");
-        modal.classList.toggle("modal-supplier-show");
+        if (fname.value == "") {
+            event.preventDefault();
+            fnameerr.style.display = "block";
+        } else {
+            fnameerr.style.display = "none";
+        }
+
+        if (lname.value == "") {
+            event.preventDefault();
+            lnameerr.style.display = "block";
+        } else {
+            lnameerr.style.display = "none";
+        }
+
+        if (supplier_num.value == "") {
+            event.preventDefault();
+            numbererr.style.display = "block";
+        } else {
+            numbererr.style.display = "none";
+        }
+
+        if (supplier_company.value == "") {
+            event.preventDefault();
+            companyerr.style.display = "block";
+        } else {
+            companyerr.style.display = "none";
+        }
+
     })
-})
-
-del.addEventListener("click", () => {
-    const deletesupplier = document.getElementById("deletesupplier");
-    deletesupplier.submit();
-})
-
-deletebtn.addEventListener("click", (event) => {
-    event.preventDefault();
-    alertbody.classList.toggle("alert-body");
-    alertbody.classList.toggle("alert-body-show");
-})
-
-if (closealert) {
-    closealert.addEventListener("click", () => {
-        if (document.querySelector(".added")) {
-            document.querySelector(".added").style.display = "none";
-        }
-
-        if (document.querySelector(".deleted")) {
-            document.querySelector(".deleted").style.display = "none";
-        }
-
-        if (document.querySelector(".updated")) {
-            document.querySelector(".updated").style.display = "none";
-        }
-    })
-}
-
-reset.addEventListener("click", (event) => {
-    event.preventDefault();
-    fname.value = "";
-    lname.value = "";
-    number.value = "";
-    company.value = "";
-    accid.value = "";
-    fnameerrstyle.display = "none";
-    lnameerr.style.display = "none";
-    numbererr.style.display = "none";
-    companyerr.style.display = "none";
-})
-
-
-openform.addEventListener("click", () => {
-    form.classList.toggle("form");
-    form.classList.toggle("show-form");
-})
-
-window.addEventListener("resize", () => {
-    if (window.innerWidth > 1022 && form.classList.contains("show-form")) {
-        form.classList.toggle("show-form");
-        form.classList.toggle("form");
-    }
-})
-
-window.addEventListener("click", (event) => {
-
-    if (event.target.id == "form" && form.classList.contains("show-form")) {
-        form.classList.toggle("show-form");
-        form.classList.toggle("form");
-    }
-
-    if (event.target.id == "alert-body" && alertbody.classList.contains("alert-body-show")) {
-        alertbody.classList.toggle("alert-body-show");
-        alertbody.classList.toggle("alert-body");
-    }
-
-    if (event.target.classList == "modal-supplier-show") {
-        modal.classList.toggle("modal-supplier-show");
-        modal.classList.toggle("modal-supplier");
-    }
-})
-
-closebtn.addEventListener("click", () => {
-    form.classList.toggle("show-form");
-    form.classList.toggle("form");
-})
-
-add.addEventListener("click", (event) => {
-
-    if (fname.value == "" && lname.value == "" && company.value == "" && number.value == "") {
-        event.preventDefault();
-        fnameerr.style.display = "block";
-        lnameerr.style.display = "block";
-        companyerr.style.display = "block";
-        numbererr.style.display = "block";
-    }
-
-    if (fname.value == "") {
-        event.preventDefault();
-        fnameerr.style.display = "block";
-    } else {
-        fnameerr.style.display = "none";
-    }
-
-    if (lname.value == "") {
-        event.preventDefault();
-        lnameerr.style.display = "block";
-    } else {
-        lnameerr.style.display = "none";
-    }
-
-    if (number.value == "") {
-        event.preventDefault();
-        numbererr.style.display = "block";
-    } else if (number.value.length <
-        11) {
-        event.preventDefault();
-        numbererr.innerHTML = "Number length must not be below 11";
-        numbererr.style.display = "block";
-    } else if (number.value.length > 11) {
-        event.preventDefault();
-        numbererr.innerHTML = "Number length must not exceed to 11";
-        numbererr.style.display = "block";
-    } else {
-        numbererr.style.display = "none";
-    }
-
-    if (company.value == "") {
-        event.preventDefault();
-        companyerr.style.display = "block";
-    } else {
-        companyerr.style.display = "none";
-    }
-
-})
-
-update.addEventListener("click", (event) => {
-
-    let fnameerr = document.getElementById("fnameerror");
-    let lnameerr = document.getElementById("lnameerror");
-    let numbererr = document.getElementById("numerr");
-    let companyerr = document.getElementById("companyerror");
-
-    let fname = document.getElementById("supplier-fname");
-    let lname = document.getElementById("supplier-lname");
-    let supplier_num = document.getElementById("supplier-number");
-    let supplier_company = document.getElementById("supplier-company");
-
-    if (fname.value == "" && lname.value == "" && supplier_num.value == "" && supplier_company.value ==
-        "") {
-        event.preventDefault();
-        fnameerr.style.display = "block";
-        lnameerr.style.display = "block";
-        companyerr.style.display = "block";
-        numbererr.style.display = "block";
-    }
-
-    if (fname.value == "") {
-        event.preventDefault();
-        fnameerr.style.display = "block";
-    } else {
-        fnameerr.style.display = "none";
-    }
-
-    if (lname.value == "") {
-        event.preventDefault();
-        lnameerr.style.display = "block";
-    } else {
-        lnameerr.style.display = "none";
-    }
-
-    if (supplier_num.value == "") {
-        event.preventDefault();
-        numbererr.style.display = "block";
-    } else {
-        numbererr.style.display = "none";
-    }
-
-    if (supplier_company.value == "") {
-        event.preventDefault();
-        companyerr.style.display = "block";
-    } else {
-        companyerr.style.display = "none";
-    }
-
-})
 </script>
 
 </html>
