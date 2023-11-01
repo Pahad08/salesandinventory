@@ -51,22 +51,15 @@ $total_pages = ceil($total_records / $number_per_page);
 
 <body>
 
+    <div class="head"></div>
+
     <div class="header">
 
         <div class="left">
-
-            <div id="menu-icon">
-                <div></div>
-                <div></div>
-                <div></div>
-            </div>
-
-            <img src="images/logo.png" alt="logo">
-            <h2> Badong Lechon Manok</h2>
+            <h3><?php echo strtoupper($_SESSION["admin_username"]); ?> </h3>
         </div>
 
         <div class="right">
-            <h3><?php echo strtoupper($_SESSION["admin_username"]); ?> </h3>
             <a href="logout.php">Logout</a>
         </div>
 
@@ -76,6 +69,17 @@ $total_pages = ceil($total_records / $number_per_page);
     <div id="nav-body" class="nav">
         <nav id="nav">
             <div id="list-container">
+
+                <div class="left">
+                    <img src="images/logo.png" alt="logo">
+                    <h2> Badong Lechon Manok</h2>
+
+                    <div id="menu-icon">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
+                </div>
 
                 <ul class="menu">
                     <p>Data Dashboard</p>
@@ -103,9 +107,6 @@ $total_pages = ceil($total_records / $number_per_page);
                 </ul>
             </div>
 
-            <div class="nav-footer">
-                <p>User Role: Admin</p>
-            </div>
         </nav>
     </div>
 
@@ -172,22 +173,22 @@ $total_pages = ceil($total_records / $number_per_page);
                 </div>
 
                 <?php if (isset($_SESSION['added'])) { ?>
-                    <div class="added">
-                        <p><span>&#10003;</span> <?php echo $_SESSION['added']; ?></p>
-                        <p id="alert-close">&#10006;</p>
-                    </div>
+                <div class="added">
+                    <p><span>&#10003;</span> <?php echo $_SESSION['added']; ?></p>
+                    <p id="alert-close">&#10006;</p>
+                </div>
                 <?php unset($_SESSION['added']);
                 } else if (isset($_SESSION['deleted'])) { ?>
-                    <div class="deleted">
-                        <p><span>&#10003;</span> <?php echo $_SESSION['deleted']; ?></p>
-                        <p id="alert-close">&#10006;</p>
-                    </div>
+                <div class="deleted">
+                    <p><span>&#10003;</span> <?php echo $_SESSION['deleted']; ?></p>
+                    <p id="alert-close">&#10006;</p>
+                </div>
                 <?php unset($_SESSION['deleted']);
                 } else if (isset($_SESSION['updated'])) { ?>
-                    <div class="updated">
-                        <p><span>&#10003;</span> <?php echo $_SESSION['updated']; ?></p>
-                        <p id="alert-close">&#10006;</p>
-                    </div>
+                <div class="updated">
+                    <p><span>&#10003;</span> <?php echo $_SESSION['updated']; ?></p>
+                    <p id="alert-close">&#10006;</p>
+                </div>
                 <?php unset($_SESSION['updated']);
                 } ?>
 
@@ -201,17 +202,21 @@ $total_pages = ceil($total_records / $number_per_page);
                     </tr>
                     <form action="delete/deleteproduct.php" id="deleteproduct" method="post">
                         <?php while ($row) { ?>
-                            <tr>
-                                <td><input type="checkbox" name="product_id[]" value="<?php echo $row['product_id']; ?>" class="checkbox"></td>
-                                <td><?php echo $row['name']; ?></td>
-                                <td><?php echo $row['kilogram']; ?></td>
-                                <td><?php echo $row['price']; ?></td>
-                                <td id="action"> <button class="edit" data-productid="<?php echo $row['product_id']; ?>" data-name="<?php echo $row['name']; ?>" data-kilogram="<?php echo $row['kilogram']; ?>" data-price="<?php echo $row['price']; ?>">Edit</button>
-                                </td>
+                        <tr>
+                            <td><input type="checkbox" name="product_id[]" value="<?php echo $row['product_id']; ?>"
+                                    class="checkbox"></td>
+                            <td><?php echo $row['name']; ?></td>
+                            <td><?php echo $row['kilogram']; ?></td>
+                            <td><?php echo $row['price']; ?></td>
+                            <td id="action"> <button class="edit" data-productid="<?php echo $row['product_id']; ?>"
+                                    data-name="<?php echo $row['name']; ?>"
+                                    data-kilogram="<?php echo $row['kilogram']; ?>"
+                                    data-price="<?php echo $row['price']; ?>">Edit</button>
+                            </td>
 
                             <?php $row = mysqli_fetch_array($result);
                         } ?>
-                            </tr>
+                        </tr>
                     </form>
                     <div class="alert-body" id="alert-body">
                         <div class="alert-container">
@@ -235,8 +240,8 @@ $total_pages = ceil($total_records / $number_per_page);
                             } ?>>&laquo;</a></li>
 
                     <?php for ($i = 0; $i < $total_pages; $i++) { ?>
-                        <li><a href="<?php echo "products.php?page_number=" . $i + 1; ?>"><?php echo $i + 1; ?></a>
-                        </li>
+                    <li><a href="<?php echo "products.php?page_number=" . $i + 1; ?>"><?php echo $i + 1; ?></a>
+                    </li>
                     <?php } ?>
 
 
@@ -259,216 +264,216 @@ $total_pages = ceil($total_records / $number_per_page);
 
 <script src="javascript/admin.js"></script>
 <script>
-    let form = document.getElementById("form");
-    let openform = document.getElementById("prodadd");
-    let closebtn = document.getElementById("closebtn");
-    let closealert = document.getElementById("alert-close");
-    let reset = document.getElementById("reset");
-    let deletebtn = document.querySelector("#delete");
-    let canceldelete = document.getElementById("close-deletion");
-    let alertbody = document.getElementById("alert-body");
-    let add = document.getElementById("add");
-    let name = document.getElementById("product-name");
-    let kilogram = document.getElementById("kilogram");
-    let price = document.getElementById("price");
-    let proderr = document.getElementById("proderr");
-    let kilogramerr = document.getElementById("kilogramerr");
-    let priceerr = document.getElementById("priceerr");
-    let del = document.getElementById("del");
-    const edit = document.querySelectorAll(".edit");
-    let modal = document.querySelector(".modal-product");
-    let cancel = document.getElementById("cancel");
-    let update = document.getElementById("update");
-    let selectall = document.getElementById('selectall');
-    let checkboxes = document.querySelectorAll(".checkbox")
+let form = document.getElementById("form");
+let openform = document.getElementById("prodadd");
+let closebtn = document.getElementById("closebtn");
+let closealert = document.getElementById("alert-close");
+let reset = document.getElementById("reset");
+let deletebtn = document.querySelector("#delete");
+let canceldelete = document.getElementById("close-deletion");
+let alertbody = document.getElementById("alert-body");
+let add = document.getElementById("add");
+let name = document.getElementById("product-name");
+let kilogram = document.getElementById("kilogram");
+let price = document.getElementById("price");
+let proderr = document.getElementById("proderr");
+let kilogramerr = document.getElementById("kilogramerr");
+let priceerr = document.getElementById("priceerr");
+let del = document.getElementById("del");
+const edit = document.querySelectorAll(".edit");
+let modal = document.querySelector(".modal-product");
+let cancel = document.getElementById("cancel");
+let update = document.getElementById("update");
+let selectall = document.getElementById('selectall');
+let checkboxes = document.querySelectorAll(".checkbox")
 
-    selectall.addEventListener("click", () => {
-        checkboxes.forEach((element) => {
+selectall.addEventListener("click", () => {
+    checkboxes.forEach((element) => {
 
-            if (element.checked == false) {
-                element.checked = true;
-            }
-        })
+        if (element.checked == false) {
+            element.checked = true;
+        }
     })
+})
 
-    if (canceldelete) {
-        canceldelete.addEventListener("click", () => {
-            alertbody.classList.toggle("alert-body-show");
-            alertbody.classList.toggle("alert-body");
-        })
-    }
-
-    cancel.addEventListener("click", (event) => {
-        event.preventDefault();
-        modal.classList.toggle("modal-product-show");
-        modal.classList.toggle("modal-product");
-    })
-
-    edit.forEach((element) => {
-        element.addEventListener("click", (event) => {
-            event.preventDefault();
-            let data_id = element.getAttribute("data-productid");
-            let data_name = element.getAttribute("data-name");
-            let data_kilogram = element.getAttribute("data-kilogram");
-            let data_price = element.getAttribute("data-price");
-            let name = document.getElementById("prod-name");
-            let kilogram = document.getElementById("prod-kilo");
-            let price = document.getElementById("prod-price");
-            let id = document.getElementById("prod-id");
-
-            id.value = data_id;
-            name.value = data_name;
-            kilogram.value = data_kilogram;
-            price.value = data_price;
-
-            modal.classList.toggle("modal-product");
-            modal.classList.toggle("modal-product-show");
-        })
-    })
-
-    deletebtn.addEventListener("click", (event) => {
-        event.preventDefault();
-        alertbody.classList.toggle("alert-body");
+if (canceldelete) {
+    canceldelete.addEventListener("click", () => {
         alertbody.classList.toggle("alert-body-show");
+        alertbody.classList.toggle("alert-body");
     })
+}
 
-    del.addEventListener("click", () => {
-        const deleteprod = document.getElementById("deleteproduct");
-        deleteprod.submit();
-    })
+cancel.addEventListener("click", (event) => {
+    event.preventDefault();
+    modal.classList.toggle("modal-product-show");
+    modal.classList.toggle("modal-product");
+})
 
-    if (closealert) {
-        closealert.addEventListener("click", () => {
-            if (document.querySelector(".added")) {
-                document.querySelector(".added").style.display = "none";
-            }
-
-            if (document.querySelector(".deleted")) {
-                document.querySelector(".deleted").style.display = "none";
-            }
-
-            if (document.querySelector(".updated")) {
-                document.querySelector(".updated").style.display = "none";
-            }
-        })
-    }
-
-    reset.addEventListener("click", (event) => {
+edit.forEach((element) => {
+    element.addEventListener("click", (event) => {
         event.preventDefault();
-        name.value = "";
-        kilogram.value = "";
-        price.value = "";
-        proderr.style.display = "none";
-        kilogramerr.style.display = "none";
-        priceerr.style.display = "none";
-    })
-
-
-    openform.addEventListener("click", () => {
-        form.classList.toggle("form");
-        form.classList.toggle("show-form");
-    })
-
-    window.addEventListener("resize", () => {
-        if (window.innerWidth > 1022 && form.classList.contains("show-form")) {
-            form.classList.toggle("show-form");
-            form.classList.toggle("form");
-        }
-    })
-
-    window.addEventListener("click", (event) => {
-
-        if (event.target.id == "form" && form.classList.contains("show-form")) {
-            form.classList.toggle("show-form");
-            form.classList.toggle("form");
-        }
-
-        if (event.target.id == "alert-body" && alertbbody.classList.contains("alert-body-show")) {
-            alertbbody.classList.toggle("alert-body-show");
-            alertbbody.classList.toggle("alert-body");
-        }
-
-        if (event.target.classList == "modal-product-show") {
-            modal.classList.toggle("modal-product-show");
-            modal.classList.toggle("modal-product");
-        }
-    })
-
-    closebtn.addEventListener("click", () => {
-        form.classList.toggle("show-form");
-        form.classList.toggle("form");
-    })
-
-    add.addEventListener("click", (event) => {
-
-        if (name.value == "" && kilogram.value == "" && price.value == "") {
-            event.preventDefault();
-            proderr.style.display = "block";
-            kilogramerr.style.display = "block";
-            kilogramerr.style.display = "block";
-        }
-
-        if (name.value == "") {
-            event.preventDefault();
-            proderr.style.display = "block";
-        } else {
-            proderr.style.display = "none";
-        }
-
-        if (kilogram.value == "") {
-            event.preventDefault();
-            kilogramerr.style.display = "block";
-        } else {
-            kilogramerr.style.display = "none";
-        }
-
-        if (price.value == "") {
-            event.preventDefault();
-            priceerr.style.display = "block";
-        } else {
-            priceerr.style.display = "none";
-        }
-
-    })
-
-    update.addEventListener("click", (event) => {
-
-        let proderr = document.getElementById("nameerr");
-        let kilogramerr = document.getElementById("kiloerr");
-        let priceerr = document.getElementById("Priceerr");
+        let data_id = element.getAttribute("data-productid");
+        let data_name = element.getAttribute("data-name");
+        let data_kilogram = element.getAttribute("data-kilogram");
+        let data_price = element.getAttribute("data-price");
         let name = document.getElementById("prod-name");
         let kilogram = document.getElementById("prod-kilo");
         let price = document.getElementById("prod-price");
+        let id = document.getElementById("prod-id");
 
-        if (name.value == "" && kilogram.value == "" && price.value == "") {
-            event.preventDefault();
-            proderr.style.display = "block";
-            kilogramerr.style.display = "block";
-            kilogramerr.style.display = "block";
-        }
+        id.value = data_id;
+        name.value = data_name;
+        kilogram.value = data_kilogram;
+        price.value = data_price;
 
-        if (name.value == "") {
-            event.preventDefault();
-            proderr.style.display = "block";
-        } else {
-            proderr.style.display = "none";
-        }
-
-        if (kilogram.value == "") {
-            event.preventDefault();
-            kilogramerr.style.display = "block";
-        } else {
-            kilogramerr.style.display = "none";
-        }
-
-        if (price.value == "") {
-            event.preventDefault();
-            priceerr.style.display = "block";
-        } else {
-            priceerr.style.display = "none";
-        }
-
+        modal.classList.toggle("modal-product");
+        modal.classList.toggle("modal-product-show");
     })
+})
+
+deletebtn.addEventListener("click", (event) => {
+    event.preventDefault();
+    alertbody.classList.toggle("alert-body");
+    alertbody.classList.toggle("alert-body-show");
+})
+
+del.addEventListener("click", () => {
+    const deleteprod = document.getElementById("deleteproduct");
+    deleteprod.submit();
+})
+
+if (closealert) {
+    closealert.addEventListener("click", () => {
+        if (document.querySelector(".added")) {
+            document.querySelector(".added").style.display = "none";
+        }
+
+        if (document.querySelector(".deleted")) {
+            document.querySelector(".deleted").style.display = "none";
+        }
+
+        if (document.querySelector(".updated")) {
+            document.querySelector(".updated").style.display = "none";
+        }
+    })
+}
+
+reset.addEventListener("click", (event) => {
+    event.preventDefault();
+    name.value = "";
+    kilogram.value = "";
+    price.value = "";
+    proderr.style.display = "none";
+    kilogramerr.style.display = "none";
+    priceerr.style.display = "none";
+})
+
+
+openform.addEventListener("click", () => {
+    form.classList.toggle("form");
+    form.classList.toggle("show-form");
+})
+
+window.addEventListener("resize", () => {
+    if (window.innerWidth > 1022 && form.classList.contains("show-form")) {
+        form.classList.toggle("show-form");
+        form.classList.toggle("form");
+    }
+})
+
+window.addEventListener("click", (event) => {
+
+    if (event.target.id == "form" && form.classList.contains("show-form")) {
+        form.classList.toggle("show-form");
+        form.classList.toggle("form");
+    }
+
+    if (event.target.id == "alert-body" && alertbbody.classList.contains("alert-body-show")) {
+        alertbbody.classList.toggle("alert-body-show");
+        alertbbody.classList.toggle("alert-body");
+    }
+
+    if (event.target.classList == "modal-product-show") {
+        modal.classList.toggle("modal-product-show");
+        modal.classList.toggle("modal-product");
+    }
+})
+
+closebtn.addEventListener("click", () => {
+    form.classList.toggle("show-form");
+    form.classList.toggle("form");
+})
+
+add.addEventListener("click", (event) => {
+
+    if (name.value == "" && kilogram.value == "" && price.value == "") {
+        event.preventDefault();
+        proderr.style.display = "block";
+        kilogramerr.style.display = "block";
+        kilogramerr.style.display = "block";
+    }
+
+    if (name.value == "") {
+        event.preventDefault();
+        proderr.style.display = "block";
+    } else {
+        proderr.style.display = "none";
+    }
+
+    if (kilogram.value == "") {
+        event.preventDefault();
+        kilogramerr.style.display = "block";
+    } else {
+        kilogramerr.style.display = "none";
+    }
+
+    if (price.value == "") {
+        event.preventDefault();
+        priceerr.style.display = "block";
+    } else {
+        priceerr.style.display = "none";
+    }
+
+})
+
+update.addEventListener("click", (event) => {
+
+    let proderr = document.getElementById("nameerr");
+    let kilogramerr = document.getElementById("kiloerr");
+    let priceerr = document.getElementById("Priceerr");
+    let name = document.getElementById("prod-name");
+    let kilogram = document.getElementById("prod-kilo");
+    let price = document.getElementById("prod-price");
+
+    if (name.value == "" && kilogram.value == "" && price.value == "") {
+        event.preventDefault();
+        proderr.style.display = "block";
+        kilogramerr.style.display = "block";
+        kilogramerr.style.display = "block";
+    }
+
+    if (name.value == "") {
+        event.preventDefault();
+        proderr.style.display = "block";
+    } else {
+        proderr.style.display = "none";
+    }
+
+    if (kilogram.value == "") {
+        event.preventDefault();
+        kilogramerr.style.display = "block";
+    } else {
+        kilogramerr.style.display = "none";
+    }
+
+    if (price.value == "") {
+        event.preventDefault();
+        priceerr.style.display = "block";
+    } else {
+        priceerr.style.display = "none";
+    }
+
+})
 </script>
 
 </html>
