@@ -9,15 +9,21 @@ if (isset($_SESSION["admin"]) && isset($_SESSION["admin_username"])) {
     exit();
 }
 
+function CleanData($data)
+{
+    $data = stripslashes($data);
+    $data = trim($data);
+    return $data;
+}
 
 if (isset($_POST['edit'])) {
 
-    $transaction_id = $_POST['transaction_id'];
-    $transaction_date = $_POST['transaction_date'];
-    $delivery_date = $_POST['delivery_date'];
-    $quantity = $_POST['quantity'];
-    $supplier_id = $_POST['supplier_id'];
-    $product_id = $_POST['product_id'];
+    $transaction_id = CleanData($_POST['transaction_id']);
+    $transaction_date = CleanData($_POST['transaction_date']);
+    $delivery_date = CleanData($_POST['delivery_date']);
+    $quantity = CleanData($_POST['quantity']);
+    $supplier_id = CleanData($_POST['supplier_id']);
+    $product_id = CleanData($_POST['product_id']);
 
     $sql = "UPDATE `transaction` SET transaction_date=?, delivery_schedule = ?, quantity = ?, 
     product_id = ?, supplier_id = ? where transaction_id= ?;";

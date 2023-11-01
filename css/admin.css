@@ -555,8 +555,8 @@ select {
     box-shadow: 0px 0px 5px #30a3eb;
 }
 
-.prodadded,
-.produpdated,
+.added,
+.updated,
 .prodreceive {
     margin-top: 5px;
     background: #42d146;
@@ -567,9 +567,10 @@ select {
     font-size: 1.1em;
 }
 
-.proddeleted,
+.deleted,
 .emptystocks,
-.lessquantity {
+.lessquantity,
+.exist {
     margin-top: 5px;
     background: #DA0037;
     border-radius: 5px;
@@ -579,18 +580,19 @@ select {
     font-size: 1.1em;
 }
 
-.prodadded p:nth-child(1),
-.proddeleted p:nth-child(1),
-.produpdated p:nth-child(1),
+.added p:nth-child(1),
+.deleted p:nth-child(1),
+.updated p:nth-child(1),
 .emptystocks p:nth-child(1),
 .lessquantity p:nth-child(1),
-.prodreceive p:nth-child(1) {
+.prodreceive p:nth-child(1),
+.exist p:nth-child(1) {
     float: left;
     font-weight: bold;
 }
 
-.prodadded p:nth-child(1) span,
-.produpdated p:nth-child(1) span,
+.added p:nth-child(1) span,
+.updated p:nth-child(1) span,
 .prodreceive p:nth-child(1) span {
     background: #034e06;
     color: #EDEDED;
@@ -598,32 +600,35 @@ select {
     padding: 3px;
 }
 
-.proddeleted p:nth-child(1) span,
+.deleted p:nth-child(1) span,
 .emptystocks p:nth-child(1) span,
-.lessquantity p:nth-child(1) span {
+.lessquantity p:nth-child(1) span,
+.exist p:nth-child(1) span {
     background: #6d0606;
     color: #EDEDED;
     border-radius: 50%;
     padding: 3px;
 }
 
-.prodadded p:nth-child(2),
-.proddeleted p:nth-child(2),
-.produpdated p:nth-child(2),
+.added p:nth-child(2),
+.deleted p:nth-child(2),
+.updated p:nth-child(2),
 .emptystocks p:nth-child(2),
 .lessquantity p:nth-child(2),
-.prodreceive p:nth-child(2) {
+.prodreceive p:nth-child(2),
+.exist p:nth-child(2) {
     float: right;
     cursor: pointer;
     margin-right: 10px;
 }
 
-.prodadded p:nth-child(2):hover,
-.produpdated p:nth-child(2):hover,
-.proddeleted p:nth-child(2):hover,
+.added p:nth-child(2):hover,
+.updated p:nth-child(2):hover,
+.deleted p:nth-child(2):hover,
 .emptystocks p:nth-child(2):hover,
 .lessquantity p:nth-child(2):hover,
-.prodreceive p:nth-child(2):hover {
+.prodreceive p:nth-child(2):hover,
+.exist p:nth-child(2):hover {
     color: #736f6f;
 }
 

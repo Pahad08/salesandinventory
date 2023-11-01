@@ -132,7 +132,7 @@ $total_pages = ceil($total_records / $number_per_page);
 
                         <div class="input-body">
                             <label for="password">Password</label>
-                            <input type="text" id="password" name="password">
+                            <input type="password" id="password" name="password">
                             <p class="emptyinput" id="passworderr">Password cannot be blank</p>
                         </div>
 
@@ -142,7 +142,7 @@ $total_pages = ceil($total_records / $number_per_page);
                                 <option value="">Select Role</option>
                                 <option value="1">Admin</option>
                                 <option value="2">Worker</option>
-                                <option value="3">Worker</option>
+                                <option value="3">Supplier</option>
                             </select>
                             <p class="emptyinput" id="roleerr">Role cannot be blank</p>
                         </div>
@@ -177,23 +177,29 @@ $total_pages = ceil($total_records / $number_per_page);
                 </div>
 
                 <?php if (isset($_SESSION['added'])) { ?>
-                    <div class="prodadded">
+                    <div class="added">
                         <p><span>&#10003;</span> <?php echo $_SESSION['added']; ?></p>
                         <p id="alert-close">&#10006;</p>
                     </div>
                 <?php unset($_SESSION['added']);
                 } else if (isset($_SESSION['deleted'])) { ?>
-                    <div class="proddeleted">
+                    <div class="deleted">
                         <p><span>&#10003;</span> <?php echo $_SESSION['deleted']; ?></p>
                         <p id="alert-close">&#10006;</p>
                     </div>
                 <?php unset($_SESSION['deleted']);
                 } else if (isset($_SESSION['updated'])) { ?>
-                    <div class="produpdated">
+                    <div class="updated">
                         <p><span>&#10003;</span> <?php echo $_SESSION['updated']; ?></p>
                         <p id="alert-close">&#10006;</p>
                     </div>
                 <?php unset($_SESSION['updated']);
+                } else if (isset($_SESSION['exist'])) { ?>
+                    <div class="exist">
+                        <p><span>&#10003;</span> <?php echo $_SESSION['exist']; ?></p>
+                        <p id="alert-close">&#10006;</p>
+                    </div>
+                <?php unset($_SESSION['exist']);
                 } ?>
 
                 <table id="table">
@@ -209,7 +215,7 @@ $total_pages = ceil($total_records / $number_per_page);
                             <tr>
                                 <td><input type="checkbox" name="account_id[]" value="<?php echo $row['account_id']; ?>" class="checkbox"></td>
                                 <td><?php echo $row['username']; ?></td>
-                                <td><?php echo password_hash($row['password'], PASSWORD_BCRYPT); ?></td>
+                                <td><?php echo $row['password']; ?></td>
                                 <td><?php echo $row['role']; ?></td>
                                 <td id="action"> <button class="edit" data-accid="<?php echo $row['account_id']; ?>" data-username="<?php echo $row['username']; ?>" data-password="<?php echo password_hash($row['password'], PASSWORD_BCRYPT); ?>" data-role="<?php echo $row['role']; ?>">Edit</button>
                                 </td>
@@ -222,7 +228,8 @@ $total_pages = ceil($total_records / $number_per_page);
                         <div class="alert-container">
                             <img src="images/warning.png">
                             <div class="text-warning">
-                                <p>Are you sure you want to delete?</p>
+                                <p>Are you sure you want to delete?<br>(User connected to the account will also be
+                                    deleted)</p>
                             </div>
                             <div class="buttons-alert">
                                 <button id="del">Delete</button>
@@ -348,22 +355,26 @@ $total_pages = ceil($total_records / $number_per_page);
     })
 
     del.addEventListener("click", () => {
-        const deleteprod = document.getElementById("deleteproduct");
-        deleteprod.submit();
+        const deleteacc = document.getElementById("deleteacc");
+        deleteacc.submit();
     })
 
     if (closealert) {
         closealert.addEventListener("click", () => {
-            if (document.querySelector(".prodadded")) {
-                document.querySelector(".prodadded").style.display = "none";
+            if (document.querySelector(".added")) {
+                document.querySelector(".added").style.display = "none";
             }
 
-            if (document.querySelector(".proddeleted")) {
-                document.querySelector(".proddeleted").style.display = "none";
+            if (document.querySelector(".deleted")) {
+                document.querySelector(".deleted").style.display = "none";
             }
 
-            if (document.querySelector(".produpdated")) {
-                document.querySelector(".produpdated").style.display = "none";
+            if (document.querySelector(".updated")) {
+                document.querySelector(".updated").style.display = "none";
+            }
+
+            if (document.querySelector(".exist")) {
+                document.querySelector(".exist").style.display = "none";
             }
         })
     }

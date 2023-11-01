@@ -57,7 +57,7 @@ body {
 
 #incorrect {
     background: rgba(254, 0, 0, 0.5);
-    width: 410px;
+    width: 90%;
     padding: 8px;
     border-radius: 5px;
     border: 1px solid #DA0037;

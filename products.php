@@ -41,228 +41,224 @@ $total_pages = ceil($total_records / $number_per_page);
 <!DOCTYPE html>
 <html lang="en">
 
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="css/admin.css">
-        <link rel="shortcut icon" href="images/logo.png" type="image/x-icon">
-        <title>Products</title>
-    </head>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/admin.css">
+    <link rel="shortcut icon" href="images/logo.png" type="image/x-icon">
+    <title>Products</title>
+</head>
 
-    <body>
+<body>
 
-        <div class="header">
+    <div class="header">
 
-            <div class="left">
+        <div class="left">
 
-                <div id="menu-icon">
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                </div>
-
-                <img src="images/logo.png" alt="logo">
-                <h2> Badong Lechon Manok</h2>
+            <div id="menu-icon">
+                <div></div>
+                <div></div>
+                <div></div>
             </div>
 
-            <div class="right">
-                <h3><?php echo strtoupper($_SESSION["admin_username"]); ?> </h3>
-                <a href="logout.php">Logout</a>
+            <img src="images/logo.png" alt="logo">
+            <h2> Badong Lechon Manok</h2>
+        </div>
+
+        <div class="right">
+            <h3><?php echo strtoupper($_SESSION["admin_username"]); ?> </h3>
+            <a href="logout.php">Logout</a>
+        </div>
+
+    </div>
+
+
+    <div id="nav-body" class="nav">
+        <nav id="nav">
+            <div id="list-container">
+
+                <ul class="menu">
+                    <p>Data Dashboard</p>
+                    <li><a href="admin.php">Dashboard</a></li>
+                </ul>
+
+                <ul class="menu">
+                    <p>Products</p>
+                    <li><a href="inventory.php">Inventory</a></li>
+                    <li><a href="products.php">Product List</a></li>
+                    <li><a href="sales.php">Sales</a></li>
+                    <li><a href="expense.php">Expenses</a></li>
+                </ul>
+
+                <ul class="menu">
+                    <p>Suppliers/Workers</p>
+                    <li><a href="supplier_list.php">List of Suppliers</a></li>
+                    <li><a href="workers_list.php">List of Workers</a></li>
+                    <li><a href="schedules.php">Schedule of Deliveries</a></li>
+                </ul>
+
+                <ul class="menu">
+                    <p>Users</p>
+                    <li><a href="users.php">Users List</a></li>
+                </ul>
             </div>
 
-        </div>
+            <div class="nav-footer">
+                <p>User Role: Admin</p>
+            </div>
+        </nav>
+    </div>
 
+    <div class="body">
 
-        <div id="nav-body" class="nav">
-            <nav id="nav">
-                <div id="list-container">
+        <div class="body-content">
 
-                    <ul class="menu">
-                        <p>Data Dashboard</p>
-                        <li><a href="admin.php">Dashboard</a></li>
-                    </ul>
+            <div class="form" id="form">
 
-                    <ul class="menu">
-                        <p>Products</p>
-                        <li><a href="inventory.php">Inventory</a></li>
-                        <li><a href="products.php">Product List</a></li>
-                        <li><a href="sales.php">Sales</a></li>
-                        <li><a href="expense.php">Expenses</a></li>
-                    </ul>
+                <div class="form-container">
 
-                    <ul class="menu">
-                        <p>Suppliers/Workers</p>
-                        <li><a href="supplier_list.php">List of Suppliers</a></li>
-                        <li><a href="workers_list.php">List of Workers</a></li>
-                        <li><a href="schedules.php">Schedule of Deliveries</a></li>
-                    </ul>
-
-                    <ul class="menu">
-                        <p>Users</p>
-                        <li><a href="users.php">Users List</a></li>
-                    </ul>
-                </div>
-
-                <div class="nav-footer">
-                    <p>User Role: Admin</p>
-                </div>
-            </nav>
-        </div>
-
-        <div class="body">
-
-            <div class="body-content">
-
-                <div class="form" id="form">
-
-                    <div class="form-container">
-
-                        <div class="header-form">
-                            <h2>Add Product</h2>
-                            <p id="closebtn">&#10006;</p>
-                        </div>
-
-                        <form action="add/addproduct.php" method="post" id="form-body">
-
-                            <div class="input-body">
-                                <label for="product-name">Product Name</label>
-                                <input type="text" id="product-name" name="product">
-                                <p class="emptyinput" id="proderr">Product cannot be blank</p>
-                            </div>
-
-                            <div class="input-body">
-                                <label for="kilogram">Kilogram</label>
-                                <input type="number" id="kilogram" name="kilogram">
-                                <p class="emptyinput" id="kilogramerr">Kilogram cannot be blank</p>
-                            </div>
-
-                            <div class="input-body">
-                                <label for="price">Price</label>
-                                <input type="number" id="price" name="price">
-                                <p class="emptyinput" id="priceerr">Price cannot be blank</p>
-                            </div>
-
-                            <div class="buttons">
-                                <button type="submit" id="add" name="add">Add</button>
-                                <button id="reset">Reset</button>
-                            </div>
-
-                        </form>
-
+                    <div class="header-form">
+                        <h2>Add Product</h2>
+                        <p id="closebtn">&#10006;</p>
                     </div>
 
+                    <form action="add/addproduct.php" method="post" id="form-body">
+
+                        <div class="input-body">
+                            <label for="product-name">Product Name</label>
+                            <input type="text" id="product-name" name="product">
+                            <p class="emptyinput" id="proderr">Product cannot be blank</p>
+                        </div>
+
+                        <div class="input-body">
+                            <label for="kilogram">Kilogram</label>
+                            <input type="number" id="kilogram" name="kilogram">
+                            <p class="emptyinput" id="kilogramerr">Kilogram cannot be blank</p>
+                        </div>
+
+                        <div class="input-body">
+                            <label for="price">Price</label>
+                            <input type="number" id="price" name="price">
+                            <p class="emptyinput" id="priceerr">Price cannot be blank</p>
+                        </div>
+
+                        <div class="buttons">
+                            <button type="submit" id="add" name="add">Add</button>
+                            <button id="reset">Reset</button>
+                        </div>
+
+                    </form>
 
                 </div>
 
-                <div class="product-list">
 
-                    <div class="table-header">
+            </div>
 
-                        <div class="header-info">
-                            <h2>Products</h2>
-                            <button id="prodadd" class="add">Add Product</button>
-                            <button id="selectall">Select All</button>
-                            <button id="delete">Delete</button>
-                        </div>
+            <div class="product-list">
 
-                        <div class="search">
-                            <input type="text" id="search" placeholder="Search">
-                        </div>
+                <div class="table-header">
 
+                    <div class="header-info">
+                        <h2>Products</h2>
+                        <button id="prodadd" class="add">Add Product</button>
+                        <button id="selectall">Select All</button>
+                        <button id="delete">Delete</button>
                     </div>
 
-                    <?php if (isset($_SESSION['added'])) { ?>
-                    <div class="prodadded">
+                    <div class="search">
+                        <input type="text" id="search" placeholder="Search">
+                    </div>
+
+                </div>
+
+                <?php if (isset($_SESSION['added'])) { ?>
+                    <div class="added">
                         <p><span>&#10003;</span> <?php echo $_SESSION['added']; ?></p>
                         <p id="alert-close">&#10006;</p>
                     </div>
-                    <?php unset($_SESSION['added']);
+                <?php unset($_SESSION['added']);
                 } else if (isset($_SESSION['deleted'])) { ?>
-                    <div class="proddeleted">
+                    <div class="deleted">
                         <p><span>&#10003;</span> <?php echo $_SESSION['deleted']; ?></p>
                         <p id="alert-close">&#10006;</p>
                     </div>
-                    <?php unset($_SESSION['deleted']);
+                <?php unset($_SESSION['deleted']);
                 } else if (isset($_SESSION['updated'])) { ?>
-                    <div class="produpdated">
+                    <div class="updated">
                         <p><span>&#10003;</span> <?php echo $_SESSION['updated']; ?></p>
                         <p id="alert-close">&#10006;</p>
                     </div>
-                    <?php unset($_SESSION['updated']);
+                <?php unset($_SESSION['updated']);
                 } ?>
 
-                    <table id="table">
-                        <tr id="head">
-                            <th></th>
-                            <th>Name</th>
-                            <th>Kilogram</th>
-                            <th>Price</th>
-                            <th>Action</th>
-                        </tr>
-                        <form action="delete/deleteproduct.php" id="deleteproduct" method="post">
-                            <?php while ($row) { ?>
+                <table id="table">
+                    <tr id="head">
+                        <th></th>
+                        <th>Name</th>
+                        <th>Kilogram</th>
+                        <th>Price</th>
+                        <th>Action</th>
+                    </tr>
+                    <form action="delete/deleteproduct.php" id="deleteproduct" method="post">
+                        <?php while ($row) { ?>
                             <tr>
-                                <td><input type="checkbox" name="product_id[]" value="<?php echo $row['product_id']; ?>"
-                                        class="checkbox"></td>
+                                <td><input type="checkbox" name="product_id[]" value="<?php echo $row['product_id']; ?>" class="checkbox"></td>
                                 <td><?php echo $row['name']; ?></td>
                                 <td><?php echo $row['kilogram']; ?></td>
                                 <td><?php echo $row['price']; ?></td>
-                                <td id="action"> <button class="edit" data-productid="<?php echo $row['product_id']; ?>"
-                                        data-name="<?php echo $row['name']; ?>"
-                                        data-kilogram="<?php echo $row['kilogram']; ?>"
-                                        data-price="<?php echo $row['price']; ?>">Edit</button>
+                                <td id="action"> <button class="edit" data-productid="<?php echo $row['product_id']; ?>" data-name="<?php echo $row['name']; ?>" data-kilogram="<?php echo $row['kilogram']; ?>" data-price="<?php echo $row['price']; ?>">Edit</button>
                                 </td>
 
-                                <?php $row = mysqli_fetch_array($result);
+                            <?php $row = mysqli_fetch_array($result);
                         } ?>
                             </tr>
-                        </form>
-                        <div class="alert-body" id="alert-body">
-                            <div class="alert-container">
-                                <img src="images/warning.png">
-                                <div class="text-warning">
-                                    <p>Are you sure you want to delete?<br>(Stocks, sales and transactions will also be
-                                        deleted)</p>
-                                </div>
-                                <div class="buttons-alert">
-                                    <button id="del">Delete</button>
-                                    <button id="close-deletion">Cancel</button>
-                                </div>
+                    </form>
+                    <div class="alert-body" id="alert-body">
+                        <div class="alert-container">
+                            <img src="images/warning.png">
+                            <div class="text-warning">
+                                <p>Are you sure you want to delete?<br>(Stocks, sales and transactions will also be
+                                    deleted)</p>
+                            </div>
+                            <div class="buttons-alert">
+                                <button id="del">Delete</button>
+                                <button id="close-deletion">Cancel</button>
                             </div>
                         </div>
+                    </div>
 
-                    </table>
+                </table>
 
-                    <ul class="page">
-                        <li><a <?php if ($page_number != 1) {
+                <ul class="page">
+                    <li><a <?php if ($page_number != 1) {
                                 echo "href=products.php?page_number=" . $previouspage;
                             } ?>>&laquo;</a></li>
 
-                        <?php for ($i = 0; $i < $total_pages; $i++) { ?>
+                    <?php for ($i = 0; $i < $total_pages; $i++) { ?>
                         <li><a href="<?php echo "products.php?page_number=" . $i + 1; ?>"><?php echo $i + 1; ?></a>
                         </li>
-                        <?php } ?>
+                    <?php } ?>
 
 
-                        <li><a <?php if ($page_number != $total_pages && $total_pages != 0) {
+                    <li><a <?php if ($page_number != $total_pages && $total_pages != 0) {
                                 echo "href=products.php?page_number=" . $nextpage;
                             } ?>>&raquo;</a></li>
-                    </ul>
-
-                </div>
-
-                <div class="modal-product">
-                    <?php include 'modal/product_modal.php'; ?>
-                </div>
+                </ul>
 
             </div>
 
+            <div class="modal-product">
+                <?php include 'modal/product_modal.php'; ?>
+            </div>
 
         </div>
-    </body>
 
-    <script src="javascript/admin.js"></script>
-    <script>
+
+    </div>
+</body>
+
+<script src="javascript/admin.js"></script>
+<script>
     let form = document.getElementById("form");
     let openform = document.getElementById("prodadd");
     let closebtn = document.getElementById("closebtn");
@@ -343,16 +339,16 @@ $total_pages = ceil($total_records / $number_per_page);
 
     if (closealert) {
         closealert.addEventListener("click", () => {
-            if (document.querySelector(".prodadded")) {
-                document.querySelector(".prodadded").style.display = "none";
+            if (document.querySelector(".added")) {
+                document.querySelector(".added").style.display = "none";
             }
 
-            if (document.querySelector(".proddeleted")) {
-                document.querySelector(".proddeleted").style.display = "none";
+            if (document.querySelector(".deleted")) {
+                document.querySelector(".deleted").style.display = "none";
             }
 
-            if (document.querySelector(".produpdated")) {
-                document.querySelector(".produpdated").style.display = "none";
+            if (document.querySelector(".updated")) {
+                document.querySelector(".updated").style.display = "none";
             }
         })
     }
@@ -473,6 +469,6 @@ $total_pages = ceil($total_records / $number_per_page);
         }
 
     })
-    </script>
+</script>
 
 </html>

@@ -1,6 +1,5 @@
 <?php
 session_start();
-include '../openconn.php';
 
 if (isset($_SESSION["admin"]) && isset($_SESSION["admin_username"])) {
     $admin_id = $_SESSION["admin"];
@@ -10,6 +9,7 @@ if (isset($_SESSION["admin"]) && isset($_SESSION["admin_username"])) {
 }
 
 if (!empty($_POST['worker_id'])) {
+    include '../openconn.php';
     $worker_ids = $_POST['worker_id'];
 
     foreach ($worker_ids as $id) {

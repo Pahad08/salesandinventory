@@ -1,6 +1,5 @@
 <?php
 session_start();
-include '../openconn.php';
 
 if (isset($_SESSION["admin"]) && isset($_SESSION["admin_username"])) {
     $admin_id = $_SESSION["admin"];
@@ -10,6 +9,7 @@ if (isset($_SESSION["admin"]) && isset($_SESSION["admin_username"])) {
 }
 
 if (!empty($_POST['transaction_id'])) {
+    include '../openconn.php';
     $item_ids = $_POST['transaction_id'];
     $sql = "DELETE FROM `transaction` WHERE transaction_id = ?;";
 

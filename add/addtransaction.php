@@ -1,6 +1,5 @@
 <?php
 session_start();
-include '../openconn.php';
 
 if (isset($_SESSION["admin"]) && isset($_SESSION["admin_username"])) {
     $admin_id = $_SESSION["admin"];
@@ -10,6 +9,7 @@ if (isset($_SESSION["admin"]) && isset($_SESSION["admin_username"])) {
 }
 
 if (isset($_POST['add'])) {
+    include '../openconn.php';
 
     $transaction_date = $_POST['transaction_date'];
     $delivery_date = $_POST['delivery_date'];

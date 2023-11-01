@@ -1,6 +1,5 @@
 <?php
 session_start();
-include '../openconn.php';
 
 if (isset($_SESSION["admin"]) && isset($_SESSION["admin_username"])) {
     $admin_id = $_SESSION["admin"];
@@ -18,6 +17,7 @@ function CleanData($data)
 
 
 if (isset($_POST['add'])) {
+    include '../openconn.php';
 
     $description = CleanData($_POST['description']);
     $amount = CleanData($_POST['amount']);

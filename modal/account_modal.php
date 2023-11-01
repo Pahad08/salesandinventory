@@ -19,9 +19,9 @@ if (isset($_SESSION["admin"]) && isset($_SESSION["admin_username"])) {
         </div>
 
 
-        <form action="edit/editaccount.php" method="post" class="edit-account" id="form">
+        <form action="edit/edit_acc.php" method="post" class="edit-account" id="form">
 
-            <input type="text" id="acc-id" name="id" value="">
+            <input type="text" id="acc-id" name="id" value="" hidden>
 
             <div class="input-edit">
                 <label for="curr_username">Username</label>
@@ -31,7 +31,7 @@ if (isset($_SESSION["admin"]) && isset($_SESSION["admin_username"])) {
 
             <div class="input-edit">
                 <label for="curr_password">Password</label>
-                <input type="text" id="curr_password" name="password">
+                <input type="password" id="curr_password" name="password">
                 <p class="empty" id="passworderror">Password cannot be blank</p>
             </div>
 
