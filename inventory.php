@@ -54,7 +54,7 @@ mysqli_close($conn);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/admin.css">
     <link rel="shortcut icon" href="images/logo.png" type="image/x-icon">
-    <title>Admin</title>
+    <title>Inventory</title>
 </head>
 
 <body>
@@ -135,7 +135,7 @@ mysqli_close($conn);
 
                 <table id="table">
                     <tr id="head">
-                        <th>#</th>
+                        <th></th>
                         <th>Product Name</th>
                         <th>Quantities</th>
                         <th>Stock In</th>
@@ -143,7 +143,7 @@ mysqli_close($conn);
                     </tr>
                     <?php while ($row) { ?>
                         <tr>
-                            <td><?php echo $row['stock_id']; ?></td>
+                            <td></td>
                             <td><?php echo $row['name']; ?></td>
                             <td><?php echo $row['quantities']; ?></td>
                             <td><?php echo $row['stock_in']; ?></td>
@@ -155,21 +155,27 @@ mysqli_close($conn);
 
                 </table>
 
-                <ul class="page">
-                    <li><a <?php if ($page_number != 1) {
-                                echo "href=inventory.php?page_number=" . $previouspage;
-                            } ?>>&laquo;</a></li>
+                <div class="page">
 
-                    <?php for ($i = 0; $i < $total_pages; $i++) { ?>
-                        <li><a href="<?php echo "inventory.php?page_number=" . $i + 1; ?>"><?php echo $i + 1; ?></a>
-                        </li>
-                    <?php } ?>
+                    <p><?php echo "Page " . "<b>$page_number </b>" . " of " . "<b>$total_pages</b>" ?></p>
+
+                    <ul class="page-list">
+                        <li><a <?php if ($page_number != 1) {
+                                    echo "href=inventory.php?page_number=" . $previouspage;
+                                } ?>>&laquo;</a></li>
+
+                        <?php for ($i = 0; $i < $total_pages; $i++) { ?>
+                            <li><a href="<?php echo "inventory.php?page_number=" . $i + 1; ?>"><?php echo $i + 1; ?></a>
+                            </li>
+                        <?php } ?>
 
 
-                    <li><a <?php if ($page_number != $total_pages && $total_pages != 0) {
-                                echo "href=inventory.php?page_number=" . $nextpage;
-                            } ?>>&raquo;</a></li>
-                </ul>
+                        <li><a <?php if ($page_number != $total_pages && $total_pages != 0) {
+                                    echo "href=inventory.php?page_number=" . $nextpage;
+                                } ?>>&raquo;</a></li>
+                    </ul>
+
+                </div>
 
             </div>
         </div>
