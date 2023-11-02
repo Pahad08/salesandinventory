@@ -3,9 +3,7 @@
 session_start();
 include 'openconn.php';
 
-if (isset($_SESSION["admin"]) && isset($_SESSION["admin_username"])) {
-    $admin_id = $_SESSION["admin"];
-} else {
+if (!isset($_SESSION["admin"]) && !isset($_SESSION["admin_username"])) {
     header("location: login.php");
     exit();
 }
@@ -41,232 +39,227 @@ $total_pages = ceil($total_records / $number_per_page);
 <!DOCTYPE html>
 <html lang="en">
 
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="css/admin.css">
-        <link rel="shortcut icon" href="images/logo.png" type="image/x-icon">
-        <title>Expenses</title>
-    </head>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/admin.css">
+    <link rel="shortcut icon" href="images/logo.png" type="image/x-icon">
+    <title>Expenses</title>
+</head>
 
-    <body>
+<body>
 
-        <div class="header">
+    <div class="header">
 
-            <div class="left">
+        <div class="left">
 
-                <div id="menu-icon">
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                </div>
-
-                <img src="images/logo.png" alt="logo">
-                <h2> Badong Lechon Manok</h2>
+            <div id="menu-icon">
+                <div></div>
+                <div></div>
+                <div></div>
             </div>
 
-            <div class="right">
-                <h3><?php echo strtoupper($_SESSION["admin_username"]); ?> </h3>
-                <a href="logout.php">Logout</a>
+            <img src="images/logo.png" alt="logo">
+            <h2> Badong Lechon Manok</h2>
+        </div>
+
+        <div class="right">
+            <h3><?php echo strtoupper($_SESSION["admin_username"]); ?> </h3>
+            <a href="logout.php">Logout</a>
+        </div>
+
+    </div>
+
+
+    <div id="nav-body" class="nav">
+        <nav id="nav">
+            <div id="list-container">
+
+                <ul class="menu">
+                    <p>Data Dashboard</p>
+                    <li><a href="admin.php">Dashboard</a></li>
+                </ul>
+
+                <ul class="menu">
+                    <p>Products</p>
+                    <li><a href="inventory.php">Inventory</a></li>
+                    <li><a href="products.php">Product List</a></li>
+                    <li><a href="sales.php">Sales</a></li>
+                    <li><a href="">Expenses</a></li>
+                </ul>
+
+                <ul class="menu">
+                    <p>Suppliers/Workers</p>
+                    <li><a href="supplier_list.php">List of Suppliers</a></li>
+                    <li><a href="workers_list.php">List of Workers</a></li>
+                    <li><a href="schedules.php">Schedule of Deliveries</a></li>
+                </ul>
+
+                <ul class="menu">
+                    <p>Users</p>
+                    <li><a href="users.php">Users List</a></li>
+                </ul>
             </div>
 
-        </div>
+        </nav>
+    </div>
 
+    <div class="body">
 
-        <div id="nav-body" class="nav">
-            <nav id="nav">
-                <div id="list-container">
+        <div class="body-content">
 
-                    <ul class="menu">
-                        <p>Data Dashboard</p>
-                        <li><a href="admin.php">Dashboard</a></li>
-                    </ul>
+            <div class="form" id="form">
 
-                    <ul class="menu">
-                        <p>Products</p>
-                        <li><a href="inventory.php">Inventory</a></li>
-                        <li><a href="products.php">Product List</a></li>
-                        <li><a href="sales.php">Sales</a></li>
-                        <li><a href="">Expenses</a></li>
-                    </ul>
+                <div class="form-container">
 
-                    <ul class="menu">
-                        <p>Suppliers/Workers</p>
-                        <li><a href="supplier_list.php">List of Suppliers</a></li>
-                        <li><a href="workers_list.php">List of Workers</a></li>
-                        <li><a href="schedules.php">Schedule of Deliveries</a></li>
-                    </ul>
-
-                    <ul class="menu">
-                        <p>Users</p>
-                        <li><a href="users.php">Users List</a></li>
-                    </ul>
-                </div>
-
-            </nav>
-        </div>
-
-        <div class="body">
-
-            <div class="body-content">
-
-                <div class="form" id="form">
-
-                    <div class="form-container">
-
-                        <div class="header-form">
-                            <h2>Add Expense</h2>
-                            <p id="closebtn">&#10006;</p>
-                        </div>
-
-                        <form action="add/addexpense.php" method="post" id="form-body">
-
-                            <div class="input-body">
-                                <label for="description">Description</label>
-                                <input type="text" id="description" name="description">
-                                <p class="emptyinput" id="descriptionerr">Description cannot be blank</p>
-                            </div>
-
-                            <div class="input-body">
-                                <label for="amount">Amount</label>
-                                <input type="number" id="amount" name="amount">
-                                <p class="emptyinput" id="amounterr">Amount cannot be blank</p>
-                            </div>
-
-                            <div class="input-body">
-                                <label for="expense-date">Date</label>
-                                <input type="date" id="expense-date" name="expense-date">
-                                <p class="emptyinput" id="expense-dateerr">Date cannot be blank</p>
-                            </div>
-
-                            <div class="buttons">
-                                <button type="submit" id="add" name="add">Add</button>
-                                <button id="reset">Reset</button>
-                            </div>
-
-                        </form>
-
+                    <div class="header-form">
+                        <h2>Add Expense</h2>
+                        <p id="closebtn">&#10006;</p>
                     </div>
 
+                    <form action="add/addexpense.php" method="post" id="form-body">
+
+                        <div class="input-body">
+                            <label for="description">Description</label>
+                            <input type="text" id="description" name="description">
+                            <p class="emptyinput" id="descriptionerr">Description cannot be blank</p>
+                        </div>
+
+                        <div class="input-body">
+                            <label for="amount">Amount</label>
+                            <input type="number" id="amount" name="amount">
+                            <p class="emptyinput" id="amounterr">Amount cannot be blank</p>
+                        </div>
+
+                        <div class="input-body">
+                            <label for="expense-date">Date</label>
+                            <input type="date" id="expense-date" name="expense-date">
+                            <p class="emptyinput" id="expense-dateerr">Date cannot be blank</p>
+                        </div>
+
+                        <div class="buttons">
+                            <button type="submit" id="add" name="add">Add</button>
+                            <button id="reset">Reset</button>
+                        </div>
+
+                    </form>
 
                 </div>
 
-                <div class="product-list">
 
-                    <div class="table-header">
+            </div>
 
-                        <div class="header-info">
-                            <h2>Expenses</h2>
+            <div class="product-list">
 
-                            <div class="btns">
-                                <button id="expenseadd" class="add"><img src="images/add.png" alt="">Add
-                                    Expense</button>
-                                <button id="delete"><img src="images/delete.png">Delete</button>
-                                <button id="selectall"><img src="images/selectall.png" alt="">Select All</button>
-                            </div>
+                <div class="table-header">
+
+                    <div class="header-info">
+                        <h2>Expenses</h2>
+
+                        <div class="btns">
+                            <button id="expenseadd" class="add"><img src="images/add.png" alt="">Add
+                                Expense</button>
+                            <button id="delete"><img src="images/delete.png">Delete</button>
+                            <button id="selectall"><img src="images/selectall.png" alt="">Select All</button>
                         </div>
-
-                        <div class="search">
-                            <input type="text" id="search" placeholder="Search">
-                        </div>
-
                     </div>
 
-                    <?php if (isset($_SESSION['added'])) { ?>
+                    <div class="search">
+                        <input type="text" id="search" placeholder="Search">
+                    </div>
+
+                </div>
+
+                <?php if (isset($_SESSION['added'])) { ?>
                     <div class="added">
                         <p><span>&#10003;</span> <?php echo $_SESSION['added']; ?></p>
                     </div>
-                    <?php unset($_SESSION['added']);
+                <?php unset($_SESSION['added']);
                 } else if (isset($_SESSION['deleted'])) { ?>
                     <div class="deleted">
                         <p><span>&#10003;</span> <?php echo $_SESSION['deleted']; ?></p>
                     </div>
-                    <?php unset($_SESSION['deleted']);
+                <?php unset($_SESSION['deleted']);
                 } else if (isset($_SESSION['updated'])) { ?>
                     <div class="updated">
                         <p><span>&#10003;</span> <?php echo $_SESSION['updated']; ?></p>
                     </div>
-                    <?php unset($_SESSION['updated']);
+                <?php unset($_SESSION['updated']);
                 }
                 ?>
 
-                    <table id="table">
-                        <tr id="head">
-                            <th></th>
-                            <th>Description</th>
-                            <th>Amount</th>
-                            <th>Date</th>
-                            <th>Action</th>
-                        </tr>
-                        <form action="delete/deleteexpense.php" id="deleteexpense" method="post">
-                            <?php while ($row) { ?>
+                <table id="table">
+                    <tr id="head">
+                        <th></th>
+                        <th>Description</th>
+                        <th>Amount</th>
+                        <th>Date</th>
+                        <th>Action</th>
+                    </tr>
+                    <form action="delete/deleteexpense.php" id="deleteexpense" method="post">
+                        <?php while ($row) { ?>
                             <tr>
-                                <td><input type="checkbox" name="expense_id[]" value="<?php echo $row['expense_id']; ?>"
-                                        class="checkbox"></td>
+                                <td><input type="checkbox" name="expense_id[]" value="<?php echo $row['expense_id']; ?>" class="checkbox"></td>
                                 <td><?php echo $row['description']; ?></td>
                                 <td><?php echo $row['amount']; ?></td>
                                 <td><?php echo $row['expense_date']; ?></td>
-                                <td id="action"> <button class="edit" data-expenseid="<?php echo $row['expense_id']; ?>"
-                                        data-description="<?php echo $row['description']; ?>"
-                                        data-amount="<?php echo $row['amount']; ?>"
-                                        data-expense_date="<?php echo $row['expense_date']; ?>"><img
-                                            src="images/edit.png" alt="">Edit</button>
+                                <td id="action"> <button class="edit" data-expenseid="<?php echo $row['expense_id']; ?>" data-description="<?php echo $row['description']; ?>" data-amount="<?php echo $row['amount']; ?>" data-expense_date="<?php echo $row['expense_date']; ?>"><img src="images/edit.png" alt="">Edit</button>
                                 </td>
 
-                                <?php $row = mysqli_fetch_array($result);
+                            <?php $row = mysqli_fetch_array($result);
                         } ?>
                             </tr>
-                        </form>
+                    </form>
 
-                        <div class="alert-body" id="alert-body">
-                            <div class="alert-container">
-                                <img src="images/warning.png">
-                                <div class="text-warning">
-                                    <p>Are you sure you want to delete?</p>
-                                </div>
-                                <div class="buttons-alert">
-                                    <button id="del">Delete</button>
-                                    <button id="close-deletion">Cancel</button>
-                                </div>
+                    <div class="alert-body" id="alert-body">
+                        <div class="alert-container">
+                            <img src="images/warning.png">
+                            <div class="text-warning">
+                                <p>Are you sure you want to delete?</p>
+                            </div>
+                            <div class="buttons-alert">
+                                <button id="del">Delete</button>
+                                <button id="close-deletion">Cancel</button>
                             </div>
                         </div>
+                    </div>
 
 
-                    </table>
+                </table>
 
-                    <div class="page">
-                        <p><?php echo "Page " . "<b>$page_number </b>" . " of " . "<b>$total_pages</b>" ?>
+                <div class="page">
+                    <p><?php echo "Page " . "<b>$page_number </b>" . " of " . "<b>$total_pages</b>" ?>
 
-                        <ul class="page-list">
-                            <li><a <?php if ($page_number != 1) {
+                    <ul class="page-list">
+                        <li><a <?php if ($page_number != 1) {
                                     echo "href=expense.php?page_number=" . $previouspage;
                                 } ?>>&laquo;</a></li>
 
-                            <?php for ($i = 0; $i < $total_pages; $i++) { ?>
+                        <?php for ($i = 0; $i < $total_pages; $i++) { ?>
                             <li><a href="<?php echo "expense.php?page_number=" . $i + 1; ?>"><?php echo $i + 1; ?></a>
                             </li>
-                            <?php } ?>
+                        <?php } ?>
 
 
-                            <li><a <?php if ($page_number != $total_pages && $total_pages != 0) {
+                        <li><a <?php if ($page_number != $total_pages && $total_pages != 0) {
                                     echo "href=expense.php?page_number=" . $nextpage;
                                 } ?>>&raquo;</a></li>
-                        </ul>
-
-                    </div>
-
-                    <div class="modal-expense">
-                        <?php include 'modal/expense_modal.php'; ?>
-                    </div>
+                    </ul>
 
                 </div>
 
+                <div class="modal-expense">
+                    <?php include 'modal/expense_modal.php'; ?>
+                </div>
 
             </div>
-    </body>
 
-    <script src="javascript/admin.js"></script>
-    <script>
+
+        </div>
+</body>
+
+<script src="javascript/admin.js"></script>
+<script>
     let form = document.getElementById("form");
     let openform = document.getElementById("expenseadd");
     let closebtn = document.getElementById("closebtn");
@@ -473,6 +466,6 @@ $total_pages = ceil($total_records / $number_per_page);
         }
 
     })
-    </script>
+</script>
 
 </html>

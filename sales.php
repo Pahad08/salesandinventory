@@ -3,9 +3,7 @@
 session_start();
 include 'openconn.php';
 
-if (isset($_SESSION["admin"]) && isset($_SESSION["admin_username"])) {
-    $admin_id = $_SESSION["admin"];
-} else {
+if (!isset($_SESSION["admin"]) && !isset($_SESSION["admin_username"])) {
     header("location: login.php");
     exit();
 }
@@ -132,8 +130,8 @@ mysqli_close($conn);
                             <select name="prodid" id="selectprod">
                                 <option value="">Select Product</option>
                                 <?php while ($row_prod) { ?>
-                                <option value="<?php echo $row_prod['product_id']; ?>">
-                                    <?php echo $row_prod['name']; ?></option>
+                                    <option value="<?php echo $row_prod['product_id']; ?>">
+                                        <?php echo $row_prod['name']; ?></option>
                                 <?php $row_prod = mysqli_fetch_array($result_prod);
                                 } ?>
                             </select>
@@ -185,29 +183,29 @@ mysqli_close($conn);
                 </div>
 
                 <?php if (isset($_SESSION['added'])) { ?>
-                <div class="added">
-                    <p><span>&#10003;</span> <?php echo $_SESSION['added']; ?></p>
-                </div>
+                    <div class="added">
+                        <p><span>&#10003;</span> <?php echo $_SESSION['added']; ?></p>
+                    </div>
                 <?php unset($_SESSION['added']);
                 } else if (isset($_SESSION['deleted'])) { ?>
-                <div class="deleted">
-                    <p><span>&#10003;</span> <?php echo $_SESSION['deleted']; ?></p>
-                </div>
+                    <div class="deleted">
+                        <p><span>&#10003;</span> <?php echo $_SESSION['deleted']; ?></p>
+                    </div>
                 <?php unset($_SESSION['deleted']);
                 } else if (isset($_SESSION['updated'])) { ?>
-                <div class="updated">
-                    <p><span>&#10003;</span> <?php echo $_SESSION['updated']; ?></p>
-                </div>
+                    <div class="updated">
+                        <p><span>&#10003;</span> <?php echo $_SESSION['updated']; ?></p>
+                    </div>
                 <?php unset($_SESSION['updated']);
                 } else if (isset($_SESSION['emptystocks'])) { ?>
-                <div class="emptystocks">
-                    <p><span>&#10003;</span> <?php echo $_SESSION['emptystocks']; ?></p>
-                </div>
+                    <div class="emptystocks">
+                        <p><span>&#10003;</span> <?php echo $_SESSION['emptystocks']; ?></p>
+                    </div>
                 <?php unset($_SESSION['emptystocks']);
                 } else if (isset($_SESSION['lessquantity'])) { ?>
-                <div class="lessquantity">
-                    <p><span>&#10003;</span> <?php echo $_SESSION['lessquantity']; ?></p>
-                </div>
+                    <div class="lessquantity">
+                        <p><span>&#10003;</span> <?php echo $_SESSION['lessquantity']; ?></p>
+                    </div>
                 <?php unset($_SESSION['lessquantity']);
                 }
                 ?>
@@ -225,26 +223,19 @@ mysqli_close($conn);
                     </tr>
                     <form action="delete/deletesales.php" id="deletesales" method="post">
                         <?php while ($row) { ?>
-                        <tr>
-                            <td><input type="checkbox" name="sale_id[]" value="<?php echo $row['sale_id']; ?>"
-                                    class="checkbox"></td>
-                            <td><?php echo $row['name']; ?></td>
-                            <td><?php echo $row['sale_date']; ?></td>
-                            <td><?php echo $row['quantity']; ?></td>
-                            <td><?php echo $row['sale']; ?></td>
-                            <td id="action"> <button class="edit" data-id="<?php echo $row['sale_id'];  ?>"
-                                    data-date="<?php echo $row['sale_date']; ?>"
-                                    data-quantity="<?php echo $row['quantity']; ?>"
-                                    data-currquantity="<?php echo $row['quantity']; ?>"
-                                    data-prodid="<?php echo $row['product_id']; ?>"
-                                    data-prodname="<?php echo $row['name']; ?>"><img src="images/edit.png"
-                                        alt="">Edit</button>
-                            </td>
+                            <tr>
+                                <td><input type="checkbox" name="sale_id[]" value="<?php echo $row['sale_id']; ?>" class="checkbox"></td>
+                                <td><?php echo $row['name']; ?></td>
+                                <td><?php echo $row['sale_date']; ?></td>
+                                <td><?php echo $row['quantity']; ?></td>
+                                <td><?php echo $row['sale']; ?></td>
+                                <td id="action"> <button class="edit" data-id="<?php echo $row['sale_id'];  ?>" data-date="<?php echo $row['sale_date']; ?>" data-quantity="<?php echo $row['quantity']; ?>" data-currquantity="<?php echo $row['quantity']; ?>" data-prodid="<?php echo $row['product_id']; ?>" data-prodname="<?php echo $row['name']; ?>"><img src="images/edit.png" alt="">Edit</button>
+                                </td>
 
                             <?php $row = mysqli_fetch_array($result);
                         } ?>
 
-                        </tr>
+                            </tr>
                     </form>
 
                     <div class="alert-body" id="alert-body">
@@ -271,8 +262,8 @@ mysqli_close($conn);
                                 } ?>>&laquo;</a></li>
 
                         <?php for ($i = 0; $i < $total_pages; $i++) { ?>
-                        <li><a href="<?php echo "sales.php?page_number=" . $i + 1; ?>"><?php echo $i + 1; ?></a>
-                        </li>
+                            <li><a href="<?php echo "sales.php?page_number=" . $i + 1; ?>"><?php echo $i + 1; ?></a>
+                            </li>
                         <?php } ?>
 
 
@@ -297,226 +288,226 @@ mysqli_close($conn);
 
 <script src="javascript/admin.js"></script>
 <script>
-let form = document.getElementById("form");
-let openform = document.getElementById("saleadd");
-let closebtn = document.getElementById("closebtn");
-let reset = document.getElementById("reset");
-let deletebtn = document.querySelector("#delete");
-let canceldelete = document.getElementById("close-deletion");
-let alertbody = document.getElementById("alert-body");
-let add = document.getElementById("add");
-let selectprod = document.getElementById("selectprod");
-let quantity = document.getElementById("quantity");
-let date = document.getElementById("date");
-let proderr = document.getElementById("proderr");
-let quantityerr = document.getElementById("quantityerr");
-let loc = document.getElementById("location");
-let locerr = document.getElementById("locerr");
-let dateerr = document.getElementById("dateerr");
-const edit = document.querySelectorAll(".edit");
-let modal = document.querySelector(".modal-sales");
-let cancel = document.getElementById("cancel");
-let del = document.getElementById("del");
-let update = document.getElementById("update");
-let selectall = document.getElementById('selectall');
-let checkboxes = document.querySelectorAll(".checkbox")
+    let form = document.getElementById("form");
+    let openform = document.getElementById("saleadd");
+    let closebtn = document.getElementById("closebtn");
+    let reset = document.getElementById("reset");
+    let deletebtn = document.querySelector("#delete");
+    let canceldelete = document.getElementById("close-deletion");
+    let alertbody = document.getElementById("alert-body");
+    let add = document.getElementById("add");
+    let selectprod = document.getElementById("selectprod");
+    let quantity = document.getElementById("quantity");
+    let date = document.getElementById("date");
+    let proderr = document.getElementById("proderr");
+    let quantityerr = document.getElementById("quantityerr");
+    let loc = document.getElementById("location");
+    let locerr = document.getElementById("locerr");
+    let dateerr = document.getElementById("dateerr");
+    const edit = document.querySelectorAll(".edit");
+    let modal = document.querySelector(".modal-sales");
+    let cancel = document.getElementById("cancel");
+    let del = document.getElementById("del");
+    let update = document.getElementById("update");
+    let selectall = document.getElementById('selectall');
+    let checkboxes = document.querySelectorAll(".checkbox")
 
-selectall.addEventListener("click", () => {
-    checkboxes.forEach((element) => {
+    selectall.addEventListener("click", () => {
+        checkboxes.forEach((element) => {
 
-        if (element.checked == false) {
-            element.checked = true;
+            if (element.checked == false) {
+                element.checked = true;
+            }
+        })
+    })
+
+    if (canceldelete) {
+        canceldelete.addEventListener("click", () => {
+            alertbody.classList.toggle("alert-body-show");
+            alertbody.classList.toggle("alert-body");
+        })
+    }
+
+    cancel.addEventListener("click", (event) => {
+        event.preventDefault();
+        modal.classList.toggle("modal-sales-show");
+        modal.classList.toggle("modal-sales");
+    })
+
+    edit.forEach((element) => {
+        element.addEventListener("click", (event) => {
+            event.preventDefault();
+            let id = element.getAttribute("data-id");
+            let data_date = element.getAttribute("data-date");
+            let data_quantity = element.getAttribute("data-quantity");
+            let data_currquantity = element.getAttribute("data-currquantity");
+            let prodid = element.getAttribute("data-prodid");
+            let prodname = element.getAttribute("data-prodname");
+
+            let name = document.getElementById("select-value");
+            let date = document.getElementById("date-value");
+            let quantity = document.getElementById("quantity-value");
+            let sale_id = document.getElementById("sale-id");
+            let currquantity = document.getElementById("curr-quantity");
+            let selected = document.getElementById("selected");
+
+            sale_id.value = id;
+            date.value = data_date;
+            quantity.value = data_quantity;
+            currquantity.value = data_currquantity;
+            selected.value = prodid
+            selected.innerHTML = prodname;
+
+            modal.classList.toggle("modal-sales");
+            modal.classList.toggle("modal-sales-show");
+        })
+    })
+
+    deletebtn.addEventListener("click", (event) => {
+        event.preventDefault();
+        alertbody.classList.toggle("alert-body");
+        alertbody.classList.toggle("alert-body-show");
+    })
+
+    del.addEventListener("click", () => {
+        const deletesales = document.getElementById("deletesales");
+        deletesales.submit();
+    })
+
+    if (document.querySelector(".updated")) {
+        document.querySelector(".updated").addEventListener("animationend", () => {
+            document.querySelector(".updated").style.display = "none";
+        })
+    } else if (document.querySelector(".added")) {
+        document.querySelector(".added").addEventListener("animationend", () => {
+            document.querySelector(".added").style.display = "none";
+        })
+    } else if (document.querySelector(".deleted")) {
+        document.querySelector(".deleted").addEventListener("animationend", () => {
+            document.querySelector(".deleted").style.display = "none";
+        })
+    } else if (document.querySelector(".emptystocks")) {
+        document.querySelector(".emptystocks").addEventListener("animationend", () => {
+            document.querySelector(".emptystocks").style.display = "none";
+        })
+    }
+
+
+    reset.addEventListener("click", (event) => {
+        event.preventDefault();
+        selectprod.value = "";
+        date.value = "";
+        quantity.value = "";
+        proderr.style.display = "none";
+        quantityerr.style.display = "none";
+        dateerr.style.display = "none";
+    })
+
+
+    openform.addEventListener("click", () => {
+        form.classList.toggle("form");
+        form.classList.toggle("show-form");
+    })
+
+    window.addEventListener("resize", () => {
+        if (window.innerWidth > 1022 && form.classList.contains("show-form")) {
+            form.classList.toggle("show-form");
+            form.classList.toggle("form");
         }
     })
-})
 
-if (canceldelete) {
-    canceldelete.addEventListener("click", () => {
-        alertbody.classList.toggle("alert-body-show");
-        alertbody.classList.toggle("alert-body");
+    window.addEventListener("click", (event) => {
+        if (event.target.id == "form" && form.classList.contains("show-form")) {
+            form.classList.toggle("show-form");
+            form.classList.toggle("form");
+        }
+
+        if (event.target.id == "alert-body" && alertbbody.classList.contains("alert-body-show")) {
+            alertbbody.classList.toggle("alert-body-show");
+            alertbbody.classList.toggle("alert-body");
+        }
+
+        if (event.target.classList == "modal-sales-show") {
+            modal.classList.toggle("modal-sales-show");
+            modal.classList.toggle("modal-sales");
+        }
     })
-}
 
-cancel.addEventListener("click", (event) => {
-    event.preventDefault();
-    modal.classList.toggle("modal-sales-show");
-    modal.classList.toggle("modal-sales");
-})
+    closebtn.addEventListener("click", () => {
+        form.classList.toggle("show-form");
+        form.classList.toggle("form");
+    })
 
-edit.forEach((element) => {
-    element.addEventListener("click", (event) => {
-        event.preventDefault();
-        let id = element.getAttribute("data-id");
-        let data_date = element.getAttribute("data-date");
-        let data_quantity = element.getAttribute("data-quantity");
-        let data_currquantity = element.getAttribute("data-currquantity");
-        let prodid = element.getAttribute("data-prodid");
-        let prodname = element.getAttribute("data-prodname");
+    add.addEventListener("click", (event) => {
 
-        let name = document.getElementById("select-value");
+        if (selectprod.value == "" && quantity.value == "" && date.value == "") {
+            event.preventDefault();
+            proderr.style.display = "block";
+            quantityerr.style.display = "block";
+            dateerr.style.display = "block";
+        }
+
+        if (selectprod.value == "") {
+            event.preventDefault();
+            proderr.style.display = "block";
+        } else {
+            proderr.style.display = "none";
+        }
+
+        if (quantity.value == "") {
+            event.preventDefault();
+            quantityerr.style.display = "block";
+        } else {
+            quantityerr.style.display = "none";
+        }
+
+        if (date.value == "") {
+            event.preventDefault();
+            dateerr.style.display = "block";
+        } else {
+            dateerr.style.display = "none";
+        }
+    })
+
+    update.addEventListener("click", (event) => {
+
+        let iderr = document.getElementById("iderr");
+        let daterror = document.getElementById("dateerror");
+        let quantityerr = document.getElementById("quanterr");
+
+        let name = document.getElementById("prodselect");
         let date = document.getElementById("date-value");
         let quantity = document.getElementById("quantity-value");
-        let sale_id = document.getElementById("sale-id");
-        let currquantity = document.getElementById("curr-quantity");
-        let selected = document.getElementById("selected");
 
-        sale_id.value = id;
-        date.value = data_date;
-        quantity.value = data_quantity;
-        currquantity.value = data_currquantity;
-        selected.value = prodid
-        selected.innerHTML = prodname;
+        if (name.value == "" && date.value == "" && quantity.value == "") {
+            event.preventDefault();
+            iderr.style.display = "block";
+            daterror.style.display = "block";
+            quantityerr.style.display = "block";
+        }
 
-        modal.classList.toggle("modal-sales");
-        modal.classList.toggle("modal-sales-show");
+        if (name.value == "") {
+            event.preventDefault();
+            iderr.style.display = "block";
+        } else {
+            iderr.style.display = "none";
+        }
+
+        if (quantity.value == "") {
+            event.preventDefault();
+            quantityerr.style.display = "block";
+        } else {
+            quantityerr.style.display = "none";
+        }
+
+        if (date.value == "") {
+            event.preventDefault();
+            daterror.style.display = "block";
+        } else {
+            daterror.style.display = "none";
+        }
+
     })
-})
-
-deletebtn.addEventListener("click", (event) => {
-    event.preventDefault();
-    alertbody.classList.toggle("alert-body");
-    alertbody.classList.toggle("alert-body-show");
-})
-
-del.addEventListener("click", () => {
-    const deletesales = document.getElementById("deletesales");
-    deletesales.submit();
-})
-
-if (document.querySelector(".updated")) {
-    document.querySelector(".updated").addEventListener("animationend", () => {
-        document.querySelector(".updated").style.display = "none";
-    })
-} else if (document.querySelector(".added")) {
-    document.querySelector(".added").addEventListener("animationend", () => {
-        document.querySelector(".added").style.display = "none";
-    })
-} else if (document.querySelector(".deleted")) {
-    document.querySelector(".deleted").addEventListener("animationend", () => {
-        document.querySelector(".deleted").style.display = "none";
-    })
-} else if (document.querySelector(".emptystocks")) {
-    document.querySelector(".emptystocks").addEventListener("animationend", () => {
-        document.querySelector(".emptystocks").style.display = "none";
-    })
-}
-
-
-reset.addEventListener("click", (event) => {
-    event.preventDefault();
-    selectprod.value = "";
-    date.value = "";
-    quantity.value = "";
-    proderr.style.display = "none";
-    quantityerr.style.display = "none";
-    dateerr.style.display = "none";
-})
-
-
-openform.addEventListener("click", () => {
-    form.classList.toggle("form");
-    form.classList.toggle("show-form");
-})
-
-window.addEventListener("resize", () => {
-    if (window.innerWidth > 1022 && form.classList.contains("show-form")) {
-        form.classList.toggle("show-form");
-        form.classList.toggle("form");
-    }
-})
-
-window.addEventListener("click", (event) => {
-    if (event.target.id == "form" && form.classList.contains("show-form")) {
-        form.classList.toggle("show-form");
-        form.classList.toggle("form");
-    }
-
-    if (event.target.id == "alert-body" && alertbbody.classList.contains("alert-body-show")) {
-        alertbbody.classList.toggle("alert-body-show");
-        alertbbody.classList.toggle("alert-body");
-    }
-
-    if (event.target.classList == "modal-sales-show") {
-        modal.classList.toggle("modal-sales-show");
-        modal.classList.toggle("modal-sales");
-    }
-})
-
-closebtn.addEventListener("click", () => {
-    form.classList.toggle("show-form");
-    form.classList.toggle("form");
-})
-
-add.addEventListener("click", (event) => {
-
-    if (selectprod.value == "" && quantity.value == "" && date.value == "") {
-        event.preventDefault();
-        proderr.style.display = "block";
-        quantityerr.style.display = "block";
-        dateerr.style.display = "block";
-    }
-
-    if (selectprod.value == "") {
-        event.preventDefault();
-        proderr.style.display = "block";
-    } else {
-        proderr.style.display = "none";
-    }
-
-    if (quantity.value == "") {
-        event.preventDefault();
-        quantityerr.style.display = "block";
-    } else {
-        quantityerr.style.display = "none";
-    }
-
-    if (date.value == "") {
-        event.preventDefault();
-        dateerr.style.display = "block";
-    } else {
-        dateerr.style.display = "none";
-    }
-})
-
-update.addEventListener("click", (event) => {
-
-    let iderr = document.getElementById("iderr");
-    let daterror = document.getElementById("dateerror");
-    let quantityerr = document.getElementById("quanterr");
-
-    let name = document.getElementById("prodselect");
-    let date = document.getElementById("date-value");
-    let quantity = document.getElementById("quantity-value");
-
-    if (name.value == "" && date.value == "" && quantity.value == "") {
-        event.preventDefault();
-        iderr.style.display = "block";
-        daterror.style.display = "block";
-        quantityerr.style.display = "block";
-    }
-
-    if (name.value == "") {
-        event.preventDefault();
-        iderr.style.display = "block";
-    } else {
-        iderr.style.display = "none";
-    }
-
-    if (quantity.value == "") {
-        event.preventDefault();
-        quantityerr.style.display = "block";
-    } else {
-        quantityerr.style.display = "none";
-    }
-
-    if (date.value == "") {
-        event.preventDefault();
-        daterror.style.display = "block";
-    } else {
-        daterror.style.display = "none";
-    }
-
-})
 </script>
 
 </html>

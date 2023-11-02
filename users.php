@@ -3,9 +3,7 @@
 session_start();
 include 'openconn.php';
 
-if (isset($_SESSION["admin"]) && isset($_SESSION["admin_username"])) {
-    $admin_id = $_SESSION["admin"];
-} else {
+if (!isset($_SESSION["admin"]) && !isset($_SESSION["admin_username"])) {
     header("location: login.php");
     exit();
 }
@@ -177,24 +175,24 @@ $total_pages = ceil($total_records / $number_per_page);
                 </div>
 
                 <?php if (isset($_SESSION['added'])) { ?>
-                <div class="added">
-                    <p><span>&#10003;</span> <?php echo $_SESSION['added']; ?></p>
-                </div>
+                    <div class="added">
+                        <p><span>&#10003;</span> <?php echo $_SESSION['added']; ?></p>
+                    </div>
                 <?php unset($_SESSION['added']);
                 } else if (isset($_SESSION['deleted'])) { ?>
-                <div class="deleted">
-                    <p><span>&#10003;</span> <?php echo $_SESSION['deleted']; ?></p>
-                </div>
+                    <div class="deleted">
+                        <p><span>&#10003;</span> <?php echo $_SESSION['deleted']; ?></p>
+                    </div>
                 <?php unset($_SESSION['deleted']);
                 } else if (isset($_SESSION['updated'])) { ?>
-                <div class="updated">
-                    <p><span>&#10003;</span> <?php echo $_SESSION['updated']; ?></p>
-                </div>
+                    <div class="updated">
+                        <p><span>&#10003;</span> <?php echo $_SESSION['updated']; ?></p>
+                    </div>
                 <?php unset($_SESSION['updated']);
                 } else if (isset($_SESSION['exist'])) { ?>
-                <div class="exist">
-                    <p><span>&#10003;</span> <?php echo $_SESSION['exist']; ?></p>
-                </div>
+                    <div class="exist">
+                        <p><span>&#10003;</span> <?php echo $_SESSION['exist']; ?></p>
+                    </div>
                 <?php unset($_SESSION['exist']);
                 } ?>
 
@@ -208,27 +206,24 @@ $total_pages = ceil($total_records / $number_per_page);
                     </tr>
                     <form action="delete/deleteacc.php" id="deleteacc" method="post">
                         <?php while ($row) { ?>
-                        <tr>
-                            <td><input type="checkbox" name="account_id[]" value="<?php echo $row['account_id']; ?>"
-                                    class="checkbox"></td>
-                            <td><?php echo $row['username']; ?></td>
-                            <td><?php echo $row['password']; ?></td>
-                            <td><?php echo $row['role']; ?></td>
-                            <td id="action"> <button class="edit" data-accid="<?php echo $row['account_id']; ?>"
-                                    data-username="<?php echo $row['username']; ?>"
-                                    data-password="<?php echo $row['password']; ?>"
-                                    data-role="<?php echo $row['role']; ?>">Edit</button>
-                            </td>
+                            <tr>
+                                <td><input type="checkbox" name="account_id[]" value="<?php echo $row['account_id']; ?>" class="checkbox"></td>
+                                <td><?php echo $row['username']; ?></td>
+                                <td><?php echo $row['password']; ?></td>
+                                <td><?php echo $row['role']; ?></td>
+                                <td id="action"> <button class="edit" data-accid="<?php echo $row['account_id']; ?>" data-username="<?php echo $row['username']; ?>" data-password="<?php echo $row['password']; ?>" data-role="<?php echo $row['role']; ?>">Edit</button>
+                                </td>
 
                             <?php $row = mysqli_fetch_array($result);
                         } ?>
-                        </tr>
+                            </tr>
                     </form>
                     <div class="alert-body" id="alert-body">
                         <div class="alert-container">
                             <img src="images/warning.png">
                             <div class="text-warning">
-                                <p>Are you sure you want to delete?<br>(All users connected to this account will also be
+                                <p>Are you sure you want to delete?<br>(All users connected to this account will
+                                    also be
                                     delete)</p>
                             </div>
                             <div class="buttons-alert">
@@ -249,8 +244,8 @@ $total_pages = ceil($total_records / $number_per_page);
                                 } ?>>&laquo;</a></li>
 
                         <?php for ($i = 0; $i < $total_pages; $i++) { ?>
-                        <li><a href="<?php echo "users.php?page_number=" . $i + 1; ?>"><?php echo $i + 1; ?></a>
-                        </li>
+                            <li><a href="<?php echo "users.php?page_number=" . $i + 1; ?>"><?php echo $i + 1; ?></a>
+                            </li>
                         <?php } ?>
 
 
@@ -274,218 +269,218 @@ $total_pages = ceil($total_records / $number_per_page);
 
 <script src="javascript/admin.js"></script>
 <script>
-let form = document.getElementById("form");
-let openform = document.getElementById("accadd");
-let closebtn = document.getElementById("closebtn");
-let reset = document.getElementById("reset");
-let deletebtn = document.querySelector("#delete");
-let canceldelete = document.getElementById("close-deletion");
-let alertbody = document.getElementById("alert-body");
-let add = document.getElementById("add");
-let username = document.getElementById("username");
-let password = document.getElementById("password");
-let role = document.getElementById("role");
-let usernameerr = document.getElementById("usernameerr");
-let passworderr = document.getElementById("passworderr");
-let roleerr = document.getElementById("roleerr");
-let del = document.getElementById("del");
-const edit = document.querySelectorAll(".edit");
-let modal = document.querySelector(".modal-account");
-let cancel = document.getElementById("cancel");
-let update = document.getElementById("update");
-let selectall = document.getElementById('selectall');
-let checkboxes = document.querySelectorAll(".checkbox")
+    let form = document.getElementById("form");
+    let openform = document.getElementById("accadd");
+    let closebtn = document.getElementById("closebtn");
+    let reset = document.getElementById("reset");
+    let deletebtn = document.querySelector("#delete");
+    let canceldelete = document.getElementById("close-deletion");
+    let alertbody = document.getElementById("alert-body");
+    let add = document.getElementById("add");
+    let username = document.getElementById("username");
+    let password = document.getElementById("password");
+    let role = document.getElementById("role");
+    let usernameerr = document.getElementById("usernameerr");
+    let passworderr = document.getElementById("passworderr");
+    let roleerr = document.getElementById("roleerr");
+    let del = document.getElementById("del");
+    const edit = document.querySelectorAll(".edit");
+    let modal = document.querySelector(".modal-account");
+    let cancel = document.getElementById("cancel");
+    let update = document.getElementById("update");
+    let selectall = document.getElementById('selectall');
+    let checkboxes = document.querySelectorAll(".checkbox")
 
-selectall.addEventListener("click", () => {
-    checkboxes.forEach((element) => {
+    selectall.addEventListener("click", () => {
+        checkboxes.forEach((element) => {
 
-        if (element.checked == false) {
-            element.checked = true;
+            if (element.checked == false) {
+                element.checked = true;
+            }
+        })
+    })
+
+    if (canceldelete) {
+        canceldelete.addEventListener("click", () => {
+            alertbody.classList.toggle("alert-body-show");
+            alertbody.classList.toggle("alert-body");
+        })
+    }
+
+    cancel.addEventListener("click", (event) => {
+        event.preventDefault();
+        modal.classList.toggle("modal-account-show");
+        modal.classList.toggle("modal-account");
+    })
+
+    edit.forEach((element) => {
+        element.addEventListener("click", (event) => {
+            event.preventDefault();
+            let data_id = element.getAttribute("data-accid");
+            let data_username = element.getAttribute("data-username");
+            let data_password = element.getAttribute("data-password");
+            let data_role = element.getAttribute("data-role");
+
+            let username = document.getElementById("curr_username");
+            let password = document.getElementById("curr_password");
+            let role = document.getElementById("curr_role");
+            let id = document.getElementById("acc-id");
+            let role_description;
+
+            if (data_role == 1) {
+                role_description = "Admin";
+            } else if (data_role == 2) {
+                role_description = "Worker";
+            } else {
+                role_description = "Supplier";
+            }
+
+            id.value = data_id;
+            username.value = data_username;
+            password.value = data_password;
+            role.value = data_role;
+            role.innerHTML = role_description;
+
+            modal.classList.toggle("modal-account");
+            modal.classList.toggle("modal-account-show");
+        })
+    })
+
+    deletebtn.addEventListener("click", (event) => {
+        event.preventDefault();
+        alertbody.classList.toggle("alert-body");
+        alertbody.classList.toggle("alert-body-show");
+    })
+
+    del.addEventListener("click", () => {
+        const deleteacc = document.getElementById("deleteacc");
+        deleteacc.submit();
+    })
+
+    if (document.querySelector(".updated")) {
+        document.querySelector(".updated").addEventListener("animationend", () => {
+            document.querySelector(".updated").style.display = "none";
+        })
+    } else if (document.querySelector(".added")) {
+        document.querySelector(".added").addEventListener("animationend", () => {
+            document.querySelector(".added").style.display = "none";
+        })
+    } else if (document.querySelector(".deleted")) {
+        document.querySelector(".deleted").addEventListener("animationend", () => {
+            document.querySelector(".deleted").style.display = "none";
+        })
+    } else if (document.querySelector(".exist")) {
+        document.querySelector(".exist").addEventListener("animationend", () => {
+            document.querySelector(".exist").style.display = "none";
+        })
+    }
+
+    reset.addEventListener("click", (event) => {
+        event.preventDefault();
+        username.value = "";
+        password.value = "";
+        role.value = "";
+        usernameerr.style.display = "none";
+        passworderr.style.display = "none";
+        roleerr.style.display = "none";
+    })
+
+
+    openform.addEventListener("click", () => {
+        form.classList.toggle("form");
+        form.classList.toggle("show-form");
+    })
+
+    window.addEventListener("resize", () => {
+        if (window.innerWidth > 1022 && form.classList.contains("show-form")) {
+            form.classList.toggle("show-form");
+            form.classList.toggle("form");
         }
     })
-})
 
-if (canceldelete) {
-    canceldelete.addEventListener("click", () => {
-        alertbody.classList.toggle("alert-body-show");
-        alertbody.classList.toggle("alert-body");
+    window.addEventListener("click", (event) => {
+
+        if (event.target.id == "form" && form.classList.contains("show-form")) {
+            form.classList.toggle("show-form");
+            form.classList.toggle("form");
+        }
+
+        if (event.target.id == "alert-body" && alertbbody.classList.contains("alert-body-show")) {
+            alertbbody.classList.toggle("alert-body-show");
+            alertbbody.classList.toggle("alert-body");
+        }
+
+        if (event.target.classList == "modal-product-show") {
+            modal.classList.toggle("modal-product-show");
+            modal.classList.toggle("modal-product");
+        }
     })
-}
 
-cancel.addEventListener("click", (event) => {
-    event.preventDefault();
-    modal.classList.toggle("modal-account-show");
-    modal.classList.toggle("modal-account");
-})
+    closebtn.addEventListener("click", () => {
+        form.classList.toggle("show-form");
+        form.classList.toggle("form");
+    })
 
-edit.forEach((element) => {
-    element.addEventListener("click", (event) => {
-        event.preventDefault();
-        let data_id = element.getAttribute("data-accid");
-        let data_username = element.getAttribute("data-username");
-        let data_password = element.getAttribute("data-password");
-        let data_role = element.getAttribute("data-role");
+    add.addEventListener("click", (event) => {
 
+        if (username.value == "" && password.value == "" && role.value == "") {
+            event.preventDefault();
+            usernameerr.style.display = "block";
+            passworderr.style.display = "block";
+            roleerr.style.display = "block";
+        }
+
+        if (username.value == "") {
+            event.preventDefault();
+            usernameerr.style.display = "block";
+        } else {
+            usernameerr.style.display = "none";
+        }
+
+        if (password.value == "") {
+            event.preventDefault();
+            passworderr.style.display = "block";
+        } else {
+            passworderr.style.display = "none";
+        }
+
+        if (role.value == "") {
+            event.preventDefault();
+            roleerr.style.display = "block";
+        } else {
+            roleerr.style.display = "none";
+        }
+
+    })
+
+    update.addEventListener("click", (event) => {
+
+        let usernameerr = document.getElementById("usernameerror");
+        let passworderror = document.getElementById("passworderror");
         let username = document.getElementById("curr_username");
         let password = document.getElementById("curr_password");
-        let role = document.getElementById("curr_role");
-        let id = document.getElementById("acc-id");
-        let role_description;
 
-        if (data_role == 1) {
-            role_description = "Admin";
-        } else if (data_role == 2) {
-            role_description = "Worker";
-        } else {
-            role_description = "Supplier";
+        if (username.value == "" && password.value == "" && role.value == "") {
+            event.preventDefault();
+            usernameerr.style.display = "block";
+            passworderror.style.display = "block";
         }
 
-        id.value = data_id;
-        username.value = data_username;
-        password.value = data_password;
-        role.value = data_role;
-        role.innerHTML = role_description;
+        if (username.value == "") {
+            event.preventDefault();
+            usernameerr.style.display = "block";
+        } else {
+            usernameerr.style.display = "none";
+        }
 
-        modal.classList.toggle("modal-account");
-        modal.classList.toggle("modal-account-show");
+        if (password.value == "") {
+            event.preventDefault();
+            passworderror.style.display = "block";
+        } else {
+            passworderror.style.display = "none";
+        }
+
     })
-})
-
-deletebtn.addEventListener("click", (event) => {
-    event.preventDefault();
-    alertbody.classList.toggle("alert-body");
-    alertbody.classList.toggle("alert-body-show");
-})
-
-del.addEventListener("click", () => {
-    const deleteacc = document.getElementById("deleteacc");
-    deleteacc.submit();
-})
-
-if (document.querySelector(".updated")) {
-    document.querySelector(".updated").addEventListener("animationend", () => {
-        document.querySelector(".updated").style.display = "none";
-    })
-} else if (document.querySelector(".added")) {
-    document.querySelector(".added").addEventListener("animationend", () => {
-        document.querySelector(".added").style.display = "none";
-    })
-} else if (document.querySelector(".deleted")) {
-    document.querySelector(".deleted").addEventListener("animationend", () => {
-        document.querySelector(".deleted").style.display = "none";
-    })
-} else if (document.querySelector(".exist")) {
-    document.querySelector(".exist").addEventListener("animationend", () => {
-        document.querySelector(".exist").style.display = "none";
-    })
-}
-
-reset.addEventListener("click", (event) => {
-    event.preventDefault();
-    username.value = "";
-    password.value = "";
-    role.value = "";
-    usernameerr.style.display = "none";
-    passworderr.style.display = "none";
-    roleerr.style.display = "none";
-})
-
-
-openform.addEventListener("click", () => {
-    form.classList.toggle("form");
-    form.classList.toggle("show-form");
-})
-
-window.addEventListener("resize", () => {
-    if (window.innerWidth > 1022 && form.classList.contains("show-form")) {
-        form.classList.toggle("show-form");
-        form.classList.toggle("form");
-    }
-})
-
-window.addEventListener("click", (event) => {
-
-    if (event.target.id == "form" && form.classList.contains("show-form")) {
-        form.classList.toggle("show-form");
-        form.classList.toggle("form");
-    }
-
-    if (event.target.id == "alert-body" && alertbbody.classList.contains("alert-body-show")) {
-        alertbbody.classList.toggle("alert-body-show");
-        alertbbody.classList.toggle("alert-body");
-    }
-
-    if (event.target.classList == "modal-product-show") {
-        modal.classList.toggle("modal-product-show");
-        modal.classList.toggle("modal-product");
-    }
-})
-
-closebtn.addEventListener("click", () => {
-    form.classList.toggle("show-form");
-    form.classList.toggle("form");
-})
-
-add.addEventListener("click", (event) => {
-
-    if (username.value == "" && password.value == "" && role.value == "") {
-        event.preventDefault();
-        usernameerr.style.display = "block";
-        passworderr.style.display = "block";
-        roleerr.style.display = "block";
-    }
-
-    if (username.value == "") {
-        event.preventDefault();
-        usernameerr.style.display = "block";
-    } else {
-        usernameerr.style.display = "none";
-    }
-
-    if (password.value == "") {
-        event.preventDefault();
-        passworderr.style.display = "block";
-    } else {
-        passworderr.style.display = "none";
-    }
-
-    if (role.value == "") {
-        event.preventDefault();
-        roleerr.style.display = "block";
-    } else {
-        roleerr.style.display = "none";
-    }
-
-})
-
-update.addEventListener("click", (event) => {
-
-    let usernameerr = document.getElementById("usernameerror");
-    let passworderror = document.getElementById("passworderror");
-    let username = document.getElementById("curr_username");
-    let password = document.getElementById("curr_password");
-
-    if (username.value == "" && password.value == "" && role.value == "") {
-        event.preventDefault();
-        usernameerr.style.display = "block";
-        passworderror.style.display = "block";
-    }
-
-    if (username.value == "") {
-        event.preventDefault();
-        usernameerr.style.display = "block";
-    } else {
-        usernameerr.style.display = "none";
-    }
-
-    if (password.value == "") {
-        event.preventDefault();
-        passworderror.style.display = "block";
-    } else {
-        passworderror.style.display = "none";
-    }
-
-})
 </script>
 
 </html>
