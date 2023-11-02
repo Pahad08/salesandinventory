@@ -32,7 +32,7 @@ if (isset($_POST['edit'])) {
     $stmt = mysqli_prepare($conn, $sql);
     mysqli_stmt_bind_param($stmt, "siii", $date, $prodid, $quantity, $saleid);
     mysqli_stmt_execute($stmt);
-    $_SESSION['updated'] = "Product Updated Successfully";
+    $_SESSION['updated'] = "Sale Updated Successfully";
     mysqli_close($conn);
     header("location: ../sales.php");
     exit();

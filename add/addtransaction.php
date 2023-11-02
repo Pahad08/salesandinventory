@@ -22,7 +22,7 @@ if (isset($_POST['add'])) {
     $stmt = mysqli_prepare($conn, $sql);
     mysqli_stmt_bind_param($stmt, "ssiii", $transaction_date, $delivery_date, $quantity, $product_id, $supplier_id);
     mysqli_stmt_execute($stmt);
-    $_SESSION['added'] = "Delivery Schedule Added Successfully";
+    $_SESSION['added'] = "Schedule Added Successfully";
     mysqli_close($conn);
     header("location: ../schedules.php");
     exit();

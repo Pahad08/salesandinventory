@@ -23,9 +23,7 @@ if (isset($_POST['edit'])) {
     $password = $_POST['password'];
     $role = CleanData($_POST['role']);
 
-    $new_password = password_hash($password, PASSWORD_BCRYPT);
-
-    $stmt = mysqli_prepare($conn, "SELECT username FROM accounts where account_id = ?");
+    $stmt = mysqli_prepare($conn, "SELECT username, `password`  FROM accounts where account_id = ?");
     mysqli_stmt_bind_param($stmt, "i", $id);
     mysqli_stmt_execute($stmt);
     $result = mysqli_stmt_get_result($stmt);
@@ -36,6 +34,12 @@ if (isset($_POST['edit'])) {
     mysqli_stmt_execute($stmt2);
     $result2 = mysqli_stmt_get_result($stmt2);
     $row2 = mysqli_fetch_array($result2);
+
+    if ($row['password'] == $password) {
+        $new_password = $row['password'];
+    } else {
+        $new_password = password_hash($password, PASSWORD_BCRYPT);
+    }
 
     if ($row['username'] == $username || $row2['total'] == 0) {
         $sql = "UPDATE accounts SET username=?, `password`= ?, `role` = ? where account_id = ?;";

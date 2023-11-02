@@ -30,7 +30,7 @@ if (isset($_POST['add'])) {
     $result = mysqli_stmt_get_result($stmt_exist);
 
     if (mysqli_num_rows($result) > 0) {
-        $_SESSION['exist'] = "Account Already Exist";
+        $_SESSION['exist'] = "Username Already Taken";
         mysqli_close($conn);
         header("location: ../users.php");
         exit();

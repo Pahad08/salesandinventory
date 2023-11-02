@@ -157,9 +157,13 @@ $total_pages = ceil($total_records / $number_per_page);
 
                         <div class="header-info">
                             <h2>Expenses</h2>
-                            <button id="expenseadd" class="add">Add Expense</button>
-                            <button id="selectall">Select All</button>
-                            <button id="delete">Delete</button>
+
+                            <div class="btns">
+                                <button id="expenseadd" class="add"><img src="images/add.png" alt="">Add
+                                    Expense</button>
+                                <button id="delete"><img src="images/delete.png">Delete</button>
+                                <button id="selectall"><img src="images/selectall.png" alt="">Select All</button>
+                            </div>
                         </div>
 
                         <div class="search">
@@ -171,19 +175,16 @@ $total_pages = ceil($total_records / $number_per_page);
                     <?php if (isset($_SESSION['added'])) { ?>
                     <div class="added">
                         <p><span>&#10003;</span> <?php echo $_SESSION['added']; ?></p>
-                        <p id="alert-close">&#10006;</p>
                     </div>
                     <?php unset($_SESSION['added']);
                 } else if (isset($_SESSION['deleted'])) { ?>
                     <div class="deleted">
                         <p><span>&#10003;</span> <?php echo $_SESSION['deleted']; ?></p>
-                        <p id="alert-close">&#10006;</p>
                     </div>
                     <?php unset($_SESSION['deleted']);
                 } else if (isset($_SESSION['updated'])) { ?>
                     <div class="updated">
                         <p><span>&#10003;</span> <?php echo $_SESSION['updated']; ?></p>
-                        <p id="alert-close">&#10006;</p>
                     </div>
                     <?php unset($_SESSION['updated']);
                 }
@@ -208,7 +209,8 @@ $total_pages = ceil($total_records / $number_per_page);
                                 <td id="action"> <button class="edit" data-expenseid="<?php echo $row['expense_id']; ?>"
                                         data-description="<?php echo $row['description']; ?>"
                                         data-amount="<?php echo $row['amount']; ?>"
-                                        data-expense_date="<?php echo $row['expense_date']; ?>">Edit</button>
+                                        data-expense_date="<?php echo $row['expense_date']; ?>"><img
+                                            src="images/edit.png" alt="">Edit</button>
                                 </td>
 
                                 <?php $row = mysqli_fetch_array($result);
@@ -232,32 +234,35 @@ $total_pages = ceil($total_records / $number_per_page);
 
                     </table>
 
-                    <ul class="page">
-                        <li><a <?php if ($page_number != 1) {
-                                echo "href=expense.php?page_number=" . $previouspage;
-                            } ?>>&laquo;</a></li>
+                    <div class="page">
+                        <p><?php echo "Page " . "<b>$page_number </b>" . " of " . "<b>$total_pages</b>" ?>
 
-                        <?php for ($i = 0; $i < $total_pages; $i++) { ?>
-                        <li><a href="<?php echo "expense.php?page_number=" . $i + 1; ?>"><?php echo $i + 1; ?></a>
-                        </li>
-                        <?php } ?>
+                        <ul class="page-list">
+                            <li><a <?php if ($page_number != 1) {
+                                    echo "href=expense.php?page_number=" . $previouspage;
+                                } ?>>&laquo;</a></li>
+
+                            <?php for ($i = 0; $i < $total_pages; $i++) { ?>
+                            <li><a href="<?php echo "expense.php?page_number=" . $i + 1; ?>"><?php echo $i + 1; ?></a>
+                            </li>
+                            <?php } ?>
 
 
-                        <li><a <?php if ($page_number != $total_pages && $total_pages != 0) {
-                                echo "href=expense.php?page_number=" . $nextpage;
-                            } ?>>&raquo;</a></li>
-                    </ul>
+                            <li><a <?php if ($page_number != $total_pages && $total_pages != 0) {
+                                    echo "href=expense.php?page_number=" . $nextpage;
+                                } ?>>&raquo;</a></li>
+                        </ul>
+
+                    </div>
+
+                    <div class="modal-expense">
+                        <?php include 'modal/expense_modal.php'; ?>
+                    </div>
 
                 </div>
 
-                <div class="modal-expense">
-                    <?php include 'modal/expense_modal.php'; ?>
-                </div>
 
             </div>
-
-
-        </div>
     </body>
 
     <script src="javascript/admin.js"></script>
@@ -265,7 +270,6 @@ $total_pages = ceil($total_records / $number_per_page);
     let form = document.getElementById("form");
     let openform = document.getElementById("expenseadd");
     let closebtn = document.getElementById("closebtn");
-    let closealert = document.getElementById("alert-close");
     let reset = document.getElementById("reset");
     let deletebtn = document.querySelector("#delete");
     let canceldelete = document.getElementById("close-deletion");
@@ -340,19 +344,17 @@ $total_pages = ceil($total_records / $number_per_page);
         deleteexpense.submit();
     })
 
-    if (closealert) {
-        closealert.addEventListener("click", () => {
-            if (document.querySelector(".added")) {
-                document.querySelector(".added").style.display = "none";
-            }
-
-            if (document.querySelector(".deleted")) {
-                document.querySelector(".deleted").style.display = "none";
-            }
-
-            if (document.querySelector(".updated")) {
-                document.querySelector(".updated").style.display = "none";
-            }
+    if (document.querySelector(".updated")) {
+        document.querySelector(".updated").addEventListener("animationend", () => {
+            document.querySelector(".updated").style.display = "none";
+        })
+    } else if (document.querySelector(".added")) {
+        document.querySelector(".added").addEventListener("animationend", () => {
+            document.querySelector(".added").style.display = "none";
+        })
+    } else if (document.querySelector(".deleted")) {
+        document.querySelector(".deleted").addEventListener("animationend", () => {
+            document.querySelector(".deleted").style.display = "none";
         })
     }
 

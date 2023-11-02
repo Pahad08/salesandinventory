@@ -41,235 +41,241 @@ $total_pages = ceil($total_records / $number_per_page);
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/admin.css">
-    <link rel="shortcut icon" href="images/logo.png" type="image/x-icon">
-    <title>Accounts</title>
-</head>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="css/admin.css">
+        <link rel="shortcut icon" href="images/logo.png" type="image/x-icon">
+        <title>Accounts</title>
+    </head>
 
-<body>
+    <body>
 
-    <div class="header">
+        <div class="header">
 
-        <div class="left">
+            <div class="left">
 
-            <div id="menu-icon">
-                <div></div>
-                <div></div>
-                <div></div>
+                <div id="menu-icon">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
+
+                <img src="images/logo.png" alt="logo">
+                <h2> Badong Lechon Manok</h2>
             </div>
 
-            <img src="images/logo.png" alt="logo">
-            <h2> Badong Lechon Manok</h2>
-        </div>
-
-        <div class="right">
-            <h3><?php echo strtoupper($_SESSION["admin_username"]); ?> </h3>
-            <a href="logout.php">Logout</a>
-        </div>
-
-    </div>
-
-
-    <div id="nav-body" class="nav">
-        <nav id="nav">
-            <div id="list-container">
-
-                <ul class="menu">
-                    <p>Data Dashboard</p>
-                    <li><a href="admin.php">Dashboard</a></li>
-                </ul>
-
-                <ul class="menu">
-                    <p>Products</p>
-                    <li><a href="inventory.php">Inventory</a></li>
-                    <li><a href="products.php">Product List</a></li>
-                    <li><a href="sales.php">Sales</a></li>
-                    <li><a href="expense.php">Expenses</a></li>
-                </ul>
-
-                <ul class="menu">
-                    <p>Suppliers/Workers</p>
-                    <li><a href="supplier_list.php">List of Suppliers</a></li>
-                    <li><a href="workers_list.php">List of Workers</a></li>
-                    <li><a href="schedules.php">Schedule of Deliveries</a></li>
-                </ul>
-
-                <ul class="menu">
-                    <p>Users</p>
-                    <li><a href="users.php">Users List</a></li>
-                </ul>
+            <div class="right">
+                <h3><?php echo strtoupper($_SESSION["admin_username"]); ?> </h3>
+                <a href="logout.php">Logout</a>
             </div>
 
-        </nav>
-    </div>
+        </div>
 
-    <div class="body">
 
-        <div class="body-content">
+        <div id="nav-body" class="nav">
+            <nav id="nav">
+                <div id="list-container">
 
-            <div class="form" id="form">
+                    <ul class="menu">
+                        <p>Data Dashboard</p>
+                        <li><a href="admin.php">Dashboard</a></li>
+                    </ul>
 
-                <div class="form-container">
+                    <ul class="menu">
+                        <p>Products</p>
+                        <li><a href="inventory.php">Inventory</a></li>
+                        <li><a href="products.php">Product List</a></li>
+                        <li><a href="sales.php">Sales</a></li>
+                        <li><a href="expense.php">Expenses</a></li>
+                    </ul>
 
-                    <div class="header-form">
-                        <h2>Add Account</h2>
-                        <p id="closebtn">&#10006;</p>
+                    <ul class="menu">
+                        <p>Suppliers/Workers</p>
+                        <li><a href="supplier_list.php">List of Suppliers</a></li>
+                        <li><a href="workers_list.php">List of Workers</a></li>
+                        <li><a href="schedules.php">Schedule of Deliveries</a></li>
+                    </ul>
+
+                    <ul class="menu">
+                        <p>Users</p>
+                        <li><a href="users.php">Users List</a></li>
+                    </ul>
+                </div>
+
+            </nav>
+        </div>
+
+        <div class="body">
+
+            <div class="body-content">
+
+                <div class="form" id="form">
+
+                    <div class="form-container">
+
+                        <div class="header-form">
+                            <h2>Add Account</h2>
+                            <p id="closebtn">&#10006;</p>
+                        </div>
+
+                        <form action="add/addaccount.php" method="post" id="form-body">
+
+                            <div class="input-body">
+                                <label for="username">Username</label>
+                                <input type="text" id="username" name="username">
+                                <p class="emptyinput" id="usernameerr">Username cannot be blank</p>
+                            </div>
+
+                            <div class="input-body">
+                                <label for="password">Password</label>
+                                <input type="text" id="password" name="password">
+                                <p class="emptyinput" id="passworderr">Password cannot be blank</p>
+                            </div>
+
+                            <div class="input-body">
+                                <label for="role">Role</label>
+                                <select name="role" id="role">
+                                    <option value="">Select Role</option>
+                                    <option value="1">Admin</option>
+                                    <option value="2">Worker</option>
+                                    <option value="3">Supplier</option>
+                                </select>
+                                <p class="emptyinput" id="roleerr">Role cannot be blank</p>
+                            </div>
+
+                            <div class="buttons">
+                                <button type="submit" id="add" name="add">Add</button>
+                                <button id="reset">Reset</button>
+                            </div>
+
+                        </form>
+
                     </div>
 
-                    <form action="add/addaccount.php" method="post" id="form-body">
-
-                        <div class="input-body">
-                            <label for="username">Username</label>
-                            <input type="text" id="username" name="username">
-                            <p class="emptyinput" id="usernameerr">Username cannot be blank</p>
-                        </div>
-
-                        <div class="input-body">
-                            <label for="password">Password</label>
-                            <input type="text" id="password" name="password">
-                            <p class="emptyinput" id="passworderr">Password cannot be blank</p>
-                        </div>
-
-                        <div class="input-body">
-                            <label for="role">Role</label>
-                            <select name="role" id="role">
-                                <option value="">Select Role</option>
-                                <option value="1">Admin</option>
-                                <option value="2">Worker</option>
-                                <option value="3">Supplier</option>
-                            </select>
-                            <p class="emptyinput" id="roleerr">Role cannot be blank</p>
-                        </div>
-
-                        <div class="buttons">
-                            <button type="submit" id="add" name="add">Add</button>
-                            <button id="reset">Reset</button>
-                        </div>
-
-                    </form>
 
                 </div>
 
+                <div class="product-list">
 
-            </div>
+                    <div class="table-header">
 
-            <div class="product-list">
+                        <div class="header-info">
+                            <h2>Accounts</h2>
 
-                <div class="table-header">
+                            <div class="btns">
+                                <button id="accadd" class="add"><img src="images/add.png" alt="">Add Account</button>
+                                <button id="delete"><img src="images/delete.png">Delete</button>
+                                <button id="selectall"><img src="images/selectall.png" alt="">Select All</button>
+                            </div>
+                        </div>
 
-                    <div class="header-info">
-                        <h2>Accounts</h2>
-                        <button id="accadd" class="add">Add Account</button>
-                        <button id="selectall">Select All</button>
-                        <button id="delete">Delete</button>
+                        <div class="search">
+                            <input type="text" id="search" placeholder="Search">
+                        </div>
+
                     </div>
 
-                    <div class="search">
-                        <input type="text" id="search" placeholder="Search">
-                    </div>
-
-                </div>
-
-                <?php if (isset($_SESSION['added'])) { ?>
+                    <?php if (isset($_SESSION['added'])) { ?>
                     <div class="added">
                         <p><span>&#10003;</span> <?php echo $_SESSION['added']; ?></p>
-                        <p id="alert-close">&#10006;</p>
                     </div>
-                <?php unset($_SESSION['added']);
+                    <?php unset($_SESSION['added']);
                 } else if (isset($_SESSION['deleted'])) { ?>
                     <div class="deleted">
                         <p><span>&#10003;</span> <?php echo $_SESSION['deleted']; ?></p>
-                        <p id="alert-close">&#10006;</p>
                     </div>
-                <?php unset($_SESSION['deleted']);
+                    <?php unset($_SESSION['deleted']);
                 } else if (isset($_SESSION['updated'])) { ?>
                     <div class="updated">
                         <p><span>&#10003;</span> <?php echo $_SESSION['updated']; ?></p>
-                        <p id="alert-close">&#10006;</p>
                     </div>
-                <?php unset($_SESSION['updated']);
+                    <?php unset($_SESSION['updated']);
                 } else if (isset($_SESSION['exist'])) { ?>
                     <div class="exist">
                         <p><span>&#10003;</span> <?php echo $_SESSION['exist']; ?></p>
-                        <p id="alert-close">&#10006;</p>
                     </div>
-                <?php unset($_SESSION['exist']);
+                    <?php unset($_SESSION['exist']);
                 } ?>
 
-                <table id="table">
-                    <tr id="head">
-                        <th></th>
-                        <th>Username</th>
-                        <th>Password</th>
-                        <th>Role</th>
-                        <th>Action</th>
-                    </tr>
-                    <form action="delete/deleteacc.php" id="deleteacc" method="post">
-                        <?php while ($row) { ?>
+                    <table id="table">
+                        <tr id="head">
+                            <th></th>
+                            <th>Username</th>
+                            <th>Password</th>
+                            <th>Role</th>
+                            <th>Action</th>
+                        </tr>
+                        <form action="delete/deleteacc.php" id="deleteacc" method="post">
+                            <?php while ($row) { ?>
                             <tr>
-                                <td><input type="checkbox" name="account_id[]" value="<?php echo $row['account_id']; ?>" class="checkbox"></td>
+                                <td><input type="checkbox" name="account_id[]" value="<?php echo $row['account_id']; ?>"
+                                        class="checkbox"></td>
                                 <td><?php echo $row['username']; ?></td>
-                                <td><?php echo password_hash($row['password'], PASSWORD_BCRYPT); ?></td>
+                                <td><?php echo $row['password']; ?></td>
                                 <td><?php echo $row['role']; ?></td>
-                                <td id="action"> <button class="edit" data-accid="<?php echo $row['account_id']; ?>" data-username="<?php echo $row['username']; ?>" data-password="<?php echo password_hash($row['password'], PASSWORD_BCRYPT); ?>" data-role="<?php echo $row['role']; ?>">Edit</button>
+                                <td id="action"> <button class="edit" data-accid="<?php echo $row['account_id']; ?>"
+                                        data-username="<?php echo $row['username']; ?>"
+                                        data-password="<?php echo $row['password']; ?>"
+                                        data-role="<?php echo $row['role']; ?>">Edit</button>
                                 </td>
 
-                            <?php $row = mysqli_fetch_array($result);
+                                <?php $row = mysqli_fetch_array($result);
                         } ?>
                             </tr>
-                    </form>
-                    <div class="alert-body" id="alert-body">
-                        <div class="alert-container">
-                            <img src="images/warning.png">
-                            <div class="text-warning">
-                                <p>Are you sure you want to delete?</p>
-                            </div>
-                            <div class="buttons-alert">
-                                <button id="del">Delete</button>
-                                <button id="close-deletion">Cancel</button>
+                        </form>
+                        <div class="alert-body" id="alert-body">
+                            <div class="alert-container">
+                                <img src="images/warning.png">
+                                <div class="text-warning">
+                                    <p>Are you sure you want to delete?</p>
+                                </div>
+                                <div class="buttons-alert">
+                                    <button id="del">Delete</button>
+                                    <button id="close-deletion">Cancel</button>
+                                </div>
                             </div>
                         </div>
+
+                    </table>
+
+                    <div class="page">
+                        <p><?php echo "Page " . "<b>$page_number</b>" . " of " . "<b>$total_pages</b>" ?>
+
+                        <ul class="page-list">
+                            <li><a <?php if ($page_number != 1) {
+                                    echo "href=users.php?page_number=" . $previouspage;
+                                } ?>>&laquo;</a></li>
+
+                            <?php for ($i = 0; $i < $total_pages; $i++) { ?>
+                            <li><a href="<?php echo "users.php?page_number=" . $i + 1; ?>"><?php echo $i + 1; ?></a>
+                            </li>
+                            <?php } ?>
+
+
+                            <li><a <?php if ($page_number != $total_pages && $total_pages != 0) {
+                                    echo "href=users.php?page_number=" . $nextpage;
+                                } ?>>&raquo;</a></li>
+                        </ul>
+
+                        </d>
+
                     </div>
 
-                </table>
+                    <div class="modal-account">
+                        <?php include 'modal/account_modal.php'; ?>
+                    </div>
 
-                <ul class="page">
-                    <li><a <?php if ($page_number != 1) {
-                                echo "href=users.php?page_number=" . $previouspage;
-                            } ?>>&laquo;</a></li>
-
-                    <?php for ($i = 0; $i < $total_pages; $i++) { ?>
-                        <li><a href="<?php echo "users.php?page_number=" . $i + 1; ?>"><?php echo $i + 1; ?></a>
-                        </li>
-                    <?php } ?>
-
-
-                    <li><a <?php if ($page_number != $total_pages && $total_pages != 0) {
-                                echo "href=users.php?page_number=" . $nextpage;
-                            } ?>>&raquo;</a></li>
-                </ul>
+                </div>
 
             </div>
+    </body>
 
-            <div class="modal-account">
-                <?php include 'modal/account_modal.php'; ?>
-            </div>
-
-        </div>
-
-
-    </div>
-</body>
-
-<script src="javascript/admin.js"></script>
-<script>
+    <script src="javascript/admin.js"></script>
+    <script>
     let form = document.getElementById("form");
     let openform = document.getElementById("accadd");
     let closebtn = document.getElementById("closebtn");
-    let closealert = document.getElementById("alert-close");
     let reset = document.getElementById("reset");
     let deletebtn = document.querySelector("#delete");
     let canceldelete = document.getElementById("close-deletion");
@@ -355,23 +361,21 @@ $total_pages = ceil($total_records / $number_per_page);
         deleteacc.submit();
     })
 
-    if (closealert) {
-        closealert.addEventListener("click", () => {
-            if (document.querySelector(".added")) {
-                document.querySelector(".added").style.display = "none";
-            }
-
-            if (document.querySelector(".deleted")) {
-                document.querySelector(".deleted").style.display = "none";
-            }
-
-            if (document.querySelector(".updated")) {
-                document.querySelector(".updated").style.display = "none";
-            }
-
-            if (document.querySelector(".exist")) {
-                document.querySelector(".exist").style.display = "none";
-            }
+    if (document.querySelector(".updated")) {
+        document.querySelector(".updated").addEventListener("animationend", () => {
+            document.querySelector(".updated").style.display = "none";
+        })
+    } else if (document.querySelector(".added")) {
+        document.querySelector(".added").addEventListener("animationend", () => {
+            document.querySelector(".added").style.display = "none";
+        })
+    } else if (document.querySelector(".deleted")) {
+        document.querySelector(".deleted").addEventListener("animationend", () => {
+            document.querySelector(".deleted").style.display = "none";
+        })
+    } else if (document.querySelector(".exist")) {
+        document.querySelector(".exist").addEventListener("animationend", () => {
+            document.querySelector(".exist").style.display = "none";
         })
     }
 
@@ -481,6 +485,6 @@ $total_pages = ceil($total_records / $number_per_page);
         }
 
     })
-</script>
+    </script>
 
 </html>
