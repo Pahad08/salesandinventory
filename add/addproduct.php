@@ -1,10 +1,10 @@
 <?php
 session_start();
 
-if (!isset($_SESSION["admin"]) && !isset($_SESSION["admin_username"])) {
-    header("location: login.php");
-    exit();
-} elseif (!isset($_SESSION["worker"]) && !isset($_SESSION["worker_username"])) {
+if (
+    !isset($_SESSION["admin"]) && !isset($_SESSION["admin_username"])
+    && !isset($_SESSION["worker"]) && !isset($_SESSION["worker_username"])
+) {
     header("location: login.php");
     exit();
 }

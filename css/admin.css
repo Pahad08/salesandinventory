@@ -114,6 +114,7 @@ a {
     left: 0px;
     height: 100vh;
     transition: left 300ms;
+
 }
 
 .hide-nav {
@@ -132,6 +133,7 @@ a {
     width: 210px;
     height: 100vh;
     overflow: auto;
+    box-shadow: 0px 0px 5px var(--black);
 }
 
 #list-container {
@@ -443,7 +445,7 @@ select {
 .alert-container {
     background: var(--white);
     margin: 115px auto 0px auto;
-    width: 28%;
+    width: 35%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -466,7 +468,7 @@ select {
 }
 
 .alert-container p {
-    font-size: 1.3rem;
+    font-size: 1.1rem;
     text-align: center;
 }
 
@@ -617,12 +619,12 @@ select {
     background: var(--lightgreen);
     border-radius: 5px;
     padding: 7px;
-    border: 1px solid #000;
+    border: 1px solid var(--black);
     font-size: 0.9rem;
     width: 25%;
     position: absolute;
     right: 20px;
-    top: -30px;
+    top: -15px;
     z-index: 3;
     opacity: 0;
     animation: fade 5s;
@@ -636,13 +638,13 @@ select {
     background: var(--lightred);
     border-radius: 5px;
     padding: 7px;
-    border: 1px solid #000;
+    border: 1px solid var(--black);
     overflow: hidden;
     font-size: 0.9rem;
-    width: 25%;
+    width: 36%;
     position: absolute;
     right: 20px;
-    top: -30px;
+    top: -15px;
     z-index: 3;
     opacity: 0;
     animation: fade 5s;
@@ -693,7 +695,7 @@ select {
 .emptystocks p:nth-child(1) span,
 .lessquantity p:nth-child(1) span,
 .exist p:nth-child(1) span {
-    background: #6d0606;
+    background: var(--red);
     color: #EDEDED;
     border-radius: 50%;
     padding: 3px;
@@ -1109,10 +1111,6 @@ tr:hover:not(tr:nth-child(1)) {
 
     #btn-supplier {
         grid-row: 4/4;
-    }
-
-    .modal-body {
-        width: 80%;
     }
 
     #menu-icon div {

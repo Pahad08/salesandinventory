@@ -127,7 +127,7 @@ $total_pages = ceil($total_records / $number_per_page);
 
                         <div class="input-body">
                             <label for="password">Password</label>
-                            <input type="text" id="password" name="password">
+                            <input type="password" id="password" name="password">
                             <p class="emptyinput" id="passworderr">Password cannot be blank</p>
                         </div>
 
@@ -361,16 +361,32 @@ $total_pages = ceil($total_records / $number_per_page);
         document.querySelector(".updated").addEventListener("animationend", () => {
             document.querySelector(".updated").style.display = "none";
         })
+
+        document.querySelector(".updated").addEventListener("click", () => {
+            document.querySelector(".updated").style.display = "none";
+        })
     } else if (document.querySelector(".added")) {
         document.querySelector(".added").addEventListener("animationend", () => {
+            document.querySelector(".added").style.display = "none";
+        })
+
+        document.querySelector(".added").addEventListener("click", () => {
             document.querySelector(".added").style.display = "none";
         })
     } else if (document.querySelector(".deleted")) {
         document.querySelector(".deleted").addEventListener("animationend", () => {
             document.querySelector(".deleted").style.display = "none";
         })
+
+        document.querySelector(".deleted").addEventListener("click", () => {
+            document.querySelector(".deleted").style.display = "none";
+        })
     } else if (document.querySelector(".exist")) {
         document.querySelector(".exist").addEventListener("animationend", () => {
+            document.querySelector(".exist").style.display = "none";
+        })
+
+        document.querySelector(".exist").addEventListener("click", () => {
             document.querySelector(".exist").style.display = "none";
         })
     }
@@ -405,14 +421,14 @@ $total_pages = ceil($total_records / $number_per_page);
             form.classList.toggle("form");
         }
 
-        if (event.target.id == "alert-body" && alertbbody.classList.contains("alert-body-show")) {
-            alertbbody.classList.toggle("alert-body-show");
-            alertbbody.classList.toggle("alert-body");
+        if (event.target.id == "alert-body" && alertbody.classList.contains("alert-body-show")) {
+            alertbody.classList.toggle("alert-body-show");
+            alertbody.classList.toggle("alert-body");
         }
 
-        if (event.target.classList == "modal-product-show") {
-            modal.classList.toggle("modal-product-show");
-            modal.classList.toggle("modal-product");
+        if (event.target.classList == "modal-account-show") {
+            modal.classList.toggle("modal-account-show");
+            modal.classList.toggle("modal-account");
         }
     })
 

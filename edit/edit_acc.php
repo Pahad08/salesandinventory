@@ -1,7 +1,10 @@
 <?php
 session_start();
 
-if (!isset($_SESSION["admin"]) && !isset($_SESSION["admin_username"])) {
+if (
+    !isset($_SESSION["admin"]) && !isset($_SESSION["admin_username"])
+    && !isset($_SESSION["worker"]) && !isset($_SESSION["worker_username"])
+) {
     header("location: login.php");
     exit();
 }
@@ -19,7 +22,12 @@ if (isset($_POST['edit'])) {
     $id = CleanData($_POST['id']);
     $username = CleanData($_POST['username']);
     $password = $_POST['password'];
-    $role = CleanData($_POST['role']);
+    if (!empty($_POST['role'])) {
+        $role = CleanData($_POST['role']);
+    } else {
+        $role = "";
+    }
+
 
     $stmt = mysqli_prepare($conn, "SELECT username, `password`  FROM accounts where account_id = ?");
     mysqli_stmt_bind_param($stmt, "i", $id);
@@ -37,6 +45,25 @@ if (isset($_POST['edit'])) {
         $new_password = $row['password'];
     } else {
         $new_password = password_hash($password, PASSWORD_BCRYPT);
+    }
+
+    if (empty($role)) {
+
+        if ($row['username'] != $username && $row2['total'] != 0) {
+            $_SESSION['exist'] = "Username Already Exist";
+            mysqli_close($conn);
+            header("location: ../users.php");
+            exit();
+        } else {
+            $sql = "UPDATE accounts SET username=?, `password`= ? where account_id = ?;";
+            $stmt = mysqli_prepare($conn, $sql);
+            mysqli_stmt_bind_param($stmt, "ssi", $username, $new_password, $id);
+            mysqli_stmt_execute($stmt);
+            $_SESSION['updated'] = "Account Updated Successfully";
+            mysqli_close($conn);
+            header("location: ../users.php");
+            exit();
+        }
     }
 
     if ($row['username'] == $username || $row2['total'] == 0) {

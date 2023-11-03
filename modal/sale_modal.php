@@ -1,13 +1,13 @@
 <?php
 include 'openconn.php';
 
-if (isset($_SESSION["admin"]) && isset($_SESSION["admin_username"])) {
-    $admin_id = $_SESSION["admin"];
-} else {
+if (
+    !isset($_SESSION["admin"]) && !isset($_SESSION["admin_username"])
+    && !isset($_SESSION["worker"]) && !isset($_SESSION["worker_username"])
+) {
     header("location: login.php");
     exit();
 }
-
 $prod_sql = "SELECT product_id, `name` from products;";
 $stmt_prod = mysqli_prepare($conn, $prod_sql);
 mysqli_stmt_execute($stmt_prod);

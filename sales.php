@@ -3,7 +3,10 @@
 session_start();
 include 'openconn.php';
 
-if (!isset($_SESSION["admin"]) && !isset($_SESSION["admin_username"])) {
+if (
+    !isset($_SESSION["admin"]) && !isset($_SESSION["admin_username"])
+    && !isset($_SESSION["worker"]) && !isset($_SESSION["worker_username"])
+) {
     header("location: login.php");
     exit();
 }
@@ -21,6 +24,7 @@ $previouspage = $page_number - 1;
 
 $sql = "SELECT sales.sale_id,sales.product_id ,sales.sale_date, products.name, sales.quantity * products.price as sale, sales.quantity
 from sales join products on sales.product_id = products.product_id
+order by sales.sale_date desc
 LIMIT $number_per_page OFFSET $offset;";
 $stmt = mysqli_prepare($conn, $sql);
 mysqli_stmt_execute($stmt);
@@ -46,248 +50,274 @@ mysqli_close($conn);
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/admin.css">
-    <link rel="shortcut icon" href="images/logo.png" type="image/x-icon">
-    <title>Sales</title>
-</head>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="css/admin.css">
+        <link rel="shortcut icon" href="images/logo.png" type="image/x-icon">
+        <title>Sales</title>
+    </head>
 
-<body>
+    <body>
 
-    <div class="header">
+        <div class="header">
 
-        <div class="left">
+            <div class="left">
 
-            <div id="menu-icon">
-                <div></div>
-                <div></div>
-                <div></div>
+                <div id="menu-icon">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
+
+                <img src="images/logo.png" alt="logo">
+                <h2> Badong Lechon Manok</h2>
             </div>
 
-            <img src="images/logo.png" alt="logo">
-            <h2> Badong Lechon Manok</h2>
-        </div>
-
-        <div class="right">
-            <h3><?php echo strtoupper($_SESSION["admin_username"]); ?> </h3>
-            <a href="logout.php">Logout</a>
-        </div>
-
-    </div>
-
-
-    <div id="nav-body" class="nav">
-        <nav id="nav">
-            <div id="list-container">
-
-                <ul class="menu">
-                    <p>Data Dashboard</p>
-                    <li><a href="admin.php">Dashboard</a></li>
-                </ul>
-
-                <ul class="menu">
-                    <p>Products</p>
-                    <li><a href="inventory.php">Inventory</a></li>
-                    <li><a href="products.php">Product List</a></li>
-                    <li><a href="">Sales</a></li>
-                    <li><a href="expense.php">Expenses</a></li>
-                </ul>
-
-                <ul class="menu">
-                    <p>Suppliers/Workers</p>
-                    <li><a href="supplier_list.php">List of Suppliers</a></li>
-                    <li><a href="workers_list.php">List of Workers</a></li>
-                    <li><a href="schedules.php">Schedule of Deliveries</a></li>
-                </ul>
-
-                <ul class="menu">
-                    <p>Users</p>
-                    <li><a href="users.php">Users List</a></li>
-                </ul>
+            <div class="right">
+                <h3><?php echo $username = (isset($_SESSION["admin_username"])) ?
+                    strtoupper($_SESSION["admin_username"]) : strtoupper($_SESSION["worker_username"]); ?>
+                </h3>
+                <a href="logout.php">Logout</a>
             </div>
-        </nav>
-    </div>
 
-    <div class="body">
+        </div>
 
-        <div class="body-content">
 
-            <div class="form" id="form">
+        <div id="nav-body" class="nav">
+            <nav id="nav">
+                <div id="list-container">
 
-                <div class="form-container">
+                    <?php if (isset($_SESSION["admin"]) && isset($_SESSION["admin_username"])) { ?>
+                    <ul class="menu">
+                        <p>Data Dashboard</p>
+                        <li><a href="admin.php">Dashboard</a></li>
+                    </ul>
+                    <?php } else { ?>
+                    <ul class="menu">
+                        <p>Account Details</p>
+                        <li><a href="worker.php">Account</a></li>
+                    </ul>
+                    <?php } ?>
 
-                    <div class="header-form">
-                        <h2>Add Sales</h2>
-                        <p id="closebtn">&#10006;</p>
-                    </div>
+                    <?php if (
+                    isset($_SESSION["admin"]) || isset($_SESSION["admin_username"])
+                    || isset($_SESSION["worker"]) || isset($_SESSION["worker_username"])
+                ) { ?>
+                    <ul class="menu">
+                        <p>Products</p>
+                        <li><a href="inventory.php">Inventory</a></li>
+                        <li><a href="products.php">Product List</a></li>
+                        <li><a href="sales.php">Sales</a></li>
+                        <?php if (isset($_SESSION["admin"]) && isset($_SESSION["admin_username"])) { ?>
+                        <li><a href="expense.php">Expenses</a></li>
+                        <?php } ?>
+                    </ul>
+                    <?php } ?>
 
-                    <form action="add/addsales.php" method="post" id="form-body">
+                    <?php if (isset($_SESSION["admin"]) && isset($_SESSION["admin_username"])) { ?>
+                    <ul class="menu">
+                        <p>Suppliers/Workers</p>
+                        <li><a href="supplier_list.php">List of Suppliers</a></li>
+                        <li><a href="workers_list.php">List of Workers</a></li>
+                        <li><a href="schedules.php">Schedule of Deliveries</a></li>
+                    </ul>
 
-                        <div class="input-body">
-                            <label for="selectprod">Product Name</label>
-                            <select name="prodid" id="selectprod">
-                                <option value="">Select Product</option>
-                                <?php while ($row_prod) { ?>
+                    <ul class="menu">
+                        <p>Users</p>
+                        <li><a href="users.php">Users List</a></li>
+                    </ul>
+                    <?php } ?>
+
+                </div>
+            </nav>
+        </div>
+
+        <div class="body">
+
+            <div class="body-content">
+
+                <div class="form" id="form">
+
+                    <div class="form-container">
+
+                        <div class="header-form">
+                            <h2>Add Sales</h2>
+                            <p id="closebtn">&#10006;</p>
+                        </div>
+
+                        <form action="add/addsales.php" method="post" id="form-body">
+
+                            <div class="input-body">
+                                <label for="selectprod">Product Name</label>
+                                <select name="prodid" id="selectprod">
+                                    <option value="">Select Product</option>
+                                    <?php while ($row_prod) { ?>
                                     <option value="<?php echo $row_prod['product_id']; ?>">
                                         <?php echo $row_prod['name']; ?></option>
-                                <?php $row_prod = mysqli_fetch_array($result_prod);
+                                    <?php $row_prod = mysqli_fetch_array($result_prod);
                                 } ?>
-                            </select>
-                            <p class="emptyinput" id="proderr">Product cannot be blank</p>
-                        </div>
+                                </select>
+                                <p class="emptyinput" id="proderr">Product cannot be blank</p>
+                            </div>
 
-                        <div class="input-body">
-                            <label for="date">Date</label>
-                            <input type="date" id="date" name="date">
-                            <p class="emptyinput" id="dateerr">Date cannot be blank</p>
-                        </div>
+                            <div class="input-body">
+                                <label for="date">Date</label>
+                                <input type="date" id="date" name="date">
+                                <p class="emptyinput" id="dateerr">Date cannot be blank</p>
+                            </div>
 
-                        <div class="input-body">
-                            <label for="quantity">Quantity</label>
-                            <input type="number" id="quantity" name="quantity">
-                            <p class="emptyinput" id="quantityerr">Quantity cannot be blank</p>
-                        </div>
+                            <div class="input-body">
+                                <label for="quantity">Quantity</label>
+                                <input type="number" id="quantity" name="quantity">
+                                <p class="emptyinput" id="quantityerr">Quantity cannot be blank</p>
+                            </div>
 
-                        <div class="buttons">
-                            <button type="submit" id="add" name="add">Add</button>
-                            <button id="reset">Reset</button>
-                        </div>
+                            <div class="buttons">
+                                <button type="submit" id="add" name="add">Add</button>
+                                <button id="reset">Reset</button>
+                            </div>
 
-                    </form>
+                        </form>
+
+                    </div>
+
 
                 </div>
 
+                <div class="product-list">
 
-            </div>
+                    <div class="table-header">
 
-            <div class="product-list">
+                        <div class="header-info">
+                            <h2>Sales</h2>
 
-                <div class="table-header">
-
-                    <div class="header-info">
-                        <h2>Sales</h2>
-
-                        <div class="btns">
-                            <button id="saleadd" class="add"><img src="images/add.png" alt="">Add Sales</button>
-                            <button id="delete"><img src="images/delete.png">Delete</button>
-                            <button id="selectall"><img src="images/selectall.png" alt="">Select All</button>
+                            <div class="btns">
+                                <button id="saleadd" class="add"><img src="images/add.png" alt="">Add Sales</button>
+                                <button id="delete"><img src="images/delete.png">Delete</button>
+                                <button id="selectall"><img src="images/selectall.png" alt="">Select All</button>
+                            </div>
                         </div>
+
+                        <div class="search">
+                            <input type="text" id="search" placeholder="Search">
+                        </div>
+
                     </div>
 
-                    <div class="search">
-                        <input type="text" id="search" placeholder="Search">
-                    </div>
-
-                </div>
-
-                <?php if (isset($_SESSION['added'])) { ?>
+                    <?php if (isset($_SESSION['added'])) { ?>
                     <div class="added">
                         <p><span>&#10003;</span> <?php echo $_SESSION['added']; ?></p>
                     </div>
-                <?php unset($_SESSION['added']);
+                    <?php unset($_SESSION['added']);
                 } else if (isset($_SESSION['deleted'])) { ?>
                     <div class="deleted">
                         <p><span>&#10003;</span> <?php echo $_SESSION['deleted']; ?></p>
                     </div>
-                <?php unset($_SESSION['deleted']);
+                    <?php unset($_SESSION['deleted']);
                 } else if (isset($_SESSION['updated'])) { ?>
                     <div class="updated">
                         <p><span>&#10003;</span> <?php echo $_SESSION['updated']; ?></p>
                     </div>
-                <?php unset($_SESSION['updated']);
+                    <?php unset($_SESSION['updated']);
                 } else if (isset($_SESSION['emptystocks'])) { ?>
                     <div class="emptystocks">
                         <p><span>&#10003;</span> <?php echo $_SESSION['emptystocks']; ?></p>
                     </div>
-                <?php unset($_SESSION['emptystocks']);
+                    <?php unset($_SESSION['emptystocks']);
                 } else if (isset($_SESSION['lessquantity'])) { ?>
                     <div class="lessquantity">
                         <p><span>&#10003;</span> <?php echo $_SESSION['lessquantity']; ?></p>
                     </div>
-                <?php unset($_SESSION['lessquantity']);
+                    <?php unset($_SESSION['lessquantity']);
                 }
                 ?>
 
 
 
-                <table id="table">
-                    <tr id="head">
-                        <th></th>
-                        <th>Name</th>
-                        <th>Date</th>
-                        <th>Quantity</th>
-                        <th>Income</th>
-                        <th>Action</th>
-                    </tr>
-                    <form action="delete/deletesales.php" id="deletesales" method="post">
-                        <?php while ($row) { ?>
+                    <table id="table">
+                        <tr id="head">
+                            <th></th>
+                            <th>Name</th>
+                            <th>Date</th>
+                            <th>Quantity</th>
+                            <th>Income</th>
+                            <th>Action</th>
+                        </tr>
+                        <form action="delete/deletesales.php" id="deletesales" method="post">
+                            <?php while ($row) { ?>
                             <tr>
-                                <td><input type="checkbox" name="sale_id[]" value="<?php echo $row['sale_id']; ?>" class="checkbox"></td>
+                                <td><input type="checkbox" name="sale_id[]" value="<?php echo $row['sale_id']; ?>"
+                                        class="checkbox"></td>
                                 <td><?php echo $row['name']; ?></td>
                                 <td><?php echo $row['sale_date']; ?></td>
                                 <td><?php echo $row['quantity']; ?></td>
                                 <td><?php echo $row['sale']; ?></td>
-                                <td id="action"> <button class="edit" data-id="<?php echo $row['sale_id'];  ?>" data-date="<?php echo $row['sale_date']; ?>" data-quantity="<?php echo $row['quantity']; ?>" data-currquantity="<?php echo $row['quantity']; ?>" data-prodid="<?php echo $row['product_id']; ?>" data-prodname="<?php echo $row['name']; ?>"><img src="images/edit.png" alt="">Edit</button>
+                                <td id="action"> <button class="edit" data-id="<?php echo $row['sale_id'];  ?>"
+                                        data-date="<?php echo $row['sale_date']; ?>"
+                                        data-quantity="<?php echo $row['quantity']; ?>"
+                                        data-currquantity="<?php echo $row['quantity']; ?>"
+                                        data-prodid="<?php echo $row['product_id']; ?>"
+                                        data-prodname="<?php echo $row['name']; ?>"><img src="images/edit.png"
+                                            alt="">Edit</button>
                                 </td>
 
-                            <?php $row = mysqli_fetch_array($result);
+                                <?php $row = mysqli_fetch_array($result);
                         } ?>
 
                             </tr>
-                    </form>
+                        </form>
 
-                    <div class="alert-body" id="alert-body">
-                        <div class="alert-container">
-                            <img src="images/warning.png" alt="dsadadsa">
-                            <div class="text-warning">
-                                <p>Are you sure you want to delete?
-                            </div>
-                            <div class="buttons-alert">
-                                <button id="del">Delete</button>
-                                <button id="close-deletion">Cancel</button>
+                        <div class="alert-body" id="alert-body">
+                            <div class="alert-container">
+                                <img src="images/warning.png" alt="dsadadsa">
+                                <div class="text-warning">
+                                    <p>Are you sure you want to delete?
+                                </div>
+                                <div class="buttons-alert">
+                                    <button id="del">Delete</button>
+                                    <button id="close-deletion">Cancel</button>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </table>
+                    </table>
 
-                <div class="page">
+                    <div class="page">
 
-                    <p><?php echo "Page " . "<b>$page_number </b>" . " of " . "<b>$total_pages</b>" ?></p>
+                        <p><?php echo "Page " . "<b>$page_number </b>" . " of " . "<b>$total_pages</b>" ?></p>
 
-                    <ul class="page-list">
-                        <li><a <?php if ($page_number != 1) {
+                        <ul class="page-list">
+                            <li><a <?php if ($page_number != 1) {
                                     echo "href=sales.php?page_number=" . $previouspage;
                                 } ?>>&laquo;</a></li>
 
-                        <?php for ($i = 0; $i < $total_pages; $i++) { ?>
+                            <?php for ($i = 0; $i < $total_pages; $i++) { ?>
                             <li><a href="<?php echo "sales.php?page_number=" . $i + 1; ?>"><?php echo $i + 1; ?></a>
                             </li>
-                        <?php } ?>
+                            <?php } ?>
 
 
-                        <li><a <?php if ($page_number != $total_pages && $total_pages != 0) {
+                            <li><a <?php if ($page_number != $total_pages && $total_pages != 0) {
                                     echo "href=sales.php?page_number=" . $nextpage;
                                 } ?>>&raquo;</a></li>
-                    </ul>
+                        </ul>
 
+                    </div>
+
+                </div>
+
+                <div class="modal-sales">
+                    <?php include 'modal/sale_modal.php'; ?>
                 </div>
 
             </div>
 
-            <div class="modal-sales">
-                <?php include 'modal/sale_modal.php'; ?>
-            </div>
 
         </div>
+    </body>
 
-
-    </div>
-</body>
-
-<script src="javascript/admin.js"></script>
-<script>
+    <script src="javascript/admin.js"></script>
+    <script>
     let form = document.getElementById("form");
     let openform = document.getElementById("saleadd");
     let closebtn = document.getElementById("closebtn");
@@ -378,20 +408,35 @@ mysqli_close($conn);
         document.querySelector(".updated").addEventListener("animationend", () => {
             document.querySelector(".updated").style.display = "none";
         })
+
+        document.querySelector(".updated").addEventListener("click", () => {
+            document.querySelector(".updated").style.display = "none";
+        })
     } else if (document.querySelector(".added")) {
         document.querySelector(".added").addEventListener("animationend", () => {
+            document.querySelector(".added").style.display = "none";
+        })
+
+        document.querySelector(".added").addEventListener("click", () => {
             document.querySelector(".added").style.display = "none";
         })
     } else if (document.querySelector(".deleted")) {
         document.querySelector(".deleted").addEventListener("animationend", () => {
             document.querySelector(".deleted").style.display = "none";
         })
-    } else if (document.querySelector(".emptystocks")) {
-        document.querySelector(".emptystocks").addEventListener("animationend", () => {
-            document.querySelector(".emptystocks").style.display = "none";
+
+        document.querySelector(".deleted").addEventListener("click", () => {
+            document.querySelector(".deleted").style.display = "none";
+        })
+    } else if (document.querySelector(".exist")) {
+        document.querySelector(".exist").addEventListener("animationend", () => {
+            document.querySelector(".exist").style.display = "none";
+        })
+
+        document.querySelector(".exist").addEventListener("click", () => {
+            document.querySelector(".exist").style.display = "none";
         })
     }
-
 
     reset.addEventListener("click", (event) => {
         event.preventDefault();
@@ -508,6 +553,6 @@ mysqli_close($conn);
         }
 
     })
-</script>
+    </script>
 
 </html>
