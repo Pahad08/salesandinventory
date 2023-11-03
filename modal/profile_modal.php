@@ -3,6 +3,7 @@ include 'openconn.php';
 
 if (
     !isset($_SESSION["worker"]) && !isset($_SESSION["worker_username"])
+    && !isset($_SESSION["supplier"]) && !isset($_SESSION["supplier_username"])
 ) {
     header("location: login.php");
     exit();
@@ -18,7 +19,6 @@ if (
             <h2>Edit Profile Details</h2>
         </div>
 
-        <?php if (isset($_SESSION["worker"])) { ?>
         <form action="edit/edit_profile.php" method="post" class="edit-profile" class="form">
 
             <input type="text" id="profile-id" name="id" value="" hidden>
@@ -35,18 +35,25 @@ if (
                 <p class="empty" id="lnameerr">Last Name cannot be blank</p>
             </div>
 
+            <?php if (isset($_SESSION["supplier"]) && isset($_SESSION["supplier_username"])) { ?>
+            <div class="input-edit">
+                <label for="company">Company Name</label>
+                <input type="text" id="company" name="company" value="">
+                <p class="empty" id="companyerr">Company Name cannot be blank</p>
+            </div>
+            <?php } ?>
+
             <div class="input-edit">
                 <label for="number">Contact Number</label>
                 <input type="number" id="number" name="number" value="">
-                <p class="empty" id="numbererr">Contact Number cannot be blank</p>
+                <p class="empty" id="numbererr"></p>
             </div>
 
             <div class="buttons">
-                <button type="submit" class="update" name="edit" value="edit">Update</button>
+                <button type="submit" id="update-profile" class="update" name="edit" value="edit">Update</button>
                 <button class="cancel">Cancel</button>
             </div>
         </form>
-        <?php } ?>
     </div>
 
 

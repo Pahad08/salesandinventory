@@ -3,18 +3,18 @@
 session_start();
 include 'openconn.php';
 
-if (isset($_SESSION["worker"]) && isset($_SESSION["worker_username"])) {
-    $worker_id = $_SESSION["worker"];
+if (isset($_SESSION["supplier"]) && isset($_SESSION["supplier_username"])) {
+    $supplier_id = $_SESSION["supplier"];
 } else {
     header("location: login.php");
     exit();
 }
 
-$stmt = mysqli_prepare($conn, "SELECT workers.*, accounts.username, accounts.password 
-from workers
-left join accounts on workers.account_id = accounts.account_id
-where accounts.account_id = ?;");
-mysqli_stmt_bind_param($stmt, "i", $worker_id);
+$stmt = mysqli_prepare($conn, "SELECT suppliers.*, accounts.username, accounts.password 
+from suppliers
+left join accounts on suppliers.account_id = accounts.account_id
+where suppliers.account_id = ?;");
+mysqli_stmt_bind_param($stmt, "i", $supplier_id);
 mysqli_stmt_execute($stmt);
 $result = mysqli_stmt_get_result($stmt);
 $row = mysqli_fetch_array($result);
@@ -49,7 +49,7 @@ $row = mysqli_fetch_array($result);
             </div>
 
             <div class="right">
-                <h3><?php echo strtoupper($_SESSION["worker_username"]); ?> </h3>
+                <h3><?php echo strtoupper($_SESSION["supplier_username"]); ?> </h3>
                 <a href="logout.php">Logout</a>
             </div>
 
@@ -68,8 +68,11 @@ $row = mysqli_fetch_array($result);
                     <ul class="menu">
                         <p>Products</p>
                         <li><a href="inventory.php">Inventory</a></li>
-                        <li><a href="products.php">Product List</a></li>
-                        <li><a href="sales.php">Sales</a></li>
+                    </ul>
+
+                    <ul class="menu">
+                        <p>Suppliers/Workers</p>
+                        <li><a href="schedules.php">Schedule of Deliveries</a></li>
                     </ul>
                 </div>
 
@@ -96,11 +99,11 @@ $row = mysqli_fetch_array($result);
 
             <div class="acc-body">
                 <div class="left-side">
-                    <img src="images/employer.png" alt="">
+                    <img src="images/supplierr.png" alt="">
 
                     <div class="about">
                         <p><?php echo $row['f_name'] . " " . $row['l_name']; ?></p>
-                        <p>Worker</p>
+                        <p>Supplier</p>
                     </div>
 
                 </div>
@@ -125,14 +128,20 @@ $row = mysqli_fetch_array($result);
                         </div>
 
                         <div class="info-container">
+                            <h3>Company Name</h3>
+                            <p><?php echo $row['company_name']; ?></p>
+                        </div>
+
+                        <div class="info-container">
                             <h3>Username</h3>
                             <p><?php echo $row['username']; ?></p>
                         </div>
 
                         <div class="edit-buttons">
-                            <button id="edit-profile" data-workerid="<?php echo $row['worker_id'] ?>"
+                            <button id="edit-profile" data-workerid="<?php echo $row['supplier_id'] ?>"
                                 data-fname="<?php echo $row['f_name'] ?>" data-lname="<?php echo $row['l_name'] ?>"
-                                data-contactnumber="<?php echo $row['contact_number'] ?>">Edit Profile</button>
+                                data-contactnumber="<?php echo $row['contact_number'] ?>"
+                                data-company="<?php echo $row['company_name'] ?>">Edit Profile</button>
                             <button id="edit-acc" data-accid="<?php echo $row['account_id'] ?>"
                                 data-username="<?php echo $row['username'] ?>">Edit Account</button>
                         </div>
@@ -183,16 +192,19 @@ $row = mysqli_fetch_array($result);
         let data_fname = edit_profile.getAttribute("data-fname");
         let data_lname = edit_profile.getAttribute("data-lname");
         let data_number = edit_profile.getAttribute("data-contactnumber");
+        let data_company = edit_profile.getAttribute("data-company");
 
         let profile_id = document.getElementById("profile-id");
         let fname = document.getElementById("fname");
         let lname = document.getElementById("lname");
         let number = document.getElementById("number");
+        let company = document.getElementById("company");
 
         profile_id.value = data_workerid;
         fname.value = data_fname;
         lname.value = data_lname;
         number.value = data_number;
+        company.value = data_company;
 
         profile.classList.toggle("modal-profile");
         profile.classList.toggle("modal-profile-show");
@@ -215,16 +227,11 @@ $row = mysqli_fetch_array($result);
     })
 
 
+
     window.addEventListener("click", (event) => {
         if (event.target.className == "modal-acc-show" && acc.classList.contains("modal-acc-show")) {
             acc.classList.toggle("modal-acc-show");
             acc.classList.toggle("modal-acc");
-        }
-
-        if (event.target.className == "modal-profile-show" && profile.classList.contains(
-                "modal-profile-show")) {
-            profile.classList.toggle("modal-profile-show");
-            profile.classList.toggle("modal-profile");
         }
     })
 
@@ -259,15 +266,18 @@ $row = mysqli_fetch_array($result);
         let fnameerr = document.getElementById("fnameerr");
         let lnameerr = document.getElementById("lnameerr");
         let numbererr = document.getElementById("numbererr");
+        let companyerr = document.getElementById("companyerr");
         let fname = document.getElementById("fname");
         let lname = document.getElementById("lname");
         let number = document.getElementById("number");
+        let company = document.getElementById("company");
 
-        if (fname.value == "" && lname.value == "" && number.value == "") {
+        if (fname.value == "" && lname.value == "" && number.value == "" && company.value == "") {
             event.preventDefault();
             fnameerr.style.display = "block";
             numbererr.style.display = "block";
             lnameerr.style.display = "block";
+            companyerr.style.display = "block";
         }
 
         if (fname.value == "") {

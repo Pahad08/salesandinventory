@@ -12,7 +12,8 @@ $acc_sql = "SELECT accounts.username, accounts.account_id
 FROM accounts
 left join suppliers on accounts.account_id = suppliers.account_id
 left join workers on accounts.account_id = workers.account_id
-where suppliers.account_id is null and workers.account_id is null;";
+where suppliers.account_id is null and workers.account_id is null
+and not accounts.username = 'admin' and not accounts.role = 3;";
 $stmt_acc = mysqli_prepare($conn, $acc_sql);
 mysqli_stmt_execute($stmt_acc);
 $result_acc = mysqli_stmt_get_result($stmt_acc);
@@ -48,11 +49,11 @@ mysqli_close($conn);
             <div class=" input-edit">
                 <label for="worker-number">Contact Number</label>
                 <input type="number" id="worker-number" name="number">
-                <p class="empty" id="numerr">Contact Number cannot be blank</p>
+                <p class="empty" id="numerr"></p>
             </div>
 
             <div class="input-edit">
-                <label for="worker-accountid">Account ID</label>
+                <label for="worker-accountid">Account</label>
                 <select name="account-id" id="worker-accountid">
                     <option value="" id="selected"></option>
                     <?php while ($row_acc) { ?>
@@ -64,7 +65,7 @@ mysqli_close($conn);
 
             </div>
 
-            <div class="buttons" id="btn-supplier">
+            <div class="buttons" id="btn-worker">
                 <button type="submit" id="update" name="edit" value="edit">Update</button>
                 <button id="cancel">Cancel</button>
             </div>

@@ -4,8 +4,9 @@ session_start();
 if (
     !isset($_SESSION["admin"]) && !isset($_SESSION["admin_username"])
     && !isset($_SESSION["worker"]) && !isset($_SESSION["worker_username"])
+    && !isset($_SESSION["supplier"]) && !isset($_SESSION["supplier_username"])
 ) {
-    header("location: login.php");
+    header("location: ../login.php");
     exit();
 }
 
@@ -27,7 +28,6 @@ if (isset($_POST['edit'])) {
     } else {
         $role = "";
     }
-
 
     $stmt = mysqli_prepare($conn, "SELECT username, `password`  FROM accounts where account_id = ?");
     mysqli_stmt_bind_param($stmt, "i", $id);

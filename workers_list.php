@@ -42,7 +42,8 @@ $acc_sql = "SELECT accounts.username, accounts.account_id
 FROM accounts
 left join suppliers on accounts.account_id = suppliers.account_id
 left join workers on accounts.account_id = workers.account_id
-where suppliers.account_id is null and workers.account_id is null;";
+where suppliers.account_id is null and workers.account_id is null
+and not accounts.username = 'admin' and not accounts.role = 3;";
 $stmt_acc = mysqli_prepare($conn, $acc_sql);
 mysqli_stmt_execute($stmt_acc);
 $result_acc = mysqli_stmt_get_result($stmt_acc);
@@ -218,7 +219,7 @@ mysqli_close($conn);
                             <th></th>
                             <th>Name</th>
                             <th>Contact Number</th>
-                            <th>Account ID</th>
+                            <th>Account</th>
                             <th>Action</th>
                         </tr>
                         <form action="delete/deleteworker.php" id="deleteworker" method="post">
@@ -447,9 +448,9 @@ mysqli_close($conn);
             alertbody.classList.toggle("alert-body");
         }
 
-        if (event.target.classList == "modal-supplier-show") {
-            modal.classList.toggle("modal-supplier-show");
-            modal.classList.toggle("modal-supplier");
+        if (event.target.classList == "modal-worker-show") {
+            modal.classList.toggle("modal-worker-show");
+            modal.classList.toggle("modal-worker");
         }
     })
 
@@ -483,6 +484,7 @@ mysqli_close($conn);
 
         if (number.value == "") {
             event.preventDefault();
+            numbererr.innerHTML = "Contact Number cannot be blank";
             numbererr.style.display = "block";
         } else if (number.value.length <
             11) {
@@ -504,19 +506,15 @@ mysqli_close($conn);
         let fnameerr = document.getElementById("fnameerror");
         let lnameerr = document.getElementById("lnameerror");
         let numbererr = document.getElementById("numerr");
-        let companyerr = document.getElementById("companyerror");
 
-        let fname = document.getElementById("supplier-fname");
-        let lname = document.getElementById("supplier-lname");
-        let supplier_num = document.getElementById("supplier-number");
-        let supplier_company = document.getElementById("supplier-company");
+        let fname = document.getElementById("worker-fname");
+        let lname = document.getElementById("worker-lname");
+        let worker_num = document.getElementById("worker-number");
 
-        if (fname.value == "" && lname.value == "" && supplier_num.value == "" && supplier_company.value ==
-            "") {
+        if (fname.value == "" && lname.value == "" && worker_num.value == "") {
             event.preventDefault();
             fnameerr.style.display = "block";
             lnameerr.style.display = "block";
-            companyerr.style.display = "block";
             numbererr.style.display = "block";
         }
 
@@ -534,18 +532,21 @@ mysqli_close($conn);
             lnameerr.style.display = "none";
         }
 
-        if (supplier_num.value == "") {
+        if (worker_num.value == "") {
             event.preventDefault();
+            numbererr.innerHTML = "Contact Number cannot be blank";
+            numbererr.style.display = "block";
+        } else if (worker_num.value.length <
+            11) {
+            event.preventDefault();
+            numbererr.innerHTML = "Number length must not be below 11";
+            numbererr.style.display = "block";
+        } else if (worker_num.value.length > 11) {
+            event.preventDefault();
+            numbererr.innerHTML = "Number length must not exceed to 11";
             numbererr.style.display = "block";
         } else {
             numbererr.style.display = "none";
-        }
-
-        if (supplier_company.value == "") {
-            event.preventDefault();
-            companyerr.style.display = "block";
-        } else {
-            companyerr.style.display = "none";
         }
 
     })

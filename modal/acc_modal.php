@@ -3,6 +3,7 @@ include 'openconn.php';
 
 if (
     !isset($_SESSION["worker"]) && !isset($_SESSION["worker_username"])
+    && !isset($_SESSION["supplier"]) && !isset($_SESSION["supplier_username"])
 ) {
     header("location: login.php");
     exit();
@@ -19,29 +20,27 @@ if (
             <h2>Edit Account Details</h2>
         </div>
 
-        <?php if (isset($_SESSION["worker"])) { ?>
-            <form action="edit/edit_acc.php" method="post" class="edit-acc" class="form">
+        <form action="edit/edit_acc.php" method="post" class="edit-acc" class="form">
 
-                <input type="text" id="acc-id" name="id" value="" hidden>
+            <input type="text" id="acc-id" name="id" value="" hidden>
 
-                <div class="input-edit">
-                    <label for="username">Username</label>
-                    <input type="text" id="username" name="username" value="">
-                    <p class="empty" id="usernameerr">Username cannot be blank</p>
-                </div>
+            <div class="input-edit">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" value="">
+                <p class="empty" id="usernameerr">Username cannot be blank</p>
+            </div>
 
-                <div class="input-edit">
-                    <label for="password">New Password</label>
-                    <input type="password" id="password" name="password" value="">
-                    <p class="empty" id="passworderr">Password cannot be blank</p>
-                </div>
+            <div class="input-edit">
+                <label for="password">New Password</label>
+                <input type="password" id="password" name="password" value="">
+                <p class="empty" id="passworderr">Password cannot be blank</p>
+            </div>
 
-                <div class="buttons">
-                    <button type="submit" class="update" name="edit" value="edit">Update</button>
-                    <button class="cancel">Cancel</button>
-                </div>
-            </form>
-        <?php } ?>
+            <div class="buttons">
+                <button type="submit" id="update-acc" class="update" name="edit" value="edit">Update</button>
+                <button class="cancel">Cancel</button>
+            </div>
+        </form>
     </div>
 
 </div>
