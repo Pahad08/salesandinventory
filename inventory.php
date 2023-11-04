@@ -96,7 +96,6 @@ mysqli_close($conn);
         <nav id="nav">
             <div id="list-container">
 
-
                 <?php if (isset($_SESSION["admin"]) && isset($_SESSION["admin_username"])) { ?>
                     <ul class="menu">
                         <p>Data Dashboard</p>
@@ -181,6 +180,7 @@ mysqli_close($conn);
 
                     <div class="search">
                         <input type="text" id="search" placeholder="Search">
+                        <button id="searchbtn" onclick="ShowStocks(search.value) ">Search</button>
                     </div>
 
                 </div>
@@ -237,5 +237,27 @@ mysqli_close($conn);
 </body>
 
 <script src="javascript/admin.js"></script>
+<script>
+    function ShowStocks(str) {
+        const stocks = new XMLHttpRequest();
+        stocks.onload = function() {
+            document.getElementById("table").innerHTML =
+                this.responseText;
+        }
+        stocks.open("GET", "search/inventory.php?name=" + str);
+        stocks.send();
+    }
+    document.getElementById("search").addEventListener("input", () => {
+        if (document.getElementById("search").value == "") {
+            const stocks = new XMLHttpRequest();
+            stocks.onload = function() {
+                document.getElementById("table").innerHTML =
+                    this.responseText;
+            }
+            stocks.open("GET", "search/inventory.php?");
+            stocks.send();
+        }
+    })
+</script>
 
 </html>

@@ -1,5 +1,9 @@
 <?php
-include 'openconn.php';
+if (isset($_GET['name'])) {
+    include '../openconn.php';
+} else {
+    include 'openconn.php';
+}
 
 if (isset($_SESSION["admin"]) && isset($_SESSION["admin_username"])) {
     $admin_id = $_SESSION["admin"];
@@ -30,7 +34,11 @@ mysqli_close($conn);
             <h2>Edit Worker</h2>
         </div>
 
-        <form action="edit/edit_worker.php" method="post" class="edit-worker" id="form">
+        <form action="<?php if (isset($_GET['name'])) {
+                            echo "../edit/edit_worker.php";
+                        } else {
+                            echo "edit/edit_worker.php";
+                        }  ?>" method="post" class="edit-worker" id="form">
 
             <input type="text" value="" name="worker_id" id="worker-id" hidden>
 

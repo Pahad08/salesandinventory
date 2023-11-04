@@ -33,11 +33,11 @@ mysqli_stmt_execute($stmt);
 $result = mysqli_stmt_get_result($stmt);
 $row = mysqli_fetch_array($result);
 
-$stmt_sched = mysqli_prepare($conn, "SELECT `transaction`.*, products.name, suppliers.f_name, suppliers.l_name
+$stmt_sched = mysqli_prepare($conn, "SELECT `transaction`.*, products.name
 FROM `transaction`
 LEFT JOIN suppliers on `transaction`.supplier_id = suppliers.supplier_id
 LEFT JOIN products on `transaction`.`product_id` = products.product_id
-where suppliers.supplier_id = ?
+where suppliers.account_id = ?
 LIMIT $number_per_page OFFSET $offset;");
 mysqli_stmt_bind_param($stmt_sched, "i", $_SESSION["supplier"]);
 mysqli_stmt_execute($stmt_sched);
@@ -266,6 +266,9 @@ mysqli_close($conn);
 
                         <div class="search">
                             <input type="text" id="search" placeholder="Search">
+                            <button id="searchbtn" <?php if (isset($_SESSION['supplier'])) {
+                                                    echo "onclick='ShowSched(search.value)'";
+                                                } ?>>Search</button>
                         </div>
 
                     </div>
@@ -294,8 +297,10 @@ mysqli_close($conn);
 
                     <table id="table">
                         <tr id="head">
+                            <?php if (isset($_SESSION['admin']) && isset($_SESSION['admin_username'])) { ?>
                             <th></th>
                             <th>Supplier Name</th>
+                            <?php } ?>
                             <th>Transaction Date</th>
                             <th>Delivery Schedule</th>
                             <th>Product Name</th>
@@ -365,17 +370,17 @@ mysqli_close($conn);
                         </div>
 
                         <?php } else { ?>
-                        <?php while ($result_sched) { ?>
+                        <?php while ($row_sched) { ?>
                         <tr>
-                            <td><input type="checkbox" name="transaction_id[]"
-                                    value="<?php echo $row['transaction_id']; ?>" class="checkbox"></td>
+                            <?php if (isset($_SESSION['admin']) && isset($_SESSION['admin_username'])) { ?>
                             <td><?php echo $row['f_name'] . " " . $row['l_name']; ?></td>
-                            <td><?php echo $row['transaction_date']; ?></td>
-                            <td><?php echo $row['delivery_schedule']; ?></td>
-                            <td><?php echo $row['name']; ?></td>
-                            <td><?php echo $row['quantity']; ?></td>
+                            <?php } ?>
+                            <td><?php echo $row_sched['transaction_date']; ?></td>
+                            <td><?php echo $row_sched['delivery_schedule']; ?></td>
+                            <td><?php echo $row_sched['name']; ?></td>
+                            <td><?php echo $row_sched['quantity']; ?></td>
 
-                            <?php $result_sched = mysqli_fetch_array($result_sched);
+                            <?php $row_sched = mysqli_fetch_array($result_sched);
                         } ?>
                         </tr>
 
@@ -420,6 +425,30 @@ mysqli_close($conn);
 
     <script src="javascript/admin.js"></script>
     <script>
+    <?php if (!isset($_SESSION['admin']) && !isset($_SESSION['admin_username'])) { ?>
+
+    function ShowSched(str) {
+        const stocks = new XMLHttpRequest();
+        stocks.onload = function() {
+            document.getElementById("table").innerHTML =
+                this.responseText;
+        }
+        stocks.open("GET", "search/schedule_list.php?name=" + str);
+        stocks.send();
+    }
+    document.getElementById("search").addEventListener("input", () => {
+        if (document.getElementById("search").value == "") {
+            const stocks = new XMLHttpRequest();
+            stocks.onload = function() {
+                document.getElementById("table").innerHTML =
+                    this.responseText;
+            }
+            stocks.open("GET", "search/schedule_list.php");
+            stocks.send();
+        }
+    })
+    <?php } ?>
+
     let form = document.getElementById("form");
     let openform = document.getElementById("schedadd");
     let closebtn = document.getElementById("closebtn");
@@ -460,14 +489,17 @@ mysqli_close($conn);
         })
     })
 
-    selectall.addEventListener("click", () => {
-        checkboxes.forEach((element) => {
+    if (selectall) {
+        selectall.addEventListener("click", () => {
+            checkboxes.forEach((element) => {
 
-            if (element.checked == false) {
-                element.checked = true;
-            }
+                if (element.checked == false) {
+                    element.checked = true;
+                }
+            })
         })
-    })
+    }
+
 
     if (cancelreceive) {
         cancelreceive.addEventListener("click", (event) => {
@@ -484,11 +516,13 @@ mysqli_close($conn);
         })
     }
 
-    cancel.addEventListener("click", (event) => {
-        event.preventDefault();
-        modal.classList.toggle("modal-transaction-show");
-        modal.classList.toggle("modal-transaction");
-    })
+    if (cancel) {
+        cancel.addEventListener("click", (event) => {
+            event.preventDefault();
+            modal.classList.toggle("modal-transaction-show");
+            modal.classList.toggle("modal-transaction");
+        })
+    }
 
     edit.forEach((element) => {
         element.addEventListener("click", (event) => {
@@ -526,16 +560,20 @@ mysqli_close($conn);
         })
     })
 
-    deletebtn.addEventListener("click", (event) => {
-        event.preventDefault();
-        alertbody.classList.toggle("alert-body");
-        alertbody.classList.toggle("alert-body-show");
-    })
+    if (deletebtn) {
+        deletebtn.addEventListener("click", (event) => {
+            event.preventDefault();
+            alertbody.classList.toggle("alert-body");
+            alertbody.classList.toggle("alert-body-show");
+        })
+    }
 
-    del.addEventListener("click", () => {
-        const deletesched = document.getElementById("deletesched");
-        deletesched.submit();
-    })
+    if (del) {
+        del.addEventListener("click", () => {
+            const deletesched = document.getElementById("deletesched");
+            deletesched.submit();
+        })
+    }
 
     if (document.querySelector(".updated")) {
         document.querySelector(".updated").addEventListener("animationend", () => {
@@ -569,11 +607,13 @@ mysqli_close($conn);
         producterr.style.display = "none";
     })
 
+    if (openform) {
+        openform.addEventListener("click", () => {
+            form.classList.toggle("form");
+            form.classList.toggle("show-form");
+        })
 
-    openform.addEventListener("click", () => {
-        form.classList.toggle("form");
-        form.classList.toggle("show-form");
-    })
+    }
 
     window.addEventListener("resize", () => {
         if (window.innerWidth > 1022 && form.classList.contains("show-form")) {
@@ -654,56 +694,58 @@ mysqli_close($conn);
 
     })
 
-    update.addEventListener("click", (event) => {
+    if (update) {
+        update.addEventListener("click", (event) => {
 
-        let fnameerr = document.getElementById("fnameerror");
-        let lnameerr = document.getElementById("lnameerror");
-        let numbererr = document.getElementById("numerr");
-        let companyerr = document.getElementById("companyerror");
+            let fnameerr = document.getElementById("fnameerror");
+            let lnameerr = document.getElementById("lnameerror");
+            let numbererr = document.getElementById("numerr");
+            let companyerr = document.getElementById("companyerror");
 
-        let fname = document.getElementById("supplier-fname");
-        let lname = document.getElementById("supplier-lname");
-        let supplier_num = document.getElementById("supplier-number");
-        let supplier_company = document.getElementById("supplier-company");
+            let fname = document.getElementById("supplier-fname");
+            let lname = document.getElementById("supplier-lname");
+            let supplier_num = document.getElementById("supplier-number");
+            let supplier_company = document.getElementById("supplier-company");
 
-        if (fname.value == "" && lname.value == "" && supplier_num.value == "" && supplier_company.value ==
-            "") {
-            event.preventDefault();
-            fnameerr.style.display = "block";
-            lnameerr.style.display = "block";
-            companyerr.style.display = "block";
-            numbererr.style.display = "block";
-        }
+            if (fname.value == "" && lname.value == "" && supplier_num.value == "" && supplier_company.value ==
+                "") {
+                event.preventDefault();
+                fnameerr.style.display = "block";
+                lnameerr.style.display = "block";
+                companyerr.style.display = "block";
+                numbererr.style.display = "block";
+            }
 
-        if (fname.value == "") {
-            event.preventDefault();
-            fnameerr.style.display = "block";
-        } else {
-            fnameerr.style.display = "none";
-        }
+            if (fname.value == "") {
+                event.preventDefault();
+                fnameerr.style.display = "block";
+            } else {
+                fnameerr.style.display = "none";
+            }
 
-        if (lname.value == "") {
-            event.preventDefault();
-            lnameerr.style.display = "block";
-        } else {
-            lnameerr.style.display = "none";
-        }
+            if (lname.value == "") {
+                event.preventDefault();
+                lnameerr.style.display = "block";
+            } else {
+                lnameerr.style.display = "none";
+            }
 
-        if (supplier_num.value == "") {
-            event.preventDefault();
-            numbererr.style.display = "block";
-        } else {
-            numbererr.style.display = "none";
-        }
+            if (supplier_num.value == "") {
+                event.preventDefault();
+                numbererr.style.display = "block";
+            } else {
+                numbererr.style.display = "none";
+            }
 
-        if (supplier_company.value == "") {
-            event.preventDefault();
-            companyerr.style.display = "block";
-        } else {
-            companyerr.style.display = "none";
-        }
+            if (supplier_company.value == "") {
+                event.preventDefault();
+                companyerr.style.display = "block";
+            } else {
+                companyerr.style.display = "none";
+            }
 
-    })
+        })
+    }
     </script>
 
 </html>

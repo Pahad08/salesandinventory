@@ -1,5 +1,9 @@
 <?php
-include 'openconn.php';
+if (isset($_GET['name'])) {
+    include '../openconn.php';
+} else {
+    include 'openconn.php';
+}
 
 if (
     !isset($_SESSION["admin"]) && !isset($_SESSION["admin_username"])
@@ -26,7 +30,11 @@ mysqli_close($conn);
         </div>
 
 
-        <form action="edit/editsales.php" method="post" class="edit-sales" id="form">
+        <form action="<?php if (isset($_GET['name'])) {
+                            echo "../edit/editsales.php";
+                        } else {
+                            echo "edit/editsales.php";
+                        }  ?>" method="post" class="edit-sales" id="form">
 
             <input type="number" value="" name="saleid" id="sale-id" hidden>
 
@@ -37,8 +45,8 @@ mysqli_close($conn);
                 <select name="prodid" id="prodselect">
                     <option value="" id="selected"></option>
                     <?php while ($row_prod) { ?>
-                        <option value="<?php echo $row_prod['product_id']; ?>">
-                            <?php echo $row_prod['name']; ?></option>
+                    <option value="<?php echo $row_prod['product_id']; ?>">
+                        <?php echo $row_prod['name']; ?></option>
                     <?php $row_prod = mysqli_fetch_array($result_prod);
                     } ?>
                 </select>

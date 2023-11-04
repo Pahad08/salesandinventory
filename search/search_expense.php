@@ -1,10 +1,10 @@
 <?php
 
 session_start();
-include 'openconn.php';
+include '../openconn.php';
 
 if (!isset($_SESSION["admin"]) && !isset($_SESSION["admin_username"])) {
-    header("location: login.php");
+    header("location: ../login.php");
     exit();
 }
 
@@ -14,14 +14,15 @@ if (isset($_GET['page_number'])) {
     $page_number = 1;
 }
 
-
+$description = "%" . $_GET['description'] . "%";
 $number_per_page = 5;
 $offset = ($page_number - 1) * $number_per_page;
 $nextpage = $page_number + 1;
 $previouspage = $page_number - 1;
 
-$sql = "SELECT * from expenses LIMIT $number_per_page OFFSET $offset;";
+$sql = "SELECT * from expenses where `description` LIKE ? LIMIT $number_per_page OFFSET $offset;";
 $stmt = mysqli_prepare($conn, $sql);
+mysqli_stmt_bind_param($stmt, "s", $description);
 mysqli_stmt_execute($stmt);
 $result = mysqli_stmt_get_result($stmt);
 $row = mysqli_fetch_array($result);
@@ -42,8 +43,8 @@ $total_pages = ceil($total_records / $number_per_page);
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="css/admin.css">
-        <link rel="shortcut icon" href="images/logo.png" type="image/x-icon">
+        <link rel="stylesheet" href="../css/admin.css">
+        <link rel="shortcut icon" href="../images/logo.png" type="image/x-icon">
         <title>Expenses</title>
     </head>
 
@@ -59,17 +60,16 @@ $total_pages = ceil($total_records / $number_per_page);
                     <div></div>
                 </div>
 
-                <img src="images/logo.png" alt="logo">
+                <img src="../images/logo.png" alt="logo">
                 <h2> Badong Lechon Manok</h2>
             </div>
 
             <div class="right">
                 <h3><?php echo strtoupper($_SESSION["admin_username"]); ?> </h3>
-                <a href="logout.php">Logout</a>
+                <a href="../logout.php">Logout</a>
             </div>
 
         </div>
-
 
         <div id="nav-body" class="nav">
             <nav id="nav">
@@ -77,27 +77,27 @@ $total_pages = ceil($total_records / $number_per_page);
 
                     <ul class="menu">
                         <p>Data Dashboard</p>
-                        <li><a href="admin.php">Dashboard</a></li>
+                        <li><a href="../admin.php">Dashboard</a></li>
                     </ul>
 
                     <ul class="menu">
                         <p>Products</p>
-                        <li><a href="inventory.php">Inventory</a></li>
-                        <li><a href="products.php">Product List</a></li>
-                        <li><a href="sales.php">Sales</a></li>
-                        <li><a href="">Expenses</a></li>
+                        <li><a href="../inventory.php">Inventory</a></li>
+                        <li><a href="../products.php">Product List</a></li>
+                        <li><a href="../sales.php">Sales</a></li>
+                        <li><a href="../expense.php">Expenses</a></li>
                     </ul>
 
                     <ul class="menu">
                         <p>Suppliers/Workers</p>
-                        <li><a href="supplier_list.php">List of Suppliers</a></li>
-                        <li><a href="workers_list.php">List of Workers</a></li>
-                        <li><a href="schedules.php">Schedule of Deliveries</a></li>
+                        <li><a href="../supplier_list.php">List of Suppliers</a></li>
+                        <li><a href="../workers_list.php">List of Workers</a></li>
+                        <li><a href="../schedules.php">Schedule of Deliveries</a></li>
                     </ul>
 
                     <ul class="menu">
                         <p>Users</p>
-                        <li><a href="users.php">Users List</a></li>
+                        <li><a href="../users.php">Users List</a></li>
                     </ul>
                 </div>
 
@@ -117,7 +117,7 @@ $total_pages = ceil($total_records / $number_per_page);
                             <p id="closebtn">&#10006;</p>
                         </div>
 
-                        <form action="add/addexpense.php" method="post" id="form-body">
+                        <form action="../add/addexpense.php" method="post" id="form-body">
 
                             <div class="input-body">
                                 <label for="description">Description</label>
@@ -157,16 +157,16 @@ $total_pages = ceil($total_records / $number_per_page);
                             <h2>Expenses</h2>
 
                             <div class="btns">
-                                <button id="expenseadd" class="add"><img src="images/add.png" alt="">Add
+                                <button id="expenseadd" class="add"><img src="../images/add.png" alt="">Add
                                     Expense</button>
-                                <button id="delete"><img src="images/delete.png">Delete</button>
-                                <button id="selectall"><img src="images/selectall.png" alt="">Select All</button>
+                                <button id="delete"><img src="../images/delete.png">Delete</button>
+                                <button id="selectall"><img src="../images/selectall.png" alt="">Select All</button>
                             </div>
                         </div>
 
                         <div class="search">
-                            <form action="search/search_expense.php" method="get">
-                                <input type="text" id="search" placeholder="Search" name="description">
+                            <form action="search_expense.php" method="get">
+                                <input type="text" id="search" placeholder="Search" name="name">
                                 <button type="submit" id="searchbtn">Search</button>
                             </form>
                         </div>
@@ -199,7 +199,7 @@ $total_pages = ceil($total_records / $number_per_page);
                             <th>Date</th>
                             <th>Action</th>
                         </tr>
-                        <form action="delete/deleteexpense.php" id="deleteexpense" method="post">
+                        <form action="../delete/deleteexpense.php" id="deleteexpense" method="post">
                             <?php while ($row) { ?>
                             <tr>
                                 <td><input type="checkbox" name="expense_id[]" value="<?php echo $row['expense_id']; ?>"
@@ -211,7 +211,7 @@ $total_pages = ceil($total_records / $number_per_page);
                                         data-description="<?php echo $row['description']; ?>"
                                         data-amount="<?php echo $row['amount']; ?>"
                                         data-expense_date="<?php echo $row['expense_date']; ?>"><img
-                                            src="images/edit.png" alt="">Edit</button>
+                                            src="../images/edit.png" alt="">Edit</button>
                                 </td>
 
                                 <?php $row = mysqli_fetch_array($result);
@@ -221,7 +221,7 @@ $total_pages = ceil($total_records / $number_per_page);
 
                         <div class="alert-body" id="alert-body">
                             <div class="alert-container">
-                                <img src="images/warning.png">
+                                <img src="../images/warning.png">
                                 <div class="text-warning">
                                     <p>Are you sure you want to delete all selected items?</p>
                                 </div>
@@ -240,24 +240,25 @@ $total_pages = ceil($total_records / $number_per_page);
 
                         <ul class="page-list">
                             <li><a <?php if ($page_number != 1) {
-                                    echo "href=expense.php?page_number=" . $previouspage;
+                                    echo "href=../expense.php?page_number=" . $previouspage;
                                 } ?>>&laquo;</a></li>
 
                             <?php for ($i = 0; $i < $total_pages; $i++) { ?>
-                            <li><a href="<?php echo "expense.php?page_number=" . $i + 1; ?>"><?php echo $i + 1; ?></a>
+                            <li><a
+                                    href="<?php echo "../expense.php?page_number=" . $i + 1; ?>"><?php echo $i + 1; ?></a>
                             </li>
                             <?php } ?>
 
 
                             <li><a <?php if ($page_number != $total_pages && $total_pages != 0) {
-                                    echo "href=expense.php?page_number=" . $nextpage;
+                                    echo "href=../expense.php?page_number=" . $nextpage;
                                 } ?>>&raquo;</a></li>
                         </ul>
 
                     </div>
 
                     <div class="modal-expense">
-                        <?php include 'modal/expense_modal.php'; ?>
+                        <?php include '../modal/expense_modal.php'; ?>
                     </div>
 
                 </div>
@@ -266,7 +267,7 @@ $total_pages = ceil($total_records / $number_per_page);
             </div>
     </body>
 
-    <script src="javascript/admin.js"></script>
+    <script src="../javascript/admin.js"></script>
     <script>
     let form = document.getElementById("form");
     let openform = document.getElementById("expenseadd");

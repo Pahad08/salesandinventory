@@ -1,10 +1,13 @@
 <?php
 
 session_start();
-include 'openconn.php';
+include '../openconn.php';
 
-if (!isset($_SESSION["admin"]) && !isset($_SESSION["admin_username"])) {
-    header("location: login.php");
+if (
+    !isset($_SESSION["admin"]) && !isset($_SESSION["admin_username"])
+    && !isset($_SESSION["worker"]) && !isset($_SESSION["worker_username"])
+) {
+    header("location: ../login.php");
     exit();
 }
 
@@ -14,19 +17,20 @@ if (isset($_GET['page_number'])) {
     $page_number = 1;
 }
 
-
+$product_name = "%" . $_GET['name'] . "%";
 $number_per_page = 5;
 $offset = ($page_number - 1) * $number_per_page;
 $nextpage = $page_number + 1;
 $previouspage = $page_number - 1;
 
-$sql = "SELECT * from expenses LIMIT $number_per_page OFFSET $offset;";
+$sql = "SELECT * from products where `name` LIKE ? LIMIT $number_per_page OFFSET $offset;";
 $stmt = mysqli_prepare($conn, $sql);
+mysqli_stmt_bind_param($stmt, "s", $product_name);
 mysqli_stmt_execute($stmt);
 $result = mysqli_stmt_get_result($stmt);
 $row = mysqli_fetch_array($result);
 
-$sql2 = "SELECT count(expense_id) as total from expenses;";
+$sql2 = "SELECT count(product_id) as total from products;";
 $stmt2 = mysqli_prepare($conn, $sql2);
 mysqli_stmt_execute($stmt2);
 $result2 = mysqli_stmt_get_result($stmt2);
@@ -42,12 +46,14 @@ $total_pages = ceil($total_records / $number_per_page);
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="css/admin.css">
-        <link rel="shortcut icon" href="images/logo.png" type="image/x-icon">
-        <title>Expenses</title>
+        <link rel="stylesheet" href="../css/admin.css">
+        <link rel="shortcut icon" href="../images/logo.png" type="image/x-icon">
+        <title>Products</title>
     </head>
 
     <body>
+
+        <div class="head"></div>
 
         <div class="header">
 
@@ -59,13 +65,15 @@ $total_pages = ceil($total_records / $number_per_page);
                     <div></div>
                 </div>
 
-                <img src="images/logo.png" alt="logo">
+                <img src="../images/logo.png" alt="logo">
                 <h2> Badong Lechon Manok</h2>
             </div>
 
             <div class="right">
-                <h3><?php echo strtoupper($_SESSION["admin_username"]); ?> </h3>
-                <a href="logout.php">Logout</a>
+                <h3><?php echo $username = (isset($_SESSION["admin_username"])) ?
+                    strtoupper($_SESSION["admin_username"]) : strtoupper($_SESSION["worker_username"]); ?>
+                </h3>
+                <a href="../logout.php">Logout</a>
             </div>
 
         </div>
@@ -75,30 +83,46 @@ $total_pages = ceil($total_records / $number_per_page);
             <nav id="nav">
                 <div id="list-container">
 
+                    <?php if (isset($_SESSION["admin"]) && isset($_SESSION["admin_username"])) { ?>
                     <ul class="menu">
                         <p>Data Dashboard</p>
-                        <li><a href="admin.php">Dashboard</a></li>
+                        <li><a href="../admin.php">Dashboard</a></li>
                     </ul>
+                    <?php } else { ?>
+                    <ul class="menu">
+                        <p>Account Details</p>
+                        <li><a href="../worker.php">Account</a></li>
+                    </ul>
+                    <?php } ?>
 
+                    <?php if (
+                    isset($_SESSION["admin"]) || isset($_SESSION["admin_username"])
+                    || isset($_SESSION["worker"]) || isset($_SESSION["worker_username"])
+                ) { ?>
                     <ul class="menu">
                         <p>Products</p>
-                        <li><a href="inventory.php">Inventory</a></li>
-                        <li><a href="products.php">Product List</a></li>
-                        <li><a href="sales.php">Sales</a></li>
-                        <li><a href="">Expenses</a></li>
+                        <li><a href="../inventory.php">Inventory</a></li>
+                        <li><a href="../products.php">Product List</a></li>
+                        <li><a href="../sales.php">Sales</a></li>
+                        <?php if (isset($_SESSION["admin"]) && isset($_SESSION["admin_username"])) { ?>
+                        <li><a href="../expense.php">Expenses</a></li>
+                        <?php } ?>
                     </ul>
+                    <?php } ?>
 
+                    <?php if (isset($_SESSION["admin"]) && isset($_SESSION["admin_username"])) { ?>
                     <ul class="menu">
                         <p>Suppliers/Workers</p>
-                        <li><a href="supplier_list.php">List of Suppliers</a></li>
-                        <li><a href="workers_list.php">List of Workers</a></li>
-                        <li><a href="schedules.php">Schedule of Deliveries</a></li>
+                        <li><a href="../supplier_list.php">List of Suppliers</a></li>
+                        <li><a href="../workers_list.php">List of Workers</a></li>
+                        <li><a href="../schedules.php">Schedule of Deliveries</a></li>
                     </ul>
 
                     <ul class="menu">
                         <p>Users</p>
-                        <li><a href="users.php">Users List</a></li>
+                        <li><a href="../users.php">Users List</a></li>
                     </ul>
+                    <?php } ?>
                 </div>
 
             </nav>
@@ -113,28 +137,28 @@ $total_pages = ceil($total_records / $number_per_page);
                     <div class="form-container">
 
                         <div class="header-form">
-                            <h2>Add Expense</h2>
+                            <h2>Add Product</h2>
                             <p id="closebtn">&#10006;</p>
                         </div>
 
-                        <form action="add/addexpense.php" method="post" id="form-body">
+                        <form action="../add/addproduct.php" method="post" id="form-body">
 
                             <div class="input-body">
-                                <label for="description">Description</label>
-                                <input type="text" id="description" name="description">
-                                <p class="emptyinput" id="descriptionerr">Description cannot be blank</p>
+                                <label for="product-name">Product Name</label>
+                                <input type="text" id="product-name" name="product">
+                                <p class="emptyinput" id="proderr">Product cannot be blank</p>
                             </div>
 
                             <div class="input-body">
-                                <label for="amount">Amount</label>
-                                <input type="number" id="amount" name="amount">
-                                <p class="emptyinput" id="amounterr">Amount cannot be blank</p>
+                                <label for="kilogram">Kilogram</label>
+                                <input type="number" id="kilogram" name="kilogram">
+                                <p class="emptyinput" id="kilogramerr">Kilogram cannot be blank</p>
                             </div>
 
                             <div class="input-body">
-                                <label for="expense-date">Date</label>
-                                <input type="date" id="expense-date" name="expense-date">
-                                <p class="emptyinput" id="expense-dateerr">Date cannot be blank</p>
+                                <label for="price">Price</label>
+                                <input type="number" id="price" name="price">
+                                <p class="emptyinput" id="priceerr">Price cannot be blank</p>
                             </div>
 
                             <div class="buttons">
@@ -154,28 +178,28 @@ $total_pages = ceil($total_records / $number_per_page);
                     <div class="table-header">
 
                         <div class="header-info">
-                            <h2>Expenses</h2>
+                            <h2>Products</h2>
 
                             <div class="btns">
-                                <button id="expenseadd" class="add"><img src="images/add.png" alt="">Add
-                                    Expense</button>
-                                <button id="delete"><img src="images/delete.png">Delete</button>
-                                <button id="selectall"><img src="images/selectall.png" alt="">Select All</button>
+                                <button id="prodadd" class="add"><img src="../images/add.png" alt="">Add
+                                    Product</button>
+                                <button id="delete"><img src="../images/delete.png">Delete</button>
+                                <button id="selectall"><img src="../images/selectall.png" alt="">Select All</button>
                             </div>
                         </div>
 
                         <div class="search">
-                            <form action="search/search_expense.php" method="get">
-                                <input type="text" id="search" placeholder="Search" name="description">
-                                <button type="submit" id="searchbtn">Search</button>
+                            <form action="search_product.php" method="GET">
+                                <input type="text" id="search" placeholder="Search" name="name">
+                                <button id="searchbtn" type="submit">Search</button>
                             </form>
                         </div>
-
                     </div>
 
                     <?php if (isset($_SESSION['added'])) { ?>
                     <div class="added">
                         <p><span>&#10003;</span> <?php echo $_SESSION['added']; ?></p>
+
                     </div>
                     <?php unset($_SESSION['added']);
                 } else if (isset($_SESSION['deleted'])) { ?>
@@ -188,42 +212,46 @@ $total_pages = ceil($total_records / $number_per_page);
                         <p><span>&#10003;</span> <?php echo $_SESSION['updated']; ?></p>
                     </div>
                     <?php unset($_SESSION['updated']);
-                }
-                ?>
+                } else if (isset($_SESSION['exist'])) { ?>
+                    <div class="exist">
+                        <p><span>&#10003;</span> <?php echo $_SESSION['exist']; ?></p>
+                    </div>
+                    <?php unset($_SESSION['exist']);
+                } ?>
 
                     <table id="table">
-                        <tr id="head">
+                        <tr>
                             <th></th>
-                            <th>Description</th>
-                            <th>Amount</th>
-                            <th>Date</th>
-                            <th>Action</th>
+                            <th>Name</th>
+                            <th>Kilogram</th>
+                            <th>Price</th>
+                            <th>Edit</th>
                         </tr>
-                        <form action="delete/deleteexpense.php" id="deleteexpense" method="post">
+                        <form action="../delete/deleteproduct.php" id="deleteproduct" method="post">
                             <?php while ($row) { ?>
                             <tr>
-                                <td><input type="checkbox" name="expense_id[]" value="<?php echo $row['expense_id']; ?>"
+                                <td><input type="checkbox" name="product_id[]" value="<?php echo $row['product_id']; ?>"
                                         class="checkbox"></td>
-                                <td><?php echo $row['description']; ?></td>
-                                <td><?php echo $row['amount']; ?></td>
-                                <td><?php echo $row['expense_date']; ?></td>
-                                <td id="action"> <button class="edit" data-expenseid="<?php echo $row['expense_id']; ?>"
-                                        data-description="<?php echo $row['description']; ?>"
-                                        data-amount="<?php echo $row['amount']; ?>"
-                                        data-expense_date="<?php echo $row['expense_date']; ?>"><img
-                                            src="images/edit.png" alt="">Edit</button>
+                                <td><?php echo $row['name']; ?></td>
+                                <td><?php echo $row['kilogram']; ?></td>
+                                <td><?php echo $row['price']; ?></td>
+                                <td id="action"> <button class="edit" data-productid="<?php echo $row['product_id']; ?>"
+                                        data-name="<?php echo $row['name']; ?>"
+                                        data-kilogram="<?php echo $row['kilogram']; ?>"
+                                        data-price="<?php echo $row['price']; ?>"><img src="../images/edit.png"
+                                            alt="">Edit</button>
                                 </td>
 
                                 <?php $row = mysqli_fetch_array($result);
                         } ?>
                             </tr>
                         </form>
-
                         <div class="alert-body" id="alert-body">
                             <div class="alert-container">
-                                <img src="images/warning.png">
+                                <img src="../images/warning.png">
                                 <div class="text-warning">
-                                    <p>Are you sure you want to delete all selected items?</p>
+                                    <p>Are you sure you want to delete?<br>(Stocks, sales and transactions will also be
+                                        deleted)</p>
                                 </div>
                                 <div class="buttons-alert">
                                     <button id="del">Delete</button>
@@ -232,63 +260,66 @@ $total_pages = ceil($total_records / $number_per_page);
                             </div>
                         </div>
 
-
                     </table>
 
                     <div class="page">
-                        <p><?php echo "Page " . "<b>$page_number </b>" . " of " . "<b>$total_pages</b>" ?>
+
+                        <p><?php echo "Page " . "<b>$page_number </b>" . " of " . "<b>$total_pages</b>" ?></p>
 
                         <ul class="page-list">
                             <li><a <?php if ($page_number != 1) {
-                                    echo "href=expense.php?page_number=" . $previouspage;
+                                    echo "href=../product.php?page_number=" . $previouspage;
                                 } ?>>&laquo;</a></li>
 
                             <?php for ($i = 0; $i < $total_pages; $i++) { ?>
-                            <li><a href="<?php echo "expense.php?page_number=" . $i + 1; ?>"><?php echo $i + 1; ?></a>
+                            <li><a
+                                    href="<?php echo "../products.php?page_number=" . $i + 1; ?>"><?php echo $i + 1; ?></a>
                             </li>
                             <?php } ?>
 
 
                             <li><a <?php if ($page_number != $total_pages && $total_pages != 0) {
-                                    echo "href=expense.php?page_number=" . $nextpage;
+                                    echo "href=../products.php?page_number=" . $nextpage;
                                 } ?>>&raquo;</a></li>
                         </ul>
 
                     </div>
 
-                    <div class="modal-expense">
-                        <?php include 'modal/expense_modal.php'; ?>
-                    </div>
-
                 </div>
 
+                <div class="modal-product">
+                    <?php include '../modal/product_modal.php'; ?>
+                </div>
 
             </div>
+
+
+        </div>
     </body>
 
-    <script src="javascript/admin.js"></script>
+    <script src="../javascript/admin.js"></script>
     <script>
     let form = document.getElementById("form");
-    let openform = document.getElementById("expenseadd");
+    let openform = document.getElementById("prodadd");
     let closebtn = document.getElementById("closebtn");
     let reset = document.getElementById("reset");
     let deletebtn = document.querySelector("#delete");
     let canceldelete = document.getElementById("close-deletion");
     let alertbody = document.getElementById("alert-body");
     let add = document.getElementById("add");
-    let description = document.getElementById("description");
-    let amount = document.getElementById("amount");
-    let expense_date = document.getElementById("expense-date");
-    let descriptionerr = document.getElementById("descriptionerr");
-    let amounterr = document.getElementById("amounterr");
-    let expense_dateerr = document.getElementById("expense-dateerr");
+    let name = document.getElementById("product-name");
+    let kilogram = document.getElementById("kilogram");
+    let price = document.getElementById("price");
+    let proderr = document.getElementById("proderr");
+    let kilogramerr = document.getElementById("kilogramerr");
+    let priceerr = document.getElementById("priceerr");
     let del = document.getElementById("del");
     const edit = document.querySelectorAll(".edit");
-    let modal = document.querySelector(".modal-expense");
+    let modal = document.querySelector(".modal-product");
     let cancel = document.getElementById("cancel");
     let update = document.getElementById("update");
     let selectall = document.getElementById('selectall');
-    let checkboxes = document.querySelectorAll(".checkbox");
+    let checkboxes = document.querySelectorAll(".checkbox")
 
     selectall.addEventListener("click", () => {
         checkboxes.forEach((element) => {
@@ -308,29 +339,29 @@ $total_pages = ceil($total_records / $number_per_page);
 
     cancel.addEventListener("click", (event) => {
         event.preventDefault();
-        modal.classList.toggle("modal-expense-show");
-        modal.classList.toggle("modal-expense");
+        modal.classList.toggle("modal-product-show");
+        modal.classList.toggle("modal-product");
     })
 
     edit.forEach((element) => {
-        element.addEventListener("click", () => {
+        element.addEventListener("click", (event) => {
             event.preventDefault();
-            let data_id = element.getAttribute("data-expenseid");
-            let description = element.getAttribute("data-description");
-            let amount = element.getAttribute("data-amount");
-            let date = element.getAttribute("data-expense_date");
-            let expense_date = document.getElementById("expensedate");
-            let exp_description = document.getElementById("expense-description");
-            let expense_amount = document.getElementById("expense-amount");
-            let expense_id = document.getElementById("expense-id");
+            let data_id = element.getAttribute("data-productid");
+            let data_name = element.getAttribute("data-name");
+            let data_kilogram = element.getAttribute("data-kilogram");
+            let data_price = element.getAttribute("data-price");
+            let name = document.getElementById("prod-name");
+            let kilogram = document.getElementById("prod-kilo");
+            let price = document.getElementById("prod-price");
+            let id = document.getElementById("prod-id");
 
-            expense_id.value = data_id;
-            exp_description.value = description;
-            expense_amount.value = amount;
-            expense_date.value = date;
+            id.value = data_id;
+            name.value = data_name;
+            kilogram.value = data_kilogram;
+            price.value = data_price;
 
-            modal.classList.toggle("modal-expense");
-            modal.classList.toggle("modal-expense-show");
+            modal.classList.toggle("modal-product");
+            modal.classList.toggle("modal-product-show");
         })
     })
 
@@ -341,8 +372,8 @@ $total_pages = ceil($total_records / $number_per_page);
     })
 
     del.addEventListener("click", () => {
-        const deleteexpense = document.getElementById("deleteexpense");
-        deleteexpense.submit();
+        const deleteprod = document.getElementById("deleteproduct");
+        deleteprod.submit();
     })
 
     if (document.querySelector(".updated")) {
@@ -381,13 +412,14 @@ $total_pages = ceil($total_records / $number_per_page);
 
     reset.addEventListener("click", (event) => {
         event.preventDefault();
-        description.value = "";
-        amount.value = "";
-        expense_date.value = "";
-        descriptionerr.style.display = "none";
-        amounterr.style.display = "none";
-        expense_dateerr.style.display = "none";
+        name.value = "";
+        kilogram.value = "";
+        price.value = "";
+        proderr.style.display = "none";
+        kilogramerr.style.display = "none";
+        priceerr.style.display = "none";
     })
+
 
     openform.addEventListener("click", () => {
         form.classList.toggle("form");
@@ -413,9 +445,9 @@ $total_pages = ceil($total_records / $number_per_page);
             alertbbody.classList.toggle("alert-body");
         }
 
-        if (event.target.classList == "modal-expense-show") {
-            modal.classList.toggle("modal-expense-show");
-            modal.classList.toggle("modal-expense");
+        if (event.target.classList == "modal-product-show") {
+            modal.classList.toggle("modal-product-show");
+            modal.classList.toggle("modal-product");
         }
     })
 
@@ -426,32 +458,32 @@ $total_pages = ceil($total_records / $number_per_page);
 
     add.addEventListener("click", (event) => {
 
-        if (description.value == "" && amount.value == "" && expense_date.value == "") {
+        if (name.value == "" && kilogram.value == "" && price.value == "") {
             event.preventDefault();
-            descriptionerr.style.display = "block";
-            amounterr.style.display = "block";
-            expense_dateerr.style.display = "block";
+            proderr.style.display = "block";
+            kilogramerr.style.display = "block";
+            kilogramerr.style.display = "block";
         }
 
-        if (description.value == "") {
+        if (name.value == "") {
             event.preventDefault();
-            descriptionerr.style.display = "block";
+            proderr.style.display = "block";
         } else {
-            descriptionerr.style.display = "none";
+            proderr.style.display = "none";
         }
 
-        if (amount.value == "") {
+        if (kilogram.value == "") {
             event.preventDefault();
-            amounterr.style.display = "block";
+            kilogramerr.style.display = "block";
         } else {
-            amounterr.style.display = "none";
+            kilogramerr.style.display = "none";
         }
 
-        if (expense_date.value == "") {
+        if (price.value == "") {
             event.preventDefault();
-            expense_dateerr.style.display = "block";
+            priceerr.style.display = "block";
         } else {
-            expense_dateerr.style.display = "none";
+            priceerr.style.display = "none";
         }
 
     })
@@ -469,7 +501,7 @@ $total_pages = ceil($total_records / $number_per_page);
             event.preventDefault();
             proderr.style.display = "block";
             kilogramerr.style.display = "block";
-            kilogramerr.style.display = "block";
+            priceerr.style.display = "block";
         }
 
         if (name.value == "") {

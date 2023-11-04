@@ -1,9 +1,11 @@
 <?php
-include 'openconn.php';
-
-if (isset($_SESSION["admin"]) && isset($_SESSION["admin_username"])) {
-    $admin_id = $_SESSION["admin"];
+if (isset($_GET['description'])) {
+    include '../openconn.php';
 } else {
+    include 'openconn.php';
+}
+
+if (!isset($_SESSION["admin"]) && !isset($_SESSION["admin_username"])) {
     header("location: login.php");
     exit();
 }
@@ -19,7 +21,13 @@ if (isset($_SESSION["admin"]) && isset($_SESSION["admin_username"])) {
         </div>
 
 
-        <form action="edit/editexpense.php" method="post" class="edit-expense" id="form">
+        <form action="
+        
+        <?php if (isset($_GET['description'])) {
+            echo "../edit/editexpense.php";
+        } else {
+            echo "edit/editexpense.php";
+        }  ?>" method="post" class="edit-expense" id="form">
 
             <input type="text" id="expense-id" name="id" value="" hidden>
 

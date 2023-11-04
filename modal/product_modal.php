@@ -1,5 +1,10 @@
 <?php
-include 'openconn.php';
+
+if (isset($_GET['name'])) {
+    include '../openconn.php';
+} else {
+    include 'openconn.php';
+}
 
 if (
     !isset($_SESSION["admin"]) && !isset($_SESSION["admin_username"])
@@ -20,7 +25,11 @@ if (
         </div>
 
 
-        <form action="edit/editproduct.php" method="post" class="edit-product" id="form">
+        <form action="<?php if (isset($_GET['name'])) {
+                            echo "../edit/editproduct.php";
+                        } else {
+                            echo "edit/editproduct.php";
+                        }  ?>" method="post" class="edit-product" id="form">
 
             <input type="text" id="prod-id" name="id" value="" hidden>
 

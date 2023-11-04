@@ -198,7 +198,10 @@ mysqli_close($conn);
                     </div>
 
                     <div class="search">
-                        <input type="text" id="search" placeholder="Search">
+                        <form action="search/search_supplier.php" method="get">
+                            <input type="text" id="search" placeholder="Search" name="name">
+                            <button type="submit" id="searchbtn">Search</button>
+                        </form>
                     </div>
 
                 </div>

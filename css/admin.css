@@ -601,6 +601,22 @@ select {
     margin: 10px auto 0px auto;
 }
 
+#searchbtn {
+    border: none;
+    font-size: 0.9em;
+    color: var(--black);
+    padding: 4px;
+    border-radius: 3px;
+    background: var(--blue);
+    cursor: pointer;
+    margin-left: 1px;
+}
+
+#searchbtn:hover {
+    background: var(--lightblue);
+    outline: 4px solid var(--lightblue);
+}
+
 .search input {
     padding: 5px;
     border: 1px solid var(--black);
