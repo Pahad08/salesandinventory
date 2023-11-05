@@ -25,7 +25,6 @@ if (empty($_GET['name'])) {
     $row = mysqli_fetch_array($result);
 }
 
-
 ?>
 
 <tr id="head">
