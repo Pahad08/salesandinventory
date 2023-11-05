@@ -17,7 +17,7 @@ FROM accounts
 left join suppliers on accounts.account_id = suppliers.account_id
 left join workers on accounts.account_id = workers.account_id
 where suppliers.account_id is null and workers.account_id is null
-and not accounts.username = 'admin' and not accounts.role = 3;";
+and not accounts.username = 'admin' and not accounts.role = 3 and not accounts.role = 1;";
 $stmt_acc = mysqli_prepare($conn, $acc_sql);
 mysqli_stmt_execute($stmt_acc);
 $result_acc = mysqli_stmt_get_result($stmt_acc);

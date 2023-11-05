@@ -43,7 +43,7 @@ FROM accounts
 left join suppliers on accounts.account_id = suppliers.account_id
 left join workers on accounts.account_id = workers.account_id
 where suppliers.account_id is null and workers.account_id is null
-and not accounts.username = 'admin' and not accounts.role = 3;";
+and not accounts.username = 'admin' and not accounts.role = 3 and not accounts.role = 1;";
 $stmt_acc = mysqli_prepare($conn, $acc_sql);
 mysqli_stmt_execute($stmt_acc);
 $result_acc = mysqli_stmt_get_result($stmt_acc);
@@ -157,8 +157,8 @@ mysqli_close($conn);
                             <select name="account-id" id="account-id">
                                 <option value="">Select An Account</option>
                                 <?php while ($row_acc) { ?>
-                                    <option value="<?php echo $row_acc['account_id']; ?>">
-                                        <?php echo $row_acc['username']; ?></option>
+                                <option value="<?php echo $row_acc['account_id']; ?>">
+                                    <?php echo $row_acc['username']; ?></option>
                                 <?php $row_acc = mysqli_fetch_array($result_acc);
                                 } ?>
                             </select>
@@ -201,19 +201,19 @@ mysqli_close($conn);
                 </div>
 
                 <?php if (isset($_SESSION['added'])) { ?>
-                    <div class="added">
-                        <p><span>&#10003;</span> <?php echo $_SESSION['added']; ?></p>
-                    </div>
+                <div class="added">
+                    <p><span>&#10003;</span> <?php echo $_SESSION['added']; ?></p>
+                </div>
                 <?php unset($_SESSION['added']);
                 } else if (isset($_SESSION['deleted'])) { ?>
-                    <div class="deleted">
-                        <p><span>&#10003;</span> <?php echo $_SESSION['deleted']; ?></p>
-                    </div>
+                <div class="deleted">
+                    <p><span>&#10003;</span> <?php echo $_SESSION['deleted']; ?></p>
+                </div>
                 <?php unset($_SESSION['deleted']);
                 } else if (isset($_SESSION['updated'])) { ?>
-                    <div class="updated">
-                        <p><span>&#10003;</span> <?php echo $_SESSION['updated']; ?></p>
-                    </div>
+                <div class="updated">
+                    <p><span>&#10003;</span> <?php echo $_SESSION['updated']; ?></p>
+                </div>
                 <?php unset($_SESSION['updated']);
                 } ?>
 
@@ -227,17 +227,24 @@ mysqli_close($conn);
                     </tr>
                     <form action="delete/deleteworker.php" id="deleteworker" method="post">
                         <?php while ($row) { ?>
-                            <tr>
-                                <td><input type="checkbox" name="worker_id[]" value="<?php echo $row['worker_id']; ?>" class="checkbox"></td>
-                                <td><?php echo $row['f_name'] . " " . $row['l_name']; ?></td>
-                                <td><?php echo $row['contact_number'] . $total_pages; ?></td>
-                                <td><?php echo $row['account_id']; ?></td>
-                                <td id="action"> <button class="edit" data-workerid="<?php echo $row['worker_id']; ?>" data-fname="<?php echo $row['f_name']; ?>" data-lname="<?php echo $row['l_name']; ?>" data-number="<?php echo $row['contact_number']; ?>" data-accid="<?php echo $row['account_id']; ?>" data-username="<?php echo $row['username']; ?>"><img src="images/edit.png" alt="">Edit</button>
-                                </td>
+                        <tr>
+                            <td><input type="checkbox" name="worker_id[]" value="<?php echo $row['worker_id']; ?>"
+                                    class="checkbox"></td>
+                            <td><?php echo $row['f_name'] . " " . $row['l_name']; ?></td>
+                            <td><?php echo $row['contact_number'] . $total_pages; ?></td>
+                            <td><?php echo $row['account_id']; ?></td>
+                            <td id="action"> <button class="edit" data-workerid="<?php echo $row['worker_id']; ?>"
+                                    data-fname="<?php echo $row['f_name']; ?>"
+                                    data-lname="<?php echo $row['l_name']; ?>"
+                                    data-number="<?php echo $row['contact_number']; ?>"
+                                    data-accid="<?php echo $row['account_id']; ?>"
+                                    data-username="<?php echo $row['username']; ?>"><img src="images/edit.png"
+                                        alt="">Edit</button>
+                            </td>
 
                             <?php $row = mysqli_fetch_array($result);
                         } ?>
-                            </tr>
+                        </tr>
                     </form>
 
                     <div class="alert-body" id="alert-body">
@@ -263,8 +270,8 @@ mysqli_close($conn);
                                 } ?>>&laquo;</a></li>
 
                         <?php for ($i = 0; $i < $total_pages; $i++) { ?>
-                            <li><a href="<?php echo "worker_list.php?page_number=" . $i + 1; ?>"><?php echo $i + 1; ?></a>
-                            </li>
+                        <li><a href="<?php echo "worker_list.php?page_number=" . $i + 1; ?>"><?php echo $i + 1; ?></a>
+                        </li>
                         <?php } ?>
 
 
@@ -289,262 +296,262 @@ mysqli_close($conn);
 
 <script src="javascript/admin.js"></script>
 <script>
-    let form = document.getElementById("form");
-    let openform = document.getElementById("workeradd");
-    let closebtn = document.getElementById("closebtn");
-    let reset = document.getElementById("reset");
-    let deletebtn = document.querySelector("#delete");
-    let canceldelete = document.getElementById("close-deletion");
-    let alertbody = document.getElementById("alert-body");
-    let add = document.getElementById("add");
-    let fname = document.getElementById("fname");
-    let lname = document.getElementById("lname");
-    let number = document.getElementById("number");
-    let company = document.getElementById("company");
-    let accid = document.getElementById("account-id");
-    let fnameerr = document.getElementById("fnameerr");
-    let lnameerr = document.getElementById("lnameerr");
-    let numbererr = document.getElementById("numbererr");
-    let del = document.getElementById("del");
-    const edit = document.querySelectorAll(".edit");
-    let modal = document.querySelector(".modal-worker");
-    let cancel = document.getElementById("cancel");
-    let update = document.getElementById("update");
-    let checkboxes = document.querySelectorAll(".checkbox");
+let form = document.getElementById("form");
+let openform = document.getElementById("workeradd");
+let closebtn = document.getElementById("closebtn");
+let reset = document.getElementById("reset");
+let deletebtn = document.querySelector("#delete");
+let canceldelete = document.getElementById("close-deletion");
+let alertbody = document.getElementById("alert-body");
+let add = document.getElementById("add");
+let fname = document.getElementById("fname");
+let lname = document.getElementById("lname");
+let number = document.getElementById("number");
+let company = document.getElementById("company");
+let accid = document.getElementById("account-id");
+let fnameerr = document.getElementById("fnameerr");
+let lnameerr = document.getElementById("lnameerr");
+let numbererr = document.getElementById("numbererr");
+let del = document.getElementById("del");
+const edit = document.querySelectorAll(".edit");
+let modal = document.querySelector(".modal-worker");
+let cancel = document.getElementById("cancel");
+let update = document.getElementById("update");
+let checkboxes = document.querySelectorAll(".checkbox");
 
-    selectall.addEventListener("click", () => {
-        checkboxes.forEach((element) => {
+selectall.addEventListener("click", () => {
+    checkboxes.forEach((element) => {
 
-            if (element.checked == false) {
-                element.checked = true;
-            }
-        })
+        if (element.checked == false) {
+            element.checked = true;
+        }
     })
+})
 
-    if (canceldelete) {
-        canceldelete.addEventListener("click", () => {
-            alertbody.classList.toggle("alert-body-show");
-            alertbody.classList.toggle("alert-body");
-        })
-    }
-
-    cancel.addEventListener("click", (event) => {
-        event.preventDefault();
-        modal.classList.toggle("modal-worker-show");
-        modal.classList.toggle("modal-worker");
-    })
-
-    edit.forEach((element) => {
-        element.addEventListener("click", (event) => {
-            event.preventDefault();
-            let workerid = element.getAttribute("data-workerid");
-            let f_name = element.getAttribute("data-fname");
-            let l_name = element.getAttribute("data-lname");
-            let number = element.getAttribute("data-number");
-            let username = element.getAttribute("data-username");
-            let acc_id = element.getAttribute("data-accid");
-
-            let worker_id = document.getElementById("worker-id");
-            let fname = document.getElementById("worker-fname");
-            let lname = document.getElementById("worker-lname");
-            let worker_num = document.getElementById("worker-number");
-            let selected = document.getElementById("selected");
-
-            worker_id.value = workerid;
-            fname.value = f_name;
-            lname.value = l_name;
-            worker_num.value = number;
-            selected.value = acc_id;
-            selected.innerHTML = username;
-
-            modal.classList.toggle("modal-worker");
-            modal.classList.toggle("modal-worker-show");
-        })
-    })
-
-    del.addEventListener("click", () => {
-        const deleteworker = document.getElementById("deleteworker");
-        deleteworker.submit();
-    })
-
-    deletebtn.addEventListener("click", (event) => {
-        event.preventDefault();
-        alertbody.classList.toggle("alert-body");
+if (canceldelete) {
+    canceldelete.addEventListener("click", () => {
         alertbody.classList.toggle("alert-body-show");
+        alertbody.classList.toggle("alert-body");
     })
+}
 
-    if (document.querySelector(".updated")) {
-        document.querySelector(".updated").addEventListener("animationend", () => {
-            document.querySelector(".updated").style.display = "none";
-        })
+cancel.addEventListener("click", (event) => {
+    event.preventDefault();
+    modal.classList.toggle("modal-worker-show");
+    modal.classList.toggle("modal-worker");
+})
 
-        document.querySelector(".updated").addEventListener("click", () => {
-            document.querySelector(".updated").style.display = "none";
-        })
-    } else if (document.querySelector(".added")) {
-        document.querySelector(".added").addEventListener("animationend", () => {
-            document.querySelector(".added").style.display = "none";
-        })
-
-        document.querySelector(".added").addEventListener("click", () => {
-            document.querySelector(".added").style.display = "none";
-        })
-    } else if (document.querySelector(".deleted")) {
-        document.querySelector(".deleted").addEventListener("animationend", () => {
-            document.querySelector(".deleted").style.display = "none";
-        })
-
-        document.querySelector(".deleted").addEventListener("click", () => {
-            document.querySelector(".deleted").style.display = "none";
-        })
-    } else if (document.querySelector(".exist")) {
-        document.querySelector(".exist").addEventListener("animationend", () => {
-            document.querySelector(".exist").style.display = "none";
-        })
-
-        document.querySelector(".exist").addEventListener("click", () => {
-            document.querySelector(".exist").style.display = "none";
-        })
-    }
-
-    reset.addEventListener("click", (event) => {
+edit.forEach((element) => {
+    element.addEventListener("click", (event) => {
         event.preventDefault();
-        fname.value = "";
-        lname.value = "";
-        number.value = "";
-        accid.value = "";
-        fnameerr.style.display = "none";
-        lnameerr.style.display = "none";
-        numbererr.style.display = "none";
-    })
+        let workerid = element.getAttribute("data-workerid");
+        let f_name = element.getAttribute("data-fname");
+        let l_name = element.getAttribute("data-lname");
+        let number = element.getAttribute("data-number");
+        let username = element.getAttribute("data-username");
+        let acc_id = element.getAttribute("data-accid");
 
-
-    openform.addEventListener("click", () => {
-        form.classList.toggle("form");
-        form.classList.toggle("show-form");
-    })
-
-    window.addEventListener("resize", () => {
-        if (window.innerWidth > 1022 && form.classList.contains("show-form")) {
-            form.classList.toggle("show-form");
-            form.classList.toggle("form");
-        }
-    })
-
-    window.addEventListener("click", (event) => {
-
-        if (event.target.id == "form" && form.classList.contains("show-form")) {
-            form.classList.toggle("show-form");
-            form.classList.toggle("form");
-        }
-
-        if (event.target.id == "alert-body" && alertbody.classList.contains("alert-body-show")) {
-            alertbody.classList.toggle("alert-body-show");
-            alertbody.classList.toggle("alert-body");
-        }
-
-        if (event.target.classList == "modal-worker-show") {
-            modal.classList.toggle("modal-worker-show");
-            modal.classList.toggle("modal-worker");
-        }
-    })
-
-    closebtn.addEventListener("click", () => {
-        form.classList.toggle("show-form");
-        form.classList.toggle("form");
-    })
-
-    add.addEventListener("click", (event) => {
-
-        if (fname.value == "" && lname.value == "" && number.value == "") {
-            event.preventDefault();
-            fnameerr.style.display = "block";
-            lnameerr.style.display = "block";
-            numbererr.style.display = "block";
-        }
-
-        if (fname.value == "") {
-            event.preventDefault();
-            fnameerr.style.display = "block";
-        } else {
-            fnameerr.style.display = "none";
-        }
-
-        if (lname.value == "") {
-            event.preventDefault();
-            lnameerr.style.display = "block";
-        } else {
-            lnameerr.style.display = "none";
-        }
-
-        if (number.value == "") {
-            event.preventDefault();
-            numbererr.innerHTML = "Contact Number cannot be blank";
-            numbererr.style.display = "block";
-        } else if (number.value.length <
-            11) {
-            event.preventDefault();
-            numbererr.innerHTML = "Number length must not be below 11";
-            numbererr.style.display = "block";
-        } else if (number.value.length > 11) {
-            event.preventDefault();
-            numbererr.innerHTML = "Number length must not exceed to 11";
-            numbererr.style.display = "block";
-        } else {
-            numbererr.style.display = "none";
-        }
-
-    })
-
-    update.addEventListener("click", (event) => {
-
-        let fnameerr = document.getElementById("fnameerror");
-        let lnameerr = document.getElementById("lnameerror");
-        let numbererr = document.getElementById("numerr");
-
+        let worker_id = document.getElementById("worker-id");
         let fname = document.getElementById("worker-fname");
         let lname = document.getElementById("worker-lname");
         let worker_num = document.getElementById("worker-number");
+        let selected = document.getElementById("selected");
 
-        if (fname.value == "" && lname.value == "" && worker_num.value == "") {
-            event.preventDefault();
-            fnameerr.style.display = "block";
-            lnameerr.style.display = "block";
-            numbererr.style.display = "block";
-        }
+        worker_id.value = workerid;
+        fname.value = f_name;
+        lname.value = l_name;
+        worker_num.value = number;
+        selected.value = acc_id;
+        selected.innerHTML = username;
 
-        if (fname.value == "") {
-            event.preventDefault();
-            fnameerr.style.display = "block";
-        } else {
-            fnameerr.style.display = "none";
-        }
-
-        if (lname.value == "") {
-            event.preventDefault();
-            lnameerr.style.display = "block";
-        } else {
-            lnameerr.style.display = "none";
-        }
-
-        if (worker_num.value == "") {
-            event.preventDefault();
-            numbererr.innerHTML = "Contact Number cannot be blank";
-            numbererr.style.display = "block";
-        } else if (worker_num.value.length <
-            11) {
-            event.preventDefault();
-            numbererr.innerHTML = "Number length must not be below 11";
-            numbererr.style.display = "block";
-        } else if (worker_num.value.length > 11) {
-            event.preventDefault();
-            numbererr.innerHTML = "Number length must not exceed to 11";
-            numbererr.style.display = "block";
-        } else {
-            numbererr.style.display = "none";
-        }
-
+        modal.classList.toggle("modal-worker");
+        modal.classList.toggle("modal-worker-show");
     })
+})
+
+del.addEventListener("click", () => {
+    const deleteworker = document.getElementById("deleteworker");
+    deleteworker.submit();
+})
+
+deletebtn.addEventListener("click", (event) => {
+    event.preventDefault();
+    alertbody.classList.toggle("alert-body");
+    alertbody.classList.toggle("alert-body-show");
+})
+
+if (document.querySelector(".updated")) {
+    document.querySelector(".updated").addEventListener("animationend", () => {
+        document.querySelector(".updated").style.display = "none";
+    })
+
+    document.querySelector(".updated").addEventListener("click", () => {
+        document.querySelector(".updated").style.display = "none";
+    })
+} else if (document.querySelector(".added")) {
+    document.querySelector(".added").addEventListener("animationend", () => {
+        document.querySelector(".added").style.display = "none";
+    })
+
+    document.querySelector(".added").addEventListener("click", () => {
+        document.querySelector(".added").style.display = "none";
+    })
+} else if (document.querySelector(".deleted")) {
+    document.querySelector(".deleted").addEventListener("animationend", () => {
+        document.querySelector(".deleted").style.display = "none";
+    })
+
+    document.querySelector(".deleted").addEventListener("click", () => {
+        document.querySelector(".deleted").style.display = "none";
+    })
+} else if (document.querySelector(".exist")) {
+    document.querySelector(".exist").addEventListener("animationend", () => {
+        document.querySelector(".exist").style.display = "none";
+    })
+
+    document.querySelector(".exist").addEventListener("click", () => {
+        document.querySelector(".exist").style.display = "none";
+    })
+}
+
+reset.addEventListener("click", (event) => {
+    event.preventDefault();
+    fname.value = "";
+    lname.value = "";
+    number.value = "";
+    accid.value = "";
+    fnameerr.style.display = "none";
+    lnameerr.style.display = "none";
+    numbererr.style.display = "none";
+})
+
+
+openform.addEventListener("click", () => {
+    form.classList.toggle("form");
+    form.classList.toggle("show-form");
+})
+
+window.addEventListener("resize", () => {
+    if (window.innerWidth > 1022 && form.classList.contains("show-form")) {
+        form.classList.toggle("show-form");
+        form.classList.toggle("form");
+    }
+})
+
+window.addEventListener("click", (event) => {
+
+    if (event.target.id == "form" && form.classList.contains("show-form")) {
+        form.classList.toggle("show-form");
+        form.classList.toggle("form");
+    }
+
+    if (event.target.id == "alert-body" && alertbody.classList.contains("alert-body-show")) {
+        alertbody.classList.toggle("alert-body-show");
+        alertbody.classList.toggle("alert-body");
+    }
+
+    if (event.target.classList == "modal-worker-show") {
+        modal.classList.toggle("modal-worker-show");
+        modal.classList.toggle("modal-worker");
+    }
+})
+
+closebtn.addEventListener("click", () => {
+    form.classList.toggle("show-form");
+    form.classList.toggle("form");
+})
+
+add.addEventListener("click", (event) => {
+
+    if (fname.value == "" && lname.value == "" && number.value == "") {
+        event.preventDefault();
+        fnameerr.style.display = "block";
+        lnameerr.style.display = "block";
+        numbererr.style.display = "block";
+    }
+
+    if (fname.value == "") {
+        event.preventDefault();
+        fnameerr.style.display = "block";
+    } else {
+        fnameerr.style.display = "none";
+    }
+
+    if (lname.value == "") {
+        event.preventDefault();
+        lnameerr.style.display = "block";
+    } else {
+        lnameerr.style.display = "none";
+    }
+
+    if (number.value == "") {
+        event.preventDefault();
+        numbererr.innerHTML = "Contact Number cannot be blank";
+        numbererr.style.display = "block";
+    } else if (number.value.length <
+        11) {
+        event.preventDefault();
+        numbererr.innerHTML = "Number length must not be below 11";
+        numbererr.style.display = "block";
+    } else if (number.value.length > 11) {
+        event.preventDefault();
+        numbererr.innerHTML = "Number length must not exceed to 11";
+        numbererr.style.display = "block";
+    } else {
+        numbererr.style.display = "none";
+    }
+
+})
+
+update.addEventListener("click", (event) => {
+
+    let fnameerr = document.getElementById("fnameerror");
+    let lnameerr = document.getElementById("lnameerror");
+    let numbererr = document.getElementById("numerr");
+
+    let fname = document.getElementById("worker-fname");
+    let lname = document.getElementById("worker-lname");
+    let worker_num = document.getElementById("worker-number");
+
+    if (fname.value == "" && lname.value == "" && worker_num.value == "") {
+        event.preventDefault();
+        fnameerr.style.display = "block";
+        lnameerr.style.display = "block";
+        numbererr.style.display = "block";
+    }
+
+    if (fname.value == "") {
+        event.preventDefault();
+        fnameerr.style.display = "block";
+    } else {
+        fnameerr.style.display = "none";
+    }
+
+    if (lname.value == "") {
+        event.preventDefault();
+        lnameerr.style.display = "block";
+    } else {
+        lnameerr.style.display = "none";
+    }
+
+    if (worker_num.value == "") {
+        event.preventDefault();
+        numbererr.innerHTML = "Contact Number cannot be blank";
+        numbererr.style.display = "block";
+    } else if (worker_num.value.length <
+        11) {
+        event.preventDefault();
+        numbererr.innerHTML = "Number length must not be below 11";
+        numbererr.style.display = "block";
+    } else if (worker_num.value.length > 11) {
+        event.preventDefault();
+        numbererr.innerHTML = "Number length must not exceed to 11";
+        numbererr.style.display = "block";
+    } else {
+        numbererr.style.display = "none";
+    }
+
+})
 </script>
 
 </html>
