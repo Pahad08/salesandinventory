@@ -9,20 +9,21 @@ if (
     exit();
 }
 
-if (!empty($_POST['sale_id'])) {
+if (!empty($_POST['stock_id'])) {
     include '../openconn.php';
-    $sale_ids = $_POST['sale_id'];
+    $stock_ids = $_POST['stock_id'];
 
-    foreach ($sale_ids as $id) {
-        $stmt = mysqli_prepare($conn, "DELETE FROM sales WHERE sale_id = ?;");
+    foreach ($stock_ids as $id) {
+        $stmt = mysqli_prepare($conn, "DELETE FROM stocks WHERE stock_id = ?;");
         mysqli_stmt_bind_param($stmt, "i", $id);
         mysqli_stmt_execute($stmt);
     }
     mysqli_close($conn);
-    $_SESSION['deleted'] = "Sales Deleted Successfully";
-    header("location: ../sales.php");
+
+    $_SESSION['deleted'] = "Stock Deleted Successfully";
+    header("location: ../inventory.php");
     exit();
 } else {
-    header("location: ../sales.php");
+    header("location: ../inventory.php");
     exit();
 }

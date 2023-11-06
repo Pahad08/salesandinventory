@@ -17,7 +17,7 @@ if (isset($_GET['page_number'])) {
     $page_number = 1;
 }
 
-
+$product_name = "%" . $_GET['name'] . "%";
 $number_per_page = 5;
 $offset = ($page_number - 1) * $number_per_page;
 $nextpage = $page_number + 1;
@@ -265,15 +265,10 @@ mysqli_close($conn);
                         </div>
 
                         <div class="search">
-                            <form action="search_sales.php" method="get">
-                                <input type="text" id="search" placeholder="Search" <?php if (isset($_SESSION['supplier'])) {
-                                                                                    echo "oninput='ShowSched(search.value)'";
-                                                                                } ?>>
-                                <?php if (!isset($_SESSION['admin'])) { ?>
-                                <button id="searchbtn">Search</button>
-                                <?php } ?>
-                            </form>
-
+                            <input type="text" id="search" placeholder="Search">
+                            <button id="searchbtn" <?php if (isset($_SESSION['supplier'])) {
+                                                    echo "onclick='ShowSched(search.value)'";
+                                                } ?>>Search</button>
                         </div>
 
                     </div>

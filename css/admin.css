@@ -352,7 +352,8 @@ a {
     transform: scale(1.1);
 }
 
-#form-body {
+#form-body,
+#form-stock {
     display: grid;
     grid-template-columns: auto auto;
     padding: 0px 10px;
@@ -362,6 +363,11 @@ a {
     border-bottom-right-radius: 5px;
     border-bottom-left-radius: 5px;
     color: var(--white);
+}
+
+#form-stock {
+    display: flex;
+    flex-direction: column;
 }
 
 .input-body {
@@ -843,7 +849,8 @@ tr:hover:not(tr:nth-child(1)) {
 .modal-supplier,
 .modal-worker,
 .modal-transaction,
-.modal-account {
+.modal-account,
+.modal-stock {
     display: none;
 }
 
@@ -898,7 +905,8 @@ tr:hover:not(tr:nth-child(1)) {
 .edit-expense,
 .edit-worker,
 .edit-transaction,
-.edit-account {
+.edit-account,
+.edit-stock {
     display: flex;
     flex-direction: column;
     gap: 20px;

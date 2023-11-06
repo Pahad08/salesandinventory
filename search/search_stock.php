@@ -1,6 +1,6 @@
 <?php
 session_start();
-include 'openconn.php';
+include '../openconn.php';
 
 if (
     !isset($_SESSION["admin"]) && !isset($_SESSION["admin_username"])
@@ -17,6 +17,7 @@ if (isset($_GET['page_number'])) {
     $page_number = 1;
 }
 
+$product_name = "%" . $_GET['name'] . "%";
 $number_per_page = 5;
 $offset = ($page_number - 1) * $number_per_page;
 $nextpage = $page_number + 1;
@@ -24,8 +25,11 @@ $previouspage = $page_number - 1;
 
 $sql = "SELECT products.name, stocks.*
 from stocks
-join products on stocks.product_id = products.product_id LIMIT $number_per_page OFFSET $offset;";
+join products on stocks.product_id = products.product_id
+where products.name LIKE ?
+LIMIT $number_per_page OFFSET $offset;";
 $stmt = mysqli_prepare($conn, $sql);
+mysqli_stmt_bind_param($stmt, "s", $product_name);
 mysqli_stmt_execute($stmt);
 $result = mysqli_stmt_get_result($stmt);
 $row = mysqli_fetch_array($result);
@@ -57,8 +61,8 @@ mysqli_close($conn);
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="css/admin.css">
-        <link rel="shortcut icon" href="images/logo.png" type="image/x-icon">
+        <link rel="stylesheet" href="../css/admin.css">
+        <link rel="shortcut icon" href="../images/logo.png" type="image/x-icon">
         <title>Inventory</title>
     </head>
 
@@ -74,7 +78,7 @@ mysqli_close($conn);
                     <div></div>
                 </div>
 
-                <img src="images/logo.jpg" alt="logo">
+                <img src="../images/logo.jpg" alt="logo">
                 <h2> Badong Lechon Manok</h2>
             </div>
 
@@ -89,7 +93,7 @@ mysqli_close($conn);
                 }
                 ?>
                 </h3>
-                <a href="logout.php">Logout</a>
+                <a href="../logout.php">Logout</a>
             </div>
 
         </div>
@@ -102,17 +106,17 @@ mysqli_close($conn);
                     <?php if (isset($_SESSION["admin"]) && isset($_SESSION["admin_username"])) { ?>
                     <ul class="menu">
                         <p>Data Dashboard</p>
-                        <li><a href="admin.php">Dashboard</a></li>
+                        <li><a href="../admin.php">Dashboard</a></li>
                     </ul>
                     <?php } elseif (isset($_SESSION["worker"]) && isset($_SESSION["worker_username"])) { ?>
                     <ul class="menu">
                         <p>Account Details</p>
-                        <li><a href="worker.php">Account</a></li>
+                        <li><a href="../worker.php">Account</a></li>
                     </ul>
                     <?php } else if (isset($_SESSION["supplier"]) && isset($_SESSION["supplier_username"])) { ?>
                     <ul class="menu">
                         <p>Account Details</p>
-                        <li><a href="supplier.php">Account</a></li>
+                        <li><a href="../worker.php">Account</a></li>
                     </ul>
                     <?php } ?>
 
@@ -123,19 +127,19 @@ mysqli_close($conn);
                         || isset($_SESSION["worker"]) || isset($_SESSION["worker_username"])
                         || isset($_SESSION["supplier"]) || isset($_SESSION["supplier_username"])
                     ) { ?>
-                        <li><a href="inventory.php">Inventory</a></li>
+                        <li><a href="../inventory.php">Inventory</a></li>
                         <?php } ?>
 
                         <?php if (
                         isset($_SESSION["admin"]) || isset($_SESSION["admin_username"])
                         || isset($_SESSION["worker"]) || isset($_SESSION["worker_username"])
                     ) { ?>
-                        <li><a href="products.php">Product List</a></li>
-                        <li><a href="sales.php">Sales</a></li>
+                        <li><a href="../products.php">Product List</a></li>
+                        <li><a href="../sales.php">Sales</a></li>
                         <?php } ?>
 
                         <?php if (isset($_SESSION["admin"]) && isset($_SESSION["admin_username"])) { ?>
-                        <li><a href="expense.php">Expenses</a></li>
+                        <li><a href="../expense.php">Expenses</a></li>
                         <?php } ?>
                     </ul>
 
@@ -147,11 +151,11 @@ mysqli_close($conn);
                     <ul class="menu">
                         <p>Suppliers/Workers</p>
                         <?php if (isset($_SESSION["admin"]) && isset($_SESSION["admin_username"])) { ?>
-                        <li><a href="supplier_list.php">List of Suppliers</a></li>
-                        <li><a href="workers_list.php">List of Workers</a></li>
+                        <li><a href="../supplier_list.php">List of Suppliers</a></li>
+                        <li><a href="../workers_list.php">List of Workers</a></li>
                         <?php } ?>
 
-                        <li><a href="schedules.php">Schedule of Deliveries</a></li>
+                        <li><a href="../schedules.php">Schedule of Deliveries</a></li>
                     </ul>
 
                     <?php } ?>
@@ -159,7 +163,7 @@ mysqli_close($conn);
                     <?php if (isset($_SESSION["admin"]) && isset($_SESSION["admin_username"])) { ?>
                     <ul class="menu">
                         <p>Users</p>
-                        <li><a href="users.php">Users List</a></li>
+                        <li><a href="../users.php">Users List</a></li>
                     </ul>
                     <?php } ?>
 
@@ -182,7 +186,7 @@ mysqli_close($conn);
                             <p id="closebtn">&#10006;</p>
                         </div>
 
-                        <form action="add/addstocks.php" method="post" id="form-stock">
+                        <form action="../add/addstocks.php" method="post" id="form-stock">
 
                             <div class="input-body">
                                 <label for="selectprod">Product Name</label>
@@ -220,20 +224,21 @@ mysqli_close($conn);
 
                         <div class="header-info">
                             <h2>Inventory</h2>
+
                             <?php if (
                             isset($_SESSION['admin']) && isset($_SESSION['admin_username']) &&
                             isset($_SESSION['worker']) && isset($_SESSION['worker_username'])
                         ) { ?>
                             <div class="btns">
-                                <button id="prodadd" class="add"><img src="images/add.png" alt="">Add Stock</button>
-                                <button id="delete"><img src="images/delete.png">Delete</button>
-                                <button id="selectall"><img src="images/selectall.png" alt="">Select All</button>
+                                <button id="prodadd" class="add"><img src="../images/add.png" alt="">Add Stock</button>
+                                <button id="delete"><img src="../images/delete.png">Delete</button>
+                                <button id="selectall"><img src="../images/selectall.png" alt="">Select All</button>
                             </div>
                             <?php } ?>
                         </div>
 
                         <div class="search">
-                            <form action="search/search_stock.php" method="get">
+                            <form action="search_stock.php" method="get">
                                 <input type="text" id="search" placeholder="Search" name="name">
                                 <button type="submit" id="searchbtn">Search</button>
                             </form>
@@ -264,7 +269,7 @@ mysqli_close($conn);
                             <th>Stock In</th>
                             <th>Stock Out</th>
                         </tr>
-                        <form action="delete/deletestocks.php" id="deletestocks" method="post">
+                        <form action="../delete/deletestocks.php" id="deletestocks" method="post">
                             <?php while ($row) { ?>
                             <tr>
                                 <td><input type="checkbox" name="stock_id[]" value="<?php echo $row['stock_id']; ?>"
@@ -280,7 +285,7 @@ mysqli_close($conn);
 
                         <div class="alert-body" id="alert-body">
                             <div class="alert-container">
-                                <img src="images/warning.png">
+                                <img src="../images/warning.png">
                                 <div class="text-warning">
                                     <p>Are you sure you want to delete?<br>(Stocks, sales and transactions will also be
                                         deleted)</p>
@@ -300,17 +305,18 @@ mysqli_close($conn);
 
                         <ul class="page-list">
                             <li><a <?php if ($page_number != 1) {
-                                    echo "href=inventory.php?page_number=" . $previouspage;
+                                    echo "href=../inventory.php?page_number=" . $previouspage;
                                 } ?>>&laquo;</a></li>
 
                             <?php for ($i = 0; $i < $total_pages; $i++) { ?>
-                            <li><a href="<?php echo "inventory.php?page_number=" . $i + 1; ?>"><?php echo $i + 1; ?></a>
+                            <li><a
+                                    href="<?php echo "../inventory.php?page_number=" . $i + 1; ?>"><?php echo $i + 1; ?></a>
                             </li>
                             <?php } ?>
 
 
                             <li><a <?php if ($page_number != $total_pages && $total_pages != 0) {
-                                    echo "href=inventory.php?page_number=" . $nextpage;
+                                    echo "href=../inventory.php?page_number=" . $nextpage;
                                 } ?>>&raquo;</a></li>
                         </ul>
 
@@ -324,7 +330,7 @@ mysqli_close($conn);
 
     </body>
 
-    <script src="javascript/admin.js"></script>
+    <script src="../javascript/admin.js"></script>
     <script>
     let form = document.getElementById("form");
     let openform = document.getElementById("prodadd");

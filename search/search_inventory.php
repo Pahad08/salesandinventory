@@ -35,13 +35,13 @@ if (empty($_GET['name'])) {
     <th>Stock Out</th>
 </tr>
 <?php while ($row) { ?>
-    <tr>
-        <td></td>
-        <td><?php echo $row['name']; ?></td>
-        <td><?php echo $row['quantities']; ?></td>
-        <td><?php echo $row['stock_in']; ?></td>
-        <td><?php echo $row['stock_out']; ?></td>
-    </tr>
+<tr>
+    <td></td>
+    <td><?php echo $row['name']; ?></td>
+    <td><?php echo $row['quantities']; ?></td>
+    <td><?php echo $row['stock_in']; ?></td>
+    <td><?php echo $row['stock_out']; ?></td>
+</tr>
 
 <?php $row = mysqli_fetch_array($result);
 } ?>

@@ -8,7 +8,7 @@ if (isset($_GET['name'])) {
 if (isset($_SESSION["admin"]) && isset($_SESSION["admin_username"])) {
     $admin_id = $_SESSION["admin"];
 } else {
-    header("location: login.php");
+    header("location: ../login.php");
     exit();
 }
 
@@ -71,8 +71,8 @@ mysqli_close($conn);
                 <select name="account-id" id="supplier-accountid">
                     <option value="" id="selected"></option>
                     <?php while ($row_acc) { ?>
-                        <option value="<?php echo $row_acc['account_id']; ?>">
-                            <?php echo $row_acc['username']; ?></option>
+                    <option value="<?php echo $row_acc['account_id']; ?>">
+                        <?php echo $row_acc['username']; ?></option>
                     <?php $row_acc = mysqli_fetch_array($result_acc);
                     } ?>
                 </select>

@@ -49,6 +49,6 @@ if (empty($_GET['name'])) {
     <td><?php echo $row['name']; ?></td>
     <td><?php echo $row['quantity']; ?></td>
 
-<?php $row = mysqli_fetch_array($result);
+    <?php $row = mysqli_fetch_array($result);
     } ?>
 </tr>

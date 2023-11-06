@@ -60,7 +60,7 @@ $total_pages = ceil($total_records / $number_per_page);
                     <div></div>
                 </div>
 
-                <img src="../images/logo.png" alt="logo">
+                <img src="../images/logo.jpg" alt="logo">
                 <h2> Badong Lechon Manok</h2>
             </div>
 
@@ -166,7 +166,7 @@ $total_pages = ceil($total_records / $number_per_page);
 
                         <div class="search">
                             <form action="search_expense.php" method="get">
-                                <input type="text" id="search" placeholder="Search" name="name">
+                                <input type="text" id="search" placeholder="Search" name="description">
                                 <button type="submit" id="searchbtn">Search</button>
                             </form>
                         </div>

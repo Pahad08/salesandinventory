@@ -65,7 +65,7 @@ $total_pages = ceil($total_records / $number_per_page);
                     <div></div>
                 </div>
 
-                <img src="../images/logo.png" alt="logo">
+                <img src="../images/logo.jpg" alt="logo">
                 <h2> Badong Lechon Manok</h2>
             </div>
 

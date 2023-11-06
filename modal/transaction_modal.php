@@ -2,7 +2,7 @@
 include 'openconn.php';
 
 if (!isset($_SESSION["admin"]) && !isset($_SESSION["admin_username"])) {
-    header("location: login.php");
+    header("location: ../login.php");
     exit();
 }
 
@@ -55,9 +55,9 @@ mysqli_close($conn);
                     <select name="supplier_id" id="supplier_id">
                         <option value="" id="selected-supplier"></option>
                         <?php while ($row_suppliers) { ?>
-                            <option value="">
-                                <?php echo $row_suppliers['f_name'] . " " . $row_suppliers['l_name']; ?>
-                            </option>
+                        <option value="">
+                            <?php echo $row_suppliers['f_name'] . " " . $row_suppliers['l_name']; ?>
+                        </option>
                         <?php $row_suppliers = mysqli_fetch_array($result_suppliers);
                         } ?>
                     </select>
@@ -69,9 +69,9 @@ mysqli_close($conn);
                     <select name="product_id" id="product_id">
                         <option value="" id="selected-product"></option>
                         <?php while ($row_products) { ?>
-                            <option value="<?php echo $row_products['product_id']; ?>">
-                                <?php echo $row_products['name']; ?>
-                            </option>
+                        <option value="<?php echo $row_products['product_id']; ?>">
+                            <?php echo $row_products['name']; ?>
+                        </option>
                         <?php $row_products = mysqli_fetch_array($result_products);
                         } ?>
                     </select>
