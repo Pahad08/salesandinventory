@@ -192,10 +192,7 @@ mysqli_close($conn);
                         </div>
 
                         <div class="search">
-                            <form action="search/search_worker.php" method="get">
-                                <input type="text" id="search" placeholder="Search" name="name">
-                                <button type="submit" id="searchbtn">Search</button>
-                            </form>
+                            <input type="text" id="search" placeholder="Search" name="name">
                         </div>
 
                     </div>
@@ -217,21 +214,22 @@ mysqli_close($conn);
                     <?php unset($_SESSION['updated']);
                 } ?>
 
-                    <table id="table">
-                        <tr id="head">
-                            <th></th>
-                            <th>Name</th>
-                            <th>Contact Number</th>
-                            <th>Account</th>
-                            <th>Action</th>
-                        </tr>
-                        <form action="delete/deleteworker.php" id="deleteworker" method="post">
+                    <form action="delete/deleteworker.php" id="deleteworker" method="post" class="form-table">
+                        <table id="table">
+                            <tr id="head">
+                                <th></th>
+                                <th>Name</th>
+                                <th>Contact Number</th>
+                                <th>Account</th>
+                                <th>Edit</th>
+                            </tr>
+
                             <?php while ($row) { ?>
                             <tr>
                                 <td><input type="checkbox" name="worker_id[]" value="<?php echo $row['worker_id']; ?>"
                                         class="checkbox"></td>
                                 <td><?php echo $row['f_name'] . " " . $row['l_name']; ?></td>
-                                <td><?php echo $row['contact_number'] . $total_pages; ?></td>
+                                <td><?php echo $row['contact_number']; ?></td>
                                 <td><?php echo $row['account_id']; ?></td>
                                 <td id="action"> <button class="edit" data-workerid="<?php echo $row['worker_id']; ?>"
                                         data-fname="<?php echo $row['f_name']; ?>"
@@ -241,43 +239,42 @@ mysqli_close($conn);
                                         data-username="<?php echo $row['username']; ?>"><img src="images/edit.png"
                                             alt="">Edit</button>
                                 </td>
-
-                                <?php $row = mysqli_fetch_array($result);
-                        } ?>
                             </tr>
-                        </form>
+                            <?php $row = mysqli_fetch_array($result);
+                        } ?>
+                        </table>
+                    </form>
 
-                        <div class="alert-body" id="alert-body">
-                            <div class="alert-container">
-                                <img src="images/warning.png">
-                                <div class="text-warning">
-                                    <p>Are you sure you want to delete?
-                                </div>
-                                <div class="buttons-alert">
-                                    <button id="del">Delete</button>
-                                    <button id="close-deletion">Cancel</button>
-                                </div>
+                    <div class="alert-body" id="alert-body">
+                        <div class="alert-container">
+                            <img src="images/warning.png">
+                            <div class="text-warning">
+                                <p>Are you sure you want to delete?
+                            </div>
+                            <div class="buttons-alert">
+                                <button id="del">Delete</button>
+                                <button id="close-deletion">Cancel</button>
                             </div>
                         </div>
+                    </div>
 
-                    </table>
 
                     <div class="page">
                         <p><?php echo "Page " . "<b>$page_number </b>" . " of " . "<b>$total_pages</b>" ?>
                         <ul class="page-list">
                             <li><a <?php if ($page_number != 1) {
-                                    echo "href=worker_list.php?page_number=" . $previouspage;
+                                    echo "href=workers_list.php?page_number=" . $previouspage;
                                 } ?>>&laquo;</a></li>
 
                             <?php for ($i = 0; $i < $total_pages; $i++) { ?>
                             <li><a
-                                    href="<?php echo "worker_list.php?page_number=" . $i + 1; ?>"><?php echo $i + 1; ?></a>
+                                    href="<?php echo "workers_list.php?page_number=" . $i + 1; ?>"><?php echo $i + 1; ?></a>
                             </li>
                             <?php } ?>
 
 
                             <li><a <?php if ($page_number != $total_pages && $total_pages != 0) {
-                                    echo "href=worker_list.php?page_number=" . $nextpage;
+                                    echo "href=workers_list.php?page_number=" . $nextpage;
                                 } ?>>&raquo;</a></li>
                         </ul>
 
@@ -314,19 +311,63 @@ mysqli_close($conn);
     let lnameerr = document.getElementById("lnameerr");
     let numbererr = document.getElementById("numbererr");
     let del = document.getElementById("del");
-    const edit = document.querySelectorAll(".edit");
-    let modal = document.querySelector(".modal-worker");
     let cancel = document.getElementById("cancel");
+    let search = document.getElementById("search");
     let update = document.getElementById("update");
-    let checkboxes = document.querySelectorAll(".checkbox");
 
-    selectall.addEventListener("click", () => {
-        checkboxes.forEach((element) => {
+    function AttachedEvents() {
+        let selectall = document.getElementById('selectall');
+        let checkboxes = document.querySelectorAll(".checkbox");
+        const edit = document.querySelectorAll(".edit");
+        let modal = document.querySelector(".modal-worker");
 
-            if (element.checked == false) {
-                element.checked = true;
-            }
+        selectall.addEventListener("click", () => {
+            checkboxes.forEach((element) => {
+                if (element.checked == false) {
+                    element.checked = true;
+                }
+            })
         })
+
+        edit.forEach((element) => {
+            element.addEventListener("click", (event) => {
+                event.preventDefault();
+                let workerid = element.getAttribute("data-workerid");
+                let f_name = element.getAttribute("data-fname");
+                let l_name = element.getAttribute("data-lname");
+                let number = element.getAttribute("data-number");
+                let username = element.getAttribute("data-username");
+                let acc_id = element.getAttribute("data-accid");
+
+                let worker_id = document.getElementById("worker-id");
+                let fname = document.getElementById("worker-fname");
+                let lname = document.getElementById("worker-lname");
+                let worker_num = document.getElementById("worker-number");
+                let selected = document.getElementById("selected");
+
+                worker_id.value = workerid;
+                fname.value = f_name;
+                lname.value = l_name;
+                worker_num.value = number;
+                selected.value = acc_id;
+                selected.innerHTML = username;
+
+                modal.classList.toggle("modal-worker");
+                modal.classList.toggle("modal-worker-show");
+            })
+        })
+    }
+
+    AttachedEvents();
+
+    search.addEventListener("input", () => {
+        const xhttp = new XMLHttpRequest();
+        xhttp.onload = function() {
+            document.getElementById("table").innerHTML = this.responseText;
+            AttachedEvents();
+        }
+        xhttp.open("GET", "search/search_worker.php?name=" + search.value);
+        xhttp.send();
     })
 
     if (canceldelete) {
@@ -340,34 +381,6 @@ mysqli_close($conn);
         event.preventDefault();
         modal.classList.toggle("modal-worker-show");
         modal.classList.toggle("modal-worker");
-    })
-
-    edit.forEach((element) => {
-        element.addEventListener("click", (event) => {
-            event.preventDefault();
-            let workerid = element.getAttribute("data-workerid");
-            let f_name = element.getAttribute("data-fname");
-            let l_name = element.getAttribute("data-lname");
-            let number = element.getAttribute("data-number");
-            let username = element.getAttribute("data-username");
-            let acc_id = element.getAttribute("data-accid");
-
-            let worker_id = document.getElementById("worker-id");
-            let fname = document.getElementById("worker-fname");
-            let lname = document.getElementById("worker-lname");
-            let worker_num = document.getElementById("worker-number");
-            let selected = document.getElementById("selected");
-
-            worker_id.value = workerid;
-            fname.value = f_name;
-            lname.value = l_name;
-            worker_num.value = number;
-            selected.value = acc_id;
-            selected.innerHTML = username;
-
-            modal.classList.toggle("modal-worker");
-            modal.classList.toggle("modal-worker-show");
-        })
     })
 
     del.addEventListener("click", () => {

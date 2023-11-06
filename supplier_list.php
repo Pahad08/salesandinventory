@@ -198,10 +198,7 @@ mysqli_close($conn);
                         </div>
 
                         <div class="search">
-                            <form action="search/search_supplier.php" method="get">
-                                <input type="text" id="search" placeholder="Search" name="name">
-                                <button type="submit" id="searchbtn">Search</button>
-                            </form>
+                            <input type="text" id="search" placeholder="Search" name="name">
                         </div>
 
                     </div>
@@ -223,16 +220,16 @@ mysqli_close($conn);
                     <?php unset($_SESSION['updated']);
                 } ?>
 
-                    <table id="table">
-                        <tr id="head">
-                            <th></th>
-                            <th>Name</th>
-                            <th>Contact Number</th>
-                            <th>Company Name</th>
-                            <th>Account</th>
-                            <th>Action</th>
-                        </tr>
-                        <form action="delete/deletesupplier.php" id="deletesupplier" method="post">
+                    <form action="delete/deletesupplier.php" id="deletesupplier" method="post" class="form-table">
+                        <table id="table">
+                            <tr id="head">
+                                <th></th>
+                                <th>Name</th>
+                                <th>Contact Number</th>
+                                <th>Company Name</th>
+                                <th>Account</th>
+                                <th>Edit</th>
+                            </tr>
                             <?php while ($row) { ?>
                             <tr>
                                 <td><input type="checkbox" name="supplier_id[]"
@@ -240,39 +237,37 @@ mysqli_close($conn);
                                 <td><?php echo $row['f_name'] . " " . $row['l_name']; ?></td>
                                 <td><?php echo $row['contact_number']; ?></td>
                                 <td><?php echo $row['company_name']; ?></td>
-                                <td><?php echo $row['account_id']; ?></td>
+                                <td><?php echo $row['username']; ?></td>
                                 <td id="action"> <button class="edit"
                                         data-supplierid="<?php echo $row['supplier_id']; ?>"
                                         data-fname="<?php echo $row['f_name']; ?>"
                                         data-lname="<?php echo $row['l_name']; ?>"
                                         data-number="<?php echo $row['contact_number']; ?>"
                                         data-company="<?php echo $row['company_name']; ?>"
-                                        data-accid="<?php echo $row['account_id']; ?>"
-                                        data-username="<?php echo $row['username']; ?>"><img src="images/edit.png"
+                                        data-accid="<?php echo $acc_id = (empty($row['account_id'])) ? null : $row['account_id']; ?>"
+                                        data-username="<?php echo  $row['username']; ?>"><img src="images/edit.png"
                                             alt="">Edit</button>
-
                                 </td>
-
-                                <?php $row = mysqli_fetch_array($result);
-                        } ?>
                             </tr>
-                        </form>
+                            <?php $row = mysqli_fetch_array($result);
+                        } ?>
 
-                        <div class="alert-body" id="alert-body">
-                            <div class="alert-container">
-                                <img src="images/warning.png">
-                                <div class="text-warning">
-                                    <p>Are you sure you want to delete?<br>(All transaction from supplier will also be
-                                        deleted)
-                                </div>
-                                <div class="buttons-alert">
-                                    <button id="del">Delete</button>
-                                    <button id="close-deletion">Cancel</button>
-                                </div>
+                        </table>
+                    </form>
+
+                    <div class="alert-body" id="alert-body">
+                        <div class="alert-container">
+                            <img src="images/warning.png">
+                            <div class="text-warning">
+                                <p>Are you sure you want to delete?<br>(All transaction from supplier will also be
+                                    deleted)
+                            </div>
+                            <div class="buttons-alert">
+                                <button id="del">Delete</button>
+                                <button id="close-deletion">Cancel</button>
                             </div>
                         </div>
-
-                    </table>
+                    </div>
 
                     <div class="page">
 
@@ -327,19 +322,67 @@ mysqli_close($conn);
     let numbererr = document.getElementById("numbererr");
     let companyerr = document.getElementById("companyerr");
     let del = document.getElementById("del");
-    const edit = document.querySelectorAll(".edit");
-    let modal = document.querySelector(".modal-supplier");
     let cancel = document.getElementById("cancel");
+    let search = document.getElementById("search");
     let update = document.getElementById("update");
-    let checkboxes = document.querySelectorAll(".checkbox");
-    let selectall = document.getElementById('selectall');
 
-    selectall.addEventListener("click", () => {
-        checkboxes.forEach((element) => {
-            if (element.checked == false) {
-                element.checked = true;
-            }
+    function AttachedEvents() {
+        let selectall = document.getElementById('selectall');
+        let checkboxes = document.querySelectorAll(".checkbox");
+        const edit = document.querySelectorAll(".edit");
+        let modal = document.querySelector(".modal-supplier");
+
+        selectall.addEventListener("click", () => {
+            checkboxes.forEach((element) => {
+                if (element.checked == false) {
+                    element.checked = true;
+                }
+            })
         })
+
+
+        edit.forEach((element) => {
+            element.addEventListener("click", (event) => {
+                event.preventDefault();
+                let supplierid = element.getAttribute("data-supplierid");
+                let f_name = element.getAttribute("data-fname");
+                let l_name = element.getAttribute("data-lname");
+                let number = element.getAttribute("data-number");
+                let company = element.getAttribute("data-company");
+                let username = element.getAttribute("data-username");
+                let acc_id = element.getAttribute("data-accid");
+
+                let suppid = document.getElementById("supplier-id");
+                let fname = document.getElementById("supplier-fname");
+                let lname = document.getElementById("supplier-lname");
+                let supplier_num = document.getElementById("supplier-number");
+                let supplier_company = document.getElementById("supplier-company");
+                let selected = document.getElementById("selected");
+
+                suppid.value = supplierid;
+                fname.value = f_name;
+                lname.value = l_name;
+                supplier_num.value = number;
+                supplier_company.value = company;
+                selected.value = acc_id;
+                selected.innerHTML = username;
+
+                modal.classList.toggle("modal-supplier");
+                modal.classList.toggle("modal-supplier-show");
+            })
+        })
+    }
+
+    AttachedEvents();
+
+    search.addEventListener("input", () => {
+        const xhttp = new XMLHttpRequest();
+        xhttp.onload = function() {
+            document.getElementById("table").innerHTML = this.responseText;
+            AttachedEvents();
+        }
+        xhttp.open("GET", "search/search_supplier.php?name=" + search.value);
+        xhttp.send();
     })
 
 
@@ -354,37 +397,6 @@ mysqli_close($conn);
         event.preventDefault();
         modal.classList.toggle("modal-supplier-show");
         modal.classList.toggle("modal-supplier");
-    })
-
-    edit.forEach((element) => {
-        element.addEventListener("click", (event) => {
-            event.preventDefault();
-            let supplierid = element.getAttribute("data-supplierid");
-            let f_name = element.getAttribute("data-fname");
-            let l_name = element.getAttribute("data-lname");
-            let number = element.getAttribute("data-number");
-            let company = element.getAttribute("data-company");
-            let username = element.getAttribute("data-username");
-            let acc_id = element.getAttribute("data-accid");
-
-            let suppid = document.getElementById("supplier-id");
-            let fname = document.getElementById("supplier-fname");
-            let lname = document.getElementById("supplier-lname");
-            let supplier_num = document.getElementById("supplier-number");
-            let supplier_company = document.getElementById("supplier-company");
-            let selected = document.getElementById("selected");
-
-            suppid.value = supplierid;
-            fname.value = f_name;
-            lname.value = l_name;
-            supplier_num.value = number;
-            supplier_company.value = company;
-            selected.value = acc_id;
-            selected.innerHTML = username;
-
-            modal.classList.toggle("modal-supplier");
-            modal.classList.toggle("modal-supplier-show");
-        })
     })
 
     del.addEventListener("click", () => {

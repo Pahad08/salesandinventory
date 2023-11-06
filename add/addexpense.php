@@ -19,11 +19,10 @@ if (isset($_POST['add'])) {
 
     $description = CleanData($_POST['description']);
     $amount = CleanData($_POST['amount']);
-    $date = date("Y-m-d", strtotime($_POST['expense-date']));
 
-    $sql = "INSERT INTO expenses(`description`, amount, expense_date) VALUES(?,?,?);";
+    $sql = "INSERT INTO expenses(`description`, amount, expense_date) VALUES(?,?,CURRENT_DATE());";
     $stmt = mysqli_prepare($conn, $sql);
-    mysqli_stmt_bind_param($stmt, "sis", $description, $amount, $date);
+    mysqli_stmt_bind_param($stmt, "si", $description, $amount);
     mysqli_stmt_execute($stmt);
     $_SESSION['added'] = "Expense Added Successfully";
     mysqli_close($conn);

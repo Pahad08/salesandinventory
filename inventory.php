@@ -221,11 +221,11 @@ mysqli_close($conn);
                         <div class="header-info">
                             <h2>Inventory</h2>
                             <?php if (
-                            isset($_SESSION['admin']) && isset($_SESSION['admin_username']) &&
-                            isset($_SESSION['worker']) && isset($_SESSION['worker_username'])
+                            isset($_SESSION['admin']) || isset($_SESSION['admin_username']) &&
+                            isset($_SESSION['worker']) || isset($_SESSION['worker_username'])
                         ) { ?>
                             <div class="btns">
-                                <button id="prodadd" class="add"><img src="images/add.png" alt="">Add Stock</button>
+                                <button id="stockadd" class="add"><img src="images/add.png" alt="">Add Stock</button>
                                 <button id="delete"><img src="images/delete.png">Delete</button>
                                 <button id="selectall"><img src="images/selectall.png" alt="">Select All</button>
                             </div>
@@ -233,10 +233,7 @@ mysqli_close($conn);
                         </div>
 
                         <div class="search">
-                            <form action="search/search_stock.php" method="get">
-                                <input type="text" id="search" placeholder="Search" name="name">
-                                <button type="submit" id="searchbtn">Search</button>
-                            </form>
+                            <input type="text" id="search" placeholder="Search" name="name">
                         </div>
 
                     </div>
@@ -254,45 +251,55 @@ mysqli_close($conn);
                     <?php unset($_SESSION['deleted']);
                 } ?>
 
+                    <form action="delete/deletestocks.php" id="deletestocks" method="post" class="form-table">
+                        <table id="table">
+                            <tr id="head">
+                                <?php if (
+                                isset($_SESSION['admin']) || isset($_SESSION['admin_username']) &&
+                                isset($_SESSION['worker']) || isset($_SESSION['worker_username'])
+                            ) { ?>
+                                <th></th>
+                                <?php } ?>
+                                <th>Product Name</th>
+                                <th>Quantities</th>
+                                <th>Stock In</th>
+                                <th>Stock Out</th>
+                            </tr>
 
-
-                    <table id="table">
-                        <tr id="head">
-                            <th></th>
-                            <th>Product Name</th>
-                            <th>Quantities</th>
-                            <th>Stock In</th>
-                            <th>Stock Out</th>
-                        </tr>
-                        <form action="delete/deletestocks.php" id="deletestocks" method="post">
                             <?php while ($row) { ?>
                             <tr>
+                                <?php if (
+                                    isset($_SESSION['admin']) || isset($_SESSION['admin_username']) &&
+                                    isset($_SESSION['worker']) || isset($_SESSION['worker_username'])
+                                ) { ?>
                                 <td><input type="checkbox" name="stock_id[]" value="<?php echo $row['stock_id']; ?>"
                                         class="checkbox"></td>
+                                <?php } ?>
                                 <td><?php echo $row['name']; ?></td>
                                 <td><?php echo $row['quantities']; ?></td>
                                 <td><?php echo $row['stock_in']; ?></td>
                                 <td><?php echo $row['stock_out']; ?></td>
-                                <?php $row = mysqli_fetch_array($result);
-                        } ?>
                             </tr>
-                        </form>
+                            <?php $row = mysqli_fetch_array($result);
+                        } ?>
+                        </table>
+                    </form>
 
-                        <div class="alert-body" id="alert-body">
-                            <div class="alert-container">
-                                <img src="images/warning.png">
-                                <div class="text-warning">
-                                    <p>Are you sure you want to delete?<br>(Stocks, sales and transactions will also be
-                                        deleted)</p>
-                                </div>
-                                <div class="buttons-alert">
-                                    <button id="del">Delete</button>
-                                    <button id="close-deletion">Cancel</button>
-                                </div>
+                    <div class="alert-body" id="alert-body">
+                        <div class="alert-container">
+                            <img src="images/warning.png">
+                            <div class="text-warning">
+                                <p>Are you sure you want to delete?<br>(Stocks, sales and transactions will also be
+                                    deleted)</p>
+                            </div>
+                            <div class="buttons-alert">
+                                <button id="del">Delete</button>
+                                <button id="close-deletion">Cancel</button>
                             </div>
                         </div>
+                    </div>
 
-                    </table>
+
 
                     <div class="page">
 
@@ -327,7 +334,7 @@ mysqli_close($conn);
     <script src="javascript/admin.js"></script>
     <script>
     let form = document.getElementById("form");
-    let openform = document.getElementById("prodadd");
+    let openform = document.getElementById("stockadd");
     let closebtn = document.getElementById("closebtn");
     let reset = document.getElementById("reset");
     let deletebtn = document.querySelector("#delete");
@@ -339,18 +346,36 @@ mysqli_close($conn);
     let proderr = document.getElementById("proderr");
     let quantityerr = document.getElementById("quantityerr");
     let del = document.getElementById("del");
-    let modal = document.querySelector(".modal-product");
-    let update = document.getElementById("update");
     let selectall = document.getElementById('selectall');
-    let checkboxes = document.querySelectorAll(".checkbox")
+    let checkboxes = document.querySelectorAll(".checkbox");
+    let cancel = document.getElementById("cancel");
 
-    selectall.addEventListener("click", () => {
-        checkboxes.forEach((element) => {
+    function AttachedEvents() {
+        let selectall = document.getElementById('selectall');
+        let checkboxes = document.querySelectorAll(".checkbox");
 
-            if (element.checked == false) {
-                element.checked = true;
-            }
-        })
+        if (selectall && checkboxes) {
+            selectall.addEventListener("click", () => {
+                checkboxes.forEach((element) => {
+
+                    if (element.checked == false) {
+                        element.checked = true;
+                    }
+                })
+            })
+        }
+    }
+
+    AttachedEvents();
+
+    search.addEventListener("input", () => {
+        const xhttp = new XMLHttpRequest();
+        xhttp.onload = function() {
+            document.getElementById("table").innerHTML = this.responseText;
+            AttachedEvents();
+        }
+        xhttp.open("GET", "search/search_inventory.php?name=" + search.value);
+        xhttp.send();
     })
 
     if (canceldelete) {
@@ -360,11 +385,13 @@ mysqli_close($conn);
         })
     }
 
-    deletebtn.addEventListener("click", (event) => {
-        event.preventDefault();
-        alertbody.classList.toggle("alert-body");
-        alertbody.classList.toggle("alert-body-show");
-    })
+    if (deletebtn) {
+        deletebtn.addEventListener("click", (event) => {
+            event.preventDefault();
+            alertbody.classList.toggle("alert-body");
+            alertbody.classList.toggle("alert-body-show");
+        })
+    }
 
     del.addEventListener("click", () => {
         const deletestocks = document.getElementById("deletestocks");
@@ -399,11 +426,13 @@ mysqli_close($conn);
         quantityerr.style.display = "none";
     })
 
+    if (openform) {
+        openform.addEventListener("click", () => {
+            form.classList.toggle("form");
+            form.classList.toggle("show-form");
+        })
 
-    openform.addEventListener("click", () => {
-        form.classList.toggle("form");
-        form.classList.toggle("show-form");
-    })
+    }
 
     window.addEventListener("resize", () => {
         if (window.innerWidth > 1022 && form.classList.contains("show-form")) {

@@ -191,12 +191,6 @@ mysqli_close($conn);
                         <form action="add/addtransaction.php" method="post" id="form-body" class="schedule_add">
 
                             <div class="input-body">
-                                <label for="transaction-date">Transaction Date</label>
-                                <input type="date" id="transaction-date" name="transaction_date">
-                                <p class="emptyinput" id="transactionerr">Transaction Date cannot be blank</p>
-                            </div>
-
-                            <div class="input-body">
                                 <label for="delivery-date">Delivery Date</label>
                                 <input type="date" id="delivery-date" name="delivery_date">
                                 <p class="emptyinput" id="deliveryerr">Delivery Date cannot be blank</p>
@@ -265,15 +259,7 @@ mysqli_close($conn);
                         </div>
 
                         <div class="search">
-                            <form action="search_sales.php" method="get">
-                                <input type="text" id="search" placeholder="Search" <?php if (isset($_SESSION['supplier'])) {
-                                                                                    echo "oninput='ShowSched(search.value)'";
-                                                                                } ?>>
-                                <?php if (!isset($_SESSION['admin'])) { ?>
-                                <button id="searchbtn">Search</button>
-                                <?php } ?>
-                            </form>
-
+                            <input type="text" id="search" placeholder="Search">
                         </div>
 
                     </div>
@@ -300,23 +286,25 @@ mysqli_close($conn);
                     <?php unset($_SESSION['receive']);
                 } ?>
 
-                    <table id="table">
-                        <tr id="head">
-                            <?php if (isset($_SESSION['admin']) && isset($_SESSION['admin_username'])) { ?>
-                            <th></th>
-                            <th>Supplier Name</th>
-                            <?php } ?>
-                            <th>Transaction Date</th>
-                            <th>Delivery Schedule</th>
-                            <th>Product Name</th>
-                            <th>Quantity</th>
-                            <?php if (isset($_SESSION["admin"]) && isset($_SESSION["admin_username"])) { ?>
-                            <th>Action</th>
-                            <?php } ?>
-                        </tr>
+                    <?php if (isset($_SESSION["admin"]) && isset($_SESSION["admin_username"])) { ?>
+                    <form action="delete/deletesched.php" id="deletesched" method="post" class="form-table">
+                        <?php } ?>
+                        <table id="table">
+                            <tr id="head">
+                                <?php if (isset($_SESSION['admin']) && isset($_SESSION['admin_username'])) { ?>
+                                <th></th>
+                                <th>Supplier Name</th>
+                                <?php } ?>
+                                <th>Transaction Date</th>
+                                <th>Delivery Schedule</th>
+                                <th>Product Name</th>
+                                <th>Quantity</th>
+                                <?php if (isset($_SESSION["admin"]) && isset($_SESSION["admin_username"])) { ?>
+                                <th>Action</th>
+                                <?php } ?>
+                            </tr>
 
-                        <?php if (isset($_SESSION["admin"]) && isset($_SESSION["admin_username"])) { ?>
-                        <form action="delete/deletesched.php" id="deletesched" method="post">
+                            <?php if (isset($_SESSION["admin"]) && isset($_SESSION["admin_username"])) { ?>
                             <?php while ($row) { ?>
                             <tr>
                                 <td><input type="checkbox" name="transaction_id[]"
@@ -335,62 +323,59 @@ mysqli_close($conn);
                                         data-prodid="<?php echo $row['product_id']; ?>"
                                         data-prodname="<?php echo $row['name']; ?>"
                                         data-transaction="<?php echo $row['transaction_date']; ?>"
-                                        data-delivery="<?php echo $row['delivery_schedule']; ?>"><img
-                                            src="images/edit.png" alt="">Edit</button>
+                                        data-delivery="<?php echo $row['delivery_schedule']; ?>">
+                                        <img src="images/edit.png" alt="">Edit</button>
                                     <button id="receive" class="receive"
                                         data-id="<?php echo $row['transaction_id']; ?>"><img src="images/received.png"
                                             alt="">Receive</button>
                                 </td>
-
-                                <div class="receive-body" id="receive-body">
-                                    <div class="alert-container">
-                                        <img src="images/warning.png">
-                                        <div class="text-warning">
-                                            <p>Are you sure you want to receive the item?<br>
-                                                (Schedule will also be deleted)
-                                        </div>
-                                        <div class="buttons-alert">
-                                            <a href="" id="del-sched">Receive</a>
-                                            <button id="close-receive">Cancel</button>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <?php $row = mysqli_fetch_array($result);
-                            } ?>
                             </tr>
-                        </form>
+                            <?php $row = mysqli_fetch_array($result);
+                            } ?>
+                            <?php } else { ?>
+                            <?php while ($row_sched) { ?>
+                            <tr>
+                                <td><?php echo $row_sched['transaction_date']; ?></td>
+                                <td><?php echo $row_sched['delivery_schedule']; ?></td>
+                                <td><?php echo $row_sched['name']; ?></td>
+                                <td><?php echo $row_sched['quantity']; ?></td>
+                            </tr>
+                            <?php $row_sched = mysqli_fetch_array($result_sched);
+                            } ?>
+                            <?php } ?>
+                        </table>
+                        <?php if (isset($_SESSION["admin"]) && isset($_SESSION["admin_username"])) { ?>
+                    </form>
+                    <?php } ?>
 
-                        <div class="alert-body" id="alert-body">
-                            <div class="alert-container">
-                                <img src="images/warning.png">
-                                <div class="text-warning">
-                                    <p>Are you sure you want to delete all selected items?
-                                </div>
-                                <div class="buttons-alert">
-                                    <button id="del">Delete</button>
-                                    <button id="close-deletion">Cancel</button>
-                                </div>
+                    <div class="receive-body" id="receive-body">
+                        <div class="alert-container">
+                            <img src="images/warning.png">
+                            <div class="text-warning">
+                                <p>Are you sure you want to receive the item?<br>
+                                    (Schedule will also be deleted)
+                            </div>
+                            <div class="buttons-alert">
+                                <a href="" id="del-sched">Receive</a>
+                                <button id="close-receive">Cancel</button>
                             </div>
                         </div>
+                    </div>
 
-                        <?php } else { ?>
-                        <?php while ($row_sched) { ?>
-                        <tr>
-                            <?php if (isset($_SESSION['admin']) && isset($_SESSION['admin_username'])) { ?>
-                            <td><?php echo $row['f_name'] . " " . $row['l_name']; ?></td>
-                            <?php } ?>
-                            <td><?php echo $row_sched['transaction_date']; ?></td>
-                            <td><?php echo $row_sched['delivery_schedule']; ?></td>
-                            <td><?php echo $row_sched['name']; ?></td>
-                            <td><?php echo $row_sched['quantity']; ?></td>
+                    </tr>
 
-                            <?php $row_sched = mysqli_fetch_array($result_sched);
-                        } ?>
-                        </tr>
-
-                        <?php } ?>
-                    </table>
+                    <div class="alert-body" id="alert-body">
+                        <div class="alert-container">
+                            <img src="images/warning.png">
+                            <div class="text-warning">
+                                <p>Are you sure you want to delete all selected items?
+                            </div>
+                            <div class="buttons-alert">
+                                <button id="del">Delete</button>
+                                <button id="close-deletion">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
 
                     <div class="page">
 
@@ -430,30 +415,6 @@ mysqli_close($conn);
 
     <script src="javascript/admin.js"></script>
     <script>
-    <?php if (!isset($_SESSION['admin']) && !isset($_SESSION['admin_username'])) { ?>
-
-    function ShowSched(str) {
-        const stocks = new XMLHttpRequest();
-        stocks.onload = function() {
-            document.getElementById("table").innerHTML =
-                this.responseText;
-        }
-        stocks.open("GET", "search/schedule_list.php?name=" + str);
-        stocks.send();
-    }
-    document.getElementById("search").addEventListener("input", () => {
-        if (document.getElementById("search").value == "") {
-            const stocks = new XMLHttpRequest();
-            stocks.onload = function() {
-                document.getElementById("table").innerHTML =
-                    this.responseText;
-            }
-            stocks.open("GET", "search/schedule_list.php");
-            stocks.send();
-        }
-    })
-    <?php } ?>
-
     let form = document.getElementById("form");
     let openform = document.getElementById("schedadd");
     let closebtn = document.getElementById("closebtn");
@@ -462,49 +423,96 @@ mysqli_close($conn);
     let canceldelete = document.getElementById("close-deletion");
     let alertbody = document.getElementById("alert-body");
     let add = document.getElementById("add");
-    let transaction_date = document.getElementById("transaction-date");
     let delivery_date = document.getElementById("delivery-date");
     let quantity = document.getElementById("quantity");
     let supplier = document.getElementById("supplier");
     let product = document.getElementById("product");
-    let transactionerr = document.getElementById("transactionerr");
     let deliveryerr = document.getElementById("deliveryerr");
     let quantityerr = document.getElementById("quantityerr");
     let suppliererr = document.getElementById("suppliererr");
     let producterr = document.getElementById("producterr");
     let del = document.getElementById("del");
-    const edit = document.querySelectorAll(".edit");
-    let modal = document.querySelector(".modal-transaction");
     let cancel = document.getElementById("cancel");
     let update = document.getElementById("update");
-    let selectall = document.getElementById('selectall');
-    let checkboxes = document.querySelectorAll(".checkbox")
-    let receivebtns = document.querySelectorAll(".receive");
     let cancelreceive = document.getElementById("close-receive");
-    let receivebody = document.getElementById("receive-body");
     let delsched = document.getElementById("del-sched");
+    let search = document.getElementById("search");
+    let modal = document.querySelector(".modal-transaction");
+    let receivebody = document.getElementById("receive-body");
 
-    receivebtns.forEach((element) => {
-        element.addEventListener("click", (event) => {
-            event.preventDefault();
-            receivebody.classList.toggle("receive-body");
-            receivebody.classList.toggle("receive-body-show");
-            let url = element.getAttribute("data-id");
-            delsched.href = "receive.php?id=" + url;
-        })
-    })
+    function AttachedEvents() {
+        let selectall = document.getElementById('selectall');
+        let checkboxes = document.querySelectorAll(".checkbox");
+        const edit = document.querySelectorAll(".edit");
+        let modal = document.querySelector(".modal-transaction");
+        let receivebtns = document.querySelectorAll(".receive");
 
-    if (selectall) {
-        selectall.addEventListener("click", () => {
-            checkboxes.forEach((element) => {
+        if (receivebtns && receivebody) {
+            receivebtns.forEach((element) => {
+                element.addEventListener("click", (event) => {
+                    event.preventDefault();
+                    receivebody.classList.toggle("receive-body");
+                    receivebody.classList.toggle("receive-body-show");
+                    let url = element.getAttribute("data-id");
+                    delsched.href = "receive.php?id=" + url;
+                })
+            })
+        }
 
-                if (element.checked == false) {
-                    element.checked = true;
-                }
+        if (selectall && checkboxes) {
+            selectall.addEventListener("click", () => {
+                checkboxes.forEach((element) => {
+                    if (element.checked == false) {
+                        element.checked = true;
+                    }
+                })
+            })
+        }
+
+        edit.forEach((element) => {
+            element.addEventListener("click", (event) => {
+                event.preventDefault();
+                let transactionid = element.getAttribute("data-transactionid");
+                let f_name = element.getAttribute("data-fname");
+                let l_name = element.getAttribute("data-lname");
+                let quantity = element.getAttribute("data-quantity");
+                let delivery = element.getAttribute("data-delivery");
+                let prod_id = element.getAttribute("data-prodid");
+                let supplier_id = element.getAttribute("data-supplierid");
+                let prod_name = element.getAttribute("data-prodname");
+
+                let transaction_id = document.getElementById("transaction-id");
+                let delivery_date = document.getElementById("deliver-date");
+                let transac_quantity = document.getElementById("quant");
+                let selected_supplier = document.getElementById("selected-supplier");
+                let selected_product = document.getElementById("selected-product");
+
+                transaction_id.value = transactionid;
+                delivery_date.value = delivery;
+                transac_quantity.value = quantity;
+                selected_supplier.value = supplier_id;
+                selected_product.value = prod_id;
+
+                selected_supplier.innerHTML = f_name + " " + l_name;
+                selected_product.innerHTML = prod_name;
+
+                modal.classList.toggle("modal-transaction");
+                modal.classList.toggle("modal-transaction-show");
             })
         })
     }
 
+    AttachedEvents();
+
+    search.addEventListener("input", () => {
+        const xhttp = new XMLHttpRequest();
+        xhttp.onload = function() {
+            document.getElementById("table").innerHTML = this.responseText;
+            AttachedEvents();
+        }
+        xhttp.open("GET", "search/search_sched.php?name=" + search.value);
+        xhttp.send();
+    })
 
     if (cancelreceive) {
         cancelreceive.addEventListener("click", (event) => {
@@ -529,41 +537,6 @@ mysqli_close($conn);
         })
     }
 
-    edit.forEach((element) => {
-        element.addEventListener("click", (event) => {
-            event.preventDefault();
-            let transactionid = element.getAttribute("data-transactionid");
-            let f_name = element.getAttribute("data-fname");
-            let l_name = element.getAttribute("data-lname");
-            let quantity = element.getAttribute("data-quantity");
-            let transaction = element.getAttribute("data-transaction");
-            let delivery = element.getAttribute("data-delivery");
-            let prod_id = element.getAttribute("data-prodid");
-            let supplier_id = element.getAttribute("data-supplierid");
-            let prod_name = element.getAttribute("data-prodname");
-
-            let transaction_id = document.getElementById("transaction-id");
-            let transaction_date = document.getElementById("transac-date");
-            let delivery_date = document.getElementById("deliver-date");
-            let transac_quantity = document.getElementById("quant");
-            let selected_supplier = document.getElementById("selected-supplier");
-            let selected_product = document.getElementById("selected-product");
-
-            transaction_id.value = transactionid;
-            transaction_date.value = transaction;
-            delivery_date.value = delivery;
-            transac_quantity.value = quantity;
-            selected_supplier.value = supplier_id;
-            selected_product.value = prod_id;
-
-
-            selected_supplier.innerHTML = f_name + " " + l_name;
-            selected_product.innerHTML = prod_name;
-
-            modal.classList.toggle("modal-transaction");
-            modal.classList.toggle("modal-transaction-show");
-        })
-    })
 
     if (deletebtn) {
         deletebtn.addEventListener("click", (event) => {
@@ -584,28 +557,42 @@ mysqli_close($conn);
         document.querySelector(".updated").addEventListener("animationend", () => {
             document.querySelector(".updated").style.display = "none";
         })
+
+        document.querySelector(".updated").addEventListener("click", () => {
+            document.querySelector(".updated").style.display = "none";
+        })
     } else if (document.querySelector(".added")) {
         document.querySelector(".added").addEventListener("animationend", () => {
+            document.querySelector(".added").style.display = "none";
+        })
+
+        document.querySelector(".added").addEventListener("click", () => {
             document.querySelector(".added").style.display = "none";
         })
     } else if (document.querySelector(".deleted")) {
         document.querySelector(".deleted").addEventListener("animationend", () => {
             document.querySelector(".deleted").style.display = "none";
         })
+
+        document.querySelector(".deleted").addEventListener("click", () => {
+            document.querySelector(".deleted").style.display = "none";
+        })
     } else if (document.querySelector(".prodreceive")) {
         document.querySelector(".prodreceive").addEventListener("animationend", () => {
+            document.querySelector(".prodreceive").style.display = "none";
+        })
+
+        document.querySelector(".prodreceive").addEventListener("click", () => {
             document.querySelector(".prodreceive").style.display = "none";
         })
     }
 
     reset.addEventListener("click", (event) => {
         event.preventDefault();
-        transaction_date.value = "";
         delivery_date.value = "";
         quantity.value = "";
         supplier.value = "";
         product.value = "";
-        transactionerr.display = "none";
         deliveryerr.style.display = "none";
         quantityerr.style.display = "none";
         suppliererr.style.display = "none";
@@ -652,21 +639,13 @@ mysqli_close($conn);
 
     add.addEventListener("click", (event) => {
 
-        if (transaction_date.value == "" && delivery_date.value == "" && quantity.value == "" && supplier
+        if (delivery_date.value == "" && quantity.value == "" && supplier
             .value == "" && product.value == "") {
             event.preventDefault();
-            transactionerr.style.display = "block";
             deliveryerr.style.display = "block";
             quantityerr.style.display = "block";
             suppliererr.style.display = "block";
             producterr.style.display = "block";
-        }
-
-        if (transaction_date.value == "") {
-            event.preventDefault();
-            transactionerr.style.display = "block";
-        } else {
-            transactionerr.style.display = "none";
         }
 
         if (delivery_date.value == "") {
@@ -702,52 +681,35 @@ mysqli_close($conn);
     if (update) {
         update.addEventListener("click", (event) => {
 
-            let fnameerr = document.getElementById("fnameerror");
-            let lnameerr = document.getElementById("lnameerror");
-            let numbererr = document.getElementById("numerr");
-            let companyerr = document.getElementById("companyerror");
+            let deliveryerr = document.getElementById("delivererr");
+            let quanterr = document.getElementById("quanterr");
 
-            let fname = document.getElementById("supplier-fname");
-            let lname = document.getElementById("supplier-lname");
-            let supplier_num = document.getElementById("supplier-number");
-            let supplier_company = document.getElementById("supplier-company");
+            let deliverdate = document.getElementById("deliver-date");
+            let quantity = document.getElementById("quant");
 
-            if (fname.value == "" && lname.value == "" && supplier_num.value == "" && supplier_company.value ==
+            if (deliverdate.value == "" && quantity.value == "" && supplier_id.value == "" && prod_id.value ==
                 "") {
                 event.preventDefault();
-                fnameerr.style.display = "block";
-                lnameerr.style.display = "block";
-                companyerr.style.display = "block";
-                numbererr.style.display = "block";
+                deliveryerr.style.display = "block";
+                quanterr.style.display = "block";
+                supid_err.style.display = "block";
+                prodid_err.style.display = "block";
             }
 
-            if (fname.value == "") {
+            if (deliverdate.value == "") {
                 event.preventDefault();
-                fnameerr.style.display = "block";
+                deliveryerr.style.display = "block";
             } else {
-                fnameerr.style.display = "none";
+                deliveryerr.style.display = "none";
             }
 
-            if (lname.value == "") {
+            if (quantity.value == "") {
                 event.preventDefault();
-                lnameerr.style.display = "block";
+                quanterr.style.display = "block";
             } else {
-                lnameerr.style.display = "none";
+                quanterr.style.display = "none";
             }
 
-            if (supplier_num.value == "") {
-                event.preventDefault();
-                numbererr.style.display = "block";
-            } else {
-                numbererr.style.display = "none";
-            }
-
-            if (supplier_company.value == "") {
-                event.preventDefault();
-                companyerr.style.display = "block";
-            } else {
-                companyerr.style.display = "none";
-            }
 
         })
     }

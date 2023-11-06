@@ -53,12 +53,6 @@ mysqli_close($conn);
                 <p class="empty" id="iderr">Product cannot be blank</p>
             </div>
 
-            <div class="input-edit">
-                <label for="date-value">Date</label>
-                <input type="date" id="date-value" name="date" value="">
-                <p class="empty" id="dateerror">Date cannot be blank</p>
-            </div>
-
             <div class=" input-edit">
                 <label for="quantity-value">Quantity</label>
                 <input type="number" id="quantity-value" name="quantity" value="">

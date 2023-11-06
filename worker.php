@@ -44,7 +44,7 @@ $row = mysqli_fetch_array($result);
                     <div></div>
                 </div>
 
-                <img src="images/logo.png" alt="logo">
+                <img src="images/logo.jpg" alt="logo">
                 <h2> Badong Lechon Manok</h2>
             </div>
 

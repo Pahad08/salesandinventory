@@ -65,8 +65,8 @@ mysqli_close($conn);
                 <select name="account-id" id="worker-accountid">
                     <option value="" id="selected"></option>
                     <?php while ($row_acc) { ?>
-                    <option value="<?php echo $row_acc['account_id']; ?>">
-                        <?php echo $row_acc['username']; ?></option>
+                        <option value="<?php echo $row_acc['account_id']; ?>">
+                            <?php echo $row_acc['username']; ?></option>
                     <?php $row_acc = mysqli_fetch_array($result_acc);
                     } ?>
                 </select>

@@ -29,9 +29,9 @@ if (isset($_POST['edit'])) {
     mysqli_stmt_bind_param($stm, "iiiii", $curr_quantity, $quantity, $curr_quantity, $quantity, $prodid);
     mysqli_stmt_execute($stm);
 
-    $sql = "UPDATE sales SET sale_date = ?, product_id = ?, quantity = ? where sale_id = ?;";
+    $sql = "UPDATE sales SET product_id = ?, quantity = ? where sale_id = ?;";
     $stmt = mysqli_prepare($conn, $sql);
-    mysqli_stmt_bind_param($stmt, "siii", $date, $prodid, $quantity, $saleid);
+    mysqli_stmt_bind_param($stmt, "iii", $prodid, $quantity, $saleid);
     mysqli_stmt_execute($stmt);
     $_SESSION['updated'] = "Sale Updated Successfully";
     mysqli_close($conn);

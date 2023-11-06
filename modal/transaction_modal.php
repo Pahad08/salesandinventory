@@ -32,56 +32,47 @@ mysqli_close($conn);
             <input type="text" value="" name="transaction_id" id="transaction-id" hidden>
 
             <div class="input-edit">
-                <div class="input-body">
-                    <label for="transac-date">Transaction Date</label>
-                    <input type="date" id="transac-date" name="transaction_date">
-                    <p class="empty" id="transacerr">Transaction Date cannot be blank</p>
-                </div>
+                <label for="deliver-date">Delivery Date</label>
+                <input type="date" id="deliver-date" name="delivery_date">
+                <p class="empty" id="delivererr">Delivery Date cannot be blank</p>
+            </div>
 
-                <div class="input-edit">
-                    <label for="deliver-date">Delivery Date</label>
-                    <input type="date" id="deliver-date" name="delivery_date">
-                    <p class="empty" id="delivererr">Delivery Date cannot be blank</p>
-                </div>
+            <div class=" input-edit">
+                <label for="quant">Quantity</label>
+                <input type="number" id="quant" name="quantity">
+                <p class="empty" id="quanterr">Quantity cannot be blank</p>
+            </div>
 
-                <div class=" input-edit">
-                    <label for="quant">Quantity</label>
-                    <input type="number" id="quant" name="quantity">
-                    <p class="empty" id="quanterr">Quantity cannot be blank</p>
-                </div>
-
-                <div class="input-edit">
-                    <label for="supplier_id">Supplier</label>
-                    <select name="supplier_id" id="supplier_id">
-                        <option value="" id="selected-supplier"></option>
-                        <?php while ($row_suppliers) { ?>
-                        <option value="">
+            <div class="input-edit">
+                <label for="supplier_id">Supplier</label>
+                <select name="supplier_id" id="supplier_id">
+                    <option value="" id="selected-supplier"></option>
+                    <?php while ($row_suppliers) { ?>
+                        <option value="<?php echo $row_suppliers['supplier_id']; ?>">
                             <?php echo $row_suppliers['f_name'] . " " . $row_suppliers['l_name']; ?>
                         </option>
-                        <?php $row_suppliers = mysqli_fetch_array($result_suppliers);
-                        } ?>
-                    </select>
-                    <p class="empty" id="supplierid-err">Supplier cannot be blank</p>
-                </div>
+                    <?php $row_suppliers = mysqli_fetch_array($result_suppliers);
+                    } ?>
+                </select>
+            </div>
 
-                <div class="input-edit">
-                    <label for="product_id">Products</label>
-                    <select name="product_id" id="product_id">
-                        <option value="" id="selected-product"></option>
-                        <?php while ($row_products) { ?>
+            <div class="input-edit">
+                <label for="product_id">Products</label>
+                <select name="product_id" id="product_id">
+                    <option value="" id="selected-product"></option>
+                    <?php while ($row_products) { ?>
                         <option value="<?php echo $row_products['product_id']; ?>">
                             <?php echo $row_products['name']; ?>
                         </option>
-                        <?php $row_products = mysqli_fetch_array($result_products);
-                        } ?>
-                    </select>
-                    <p class="empty" id="productid-err">Product cannot be blank</p>
-                </div>
+                    <?php $row_products = mysqli_fetch_array($result_products);
+                    } ?>
+                </select>
+            </div>
 
-                <div class="buttons" id="btn-supplier">
-                    <button type="submit" id="update" name="edit" value="edit">Update</button>
-                    <button id="cancel">Cancel</button>
-                </div>
+            <div class="buttons" id="btn-supplier">
+                <button type="submit" id="update" name="edit" value="edit">Update</button>
+                <button id="cancel">Cancel</button>
+            </div>
         </form>
 
     </div>

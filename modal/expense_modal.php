@@ -43,12 +43,6 @@ if (!isset($_SESSION["admin"]) && !isset($_SESSION["admin_username"])) {
                 <p class="empty" id="amount-err">Product cannot be blank</p>
             </div>
 
-            <div class="input-edit">
-                <label for="expensedate">Date</label>
-                <input type="date" id="expensedate" name="date" value="">
-                <p class="empty" id="date-err">Product cannot be blank</p>
-            </div>
-
             <div class="buttons">
                 <button type="submit" id="update" name="edit" value="edit">Update</button>
                 <button id="cancel">Cancel</button>

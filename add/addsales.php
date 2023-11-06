@@ -41,9 +41,9 @@ if (isset($_POST['add'])) {
             mysqli_stmt_execute($stm);
         }
 
-        $sql = "INSERT INTO sales(`sale_date`, product_id, quantity) VALUES(?,?,?);";
+        $sql = "INSERT INTO sales(`sale_date`, product_id, quantity) VALUES(CURRENT_DATE(),?,?);";
         $stmt2 = mysqli_prepare($conn, $sql);
-        mysqli_stmt_bind_param($stmt2, "sii", $date, $prod_id, $quantity);
+        mysqli_stmt_bind_param($stmt2, "ii", $prod_id, $quantity);
         mysqli_stmt_execute($stmt2);
         $_SESSION['added'] = "Sale Added Successfully";
         mysqli_close($conn);
