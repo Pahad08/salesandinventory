@@ -91,7 +91,8 @@ if (!isset($_SESSION["admin"]) && !isset($_SESSION["admin_username"])) {
                     <div class="info">
                         <p class="sale-text"><?php
                                             $sql = "SELECT sum(sales.quantity * products.price) as sale from sales
-                                            inner JOIN products on sales.product_id = products.product_id;";
+                                            inner JOIN products on sales.product_id = products.product_id
+                                            where DAY(sales.sale_date) = DAY(CURRENT_DATE);";
                                             $stmt = mysqli_prepare($conn, $sql);
                                             mysqli_stmt_execute($stmt);
                                             $result = mysqli_stmt_get_result($stmt);
@@ -176,6 +177,6 @@ if (!isset($_SESSION["admin"]) && !isset($_SESSION["admin_username"])) {
 
     </body>
 
-    <script src="javascript/admin.js"></script>
+    <script src="javascript/navigation.js"></script>
 
 </html>

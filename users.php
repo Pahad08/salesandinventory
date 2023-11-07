@@ -212,7 +212,7 @@ $total_pages = ceil($total_records / $number_per_page);
                                 <td><?php echo $row['username']; ?></td>
                                 <td><?php echo $row['password']; ?></td>
                                 <td><?php echo $row['role']; ?></td>
-                                <td id="action"> <button class="edit" data-accid="<?php echo $row['account_id']; ?>" data-username="<?php echo $row['username']; ?>" data-password="<?php echo $row['password']; ?>" data-role="<?php echo $row['role']; ?>">Edit</button>
+                                <td id="action"> <button class="edit" data-accid="<?php echo $row['account_id']; ?>" data-username="<?php echo $row['username']; ?>" data-password="<?php echo $row['password']; ?>" data-role="<?php echo $row['role']; ?>"><img src="images/edit.png">Edit</button>
                                 </td>
                             </tr>
                         <?php $row = mysqli_fetch_array($result);
@@ -269,7 +269,7 @@ $total_pages = ceil($total_records / $number_per_page);
         </div>
 </body>
 
-<script src="javascript/admin.js"></script>
+<script src="javascript/navigation.js"></script>
 <script>
     let form = document.getElementById("form");
     let openform = document.getElementById("accadd");
@@ -290,6 +290,16 @@ $total_pages = ceil($total_records / $number_per_page);
     let search = document.getElementById("search");
     let update = document.getElementById("update");
 
+    function Checkboxes() {
+        let checkboxes = document.querySelectorAll(".checkbox");
+        for (box of checkboxes) {
+            if (box.checked == false) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     function AttachedEvents() {
         let selectall = document.getElementById('selectall');
         let checkboxes = document.querySelectorAll(".checkbox");
@@ -298,12 +308,15 @@ $total_pages = ceil($total_records / $number_per_page);
 
 
         selectall.addEventListener("click", () => {
-            checkboxes.forEach((element) => {
-
-                if (element.checked == false) {
+            if (Checkboxes()) {
+                checkboxes.forEach((element) => {
                     element.checked = true;
-                }
-            })
+                })
+            } else {
+                checkboxes.forEach((element) => {
+                    element.checked = false;
+                })
+            }
         })
 
         edit.forEach((element) => {

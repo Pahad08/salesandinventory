@@ -58,7 +58,7 @@ mysqli_close($conn);
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="css/admin.css">
-        <link rel="shortcut icon" href="images/logo.png" type="image/x-icon">
+        <link rel="shortcut icon" href="images/logo.jpg" type="image/x-icon">
         <title>Inventory</title>
     </head>
 
@@ -289,7 +289,7 @@ mysqli_close($conn);
                         <div class="alert-container">
                             <img src="images/warning.png">
                             <div class="text-warning">
-                                <p>Are you sure you want to delete?<br>(Stocks, sales and transactions will also be
+                                <p>Are you sure you want to delete?(Stocks, sales and transactions will also be
                                     deleted)</p>
                             </div>
                             <div class="buttons-alert">
@@ -331,7 +331,7 @@ mysqli_close($conn);
 
     </body>
 
-    <script src="javascript/admin.js"></script>
+    <script src="javascript/navigation.js"></script>
     <script>
     let form = document.getElementById("form");
     let openform = document.getElementById("stockadd");
@@ -347,23 +347,33 @@ mysqli_close($conn);
     let quantityerr = document.getElementById("quantityerr");
     let del = document.getElementById("del");
     let selectall = document.getElementById('selectall');
-    let checkboxes = document.querySelectorAll(".checkbox");
     let cancel = document.getElementById("cancel");
+
+    function Checkboxes() {
+        let checkboxes = document.querySelectorAll(".checkbox");
+        for (box of checkboxes) {
+            if (box.checked == false) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     function AttachedEvents() {
         let selectall = document.getElementById('selectall');
         let checkboxes = document.querySelectorAll(".checkbox");
 
-        if (selectall && checkboxes) {
-            selectall.addEventListener("click", () => {
+        selectall.addEventListener("click", () => {
+            if (Checkboxes()) {
                 checkboxes.forEach((element) => {
-
-                    if (element.checked == false) {
-                        element.checked = true;
-                    }
+                    element.checked = true;
                 })
-            })
-        }
+            } else {
+                checkboxes.forEach((element) => {
+                    element.checked = false;
+                })
+            }
+        })
     }
 
     AttachedEvents();
@@ -448,10 +458,11 @@ mysqli_close($conn);
             form.classList.toggle("form");
         }
 
-        if (event.target.id == "alert-body" && alertbbody.classList.contains("alert-body-show")) {
-            alertbbody.classList.toggle("alert-body-show");
-            alertbbody.classList.toggle("alert-body");
+        if (event.target.id == "alert-body" && alertbody.classList.contains("alert-body-show")) {
+            alertbody.classList.toggle("alert-body-show");
+            alertbody.classList.toggle("alert-body");
         }
+
     })
 
     closebtn.addEventListener("click", () => {

@@ -16,7 +16,7 @@ if (
 
 ?>
 
-<div class=modal-body>
+<div div class=modal-body>
 
     <div class="form-modal">
 

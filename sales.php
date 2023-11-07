@@ -258,7 +258,7 @@ mysqli_close($conn);
                     <div class="alert-container">
                         <img src="images/warning.png" alt="dsadadsa">
                         <div class="text-warning">
-                            <p>Are you sure you want to delete?
+                            <p>Are you sure you want to delete the selected items?
                         </div>
                         <div class="buttons-alert">
                             <button id="del">Delete</button>
@@ -301,7 +301,7 @@ mysqli_close($conn);
     </div>
 </body>
 
-<script src="javascript/admin.js"></script>
+<script src="javascript/navigation.js"></script>
 <script>
     let form = document.getElementById("form");
     let openform = document.getElementById("saleadd");
@@ -323,6 +323,16 @@ mysqli_close($conn);
     let search = document.getElementById("search");
     let update = document.getElementById("update");
 
+    function Checkboxes() {
+        let checkboxes = document.querySelectorAll(".checkbox");
+        for (box of checkboxes) {
+            if (box.checked == false) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     function AttachedEvents() {
         let selectall = document.getElementById('selectall');
         let checkboxes = document.querySelectorAll(".checkbox");
@@ -330,11 +340,15 @@ mysqli_close($conn);
         let modal = document.querySelector(".modal-sales");
 
         selectall.addEventListener("click", () => {
-            checkboxes.forEach((element) => {
-                if (element.checked == false) {
+            if (Checkboxes()) {
+                checkboxes.forEach((element) => {
                     element.checked = true;
-                }
-            })
+                })
+            } else {
+                checkboxes.forEach((element) => {
+                    element.checked = false;
+                })
+            }
         })
 
         edit.forEach((element) => {
@@ -462,9 +476,9 @@ mysqli_close($conn);
             form.classList.toggle("form");
         }
 
-        if (event.target.id == "alert-body" && alertbbody.classList.contains("alert-body-show")) {
-            alertbbody.classList.toggle("alert-body-show");
-            alertbbody.classList.toggle("alert-body");
+        if (event.target.id == "alert-body" && alertbody.classList.contains("alert-body-show")) {
+            alertbody.classList.toggle("alert-body-show");
+            alertbody.classList.toggle("alert-body");
         }
 
         if (event.target.classList == "modal-sales-show") {

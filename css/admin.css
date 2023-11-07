@@ -81,7 +81,7 @@ a {
 }
 
 .right {
-    margin-right: 50px;
+    margin-right: 20px;
     display: flex;
     align-items: center;
 }
@@ -122,7 +122,6 @@ a {
     z-index: 1;
     top: 55px;
     height: 100vh;
-    left: 0px;
     left: -1000px;
     transition: left 1s;
     width: 100%;
@@ -311,9 +310,8 @@ a {
     left: 0;
 }
 
-
 .form-container {
-    margin: 115px auto 0px auto;
+    margin: 100px auto 0px auto;
     width: 50%;
     animation: show-form 300ms;
     display: grid;
@@ -325,7 +323,7 @@ a {
     }
 
     to {
-        margin-top: 115px;
+        margin-top: 100px;
     }
 }
 
@@ -352,9 +350,10 @@ a {
 }
 
 #form-body,
-#form-stock {
-    display: grid;
-    grid-template-columns: auto auto;
+#form-stock,
+#form-supplier {
+    display: flex;
+    flex-direction: column;
     padding: 0px 10px;
     gap: 20px;
     background: var(--black);
@@ -362,11 +361,6 @@ a {
     border-bottom-right-radius: 5px;
     border-bottom-left-radius: 5px;
     color: var(--white);
-}
-
-#form-stock {
-    display: flex;
-    flex-direction: column;
 }
 
 .input-body {
@@ -449,7 +443,7 @@ select {
 
 .alert-container {
     background: var(--white);
-    margin: 115px auto 0px auto;
+    margin: 100px auto 0px auto;
     width: 35%;
     display: flex;
     flex-direction: column;
@@ -464,7 +458,7 @@ select {
     }
 
     to {
-        margin-top: 115px;
+        margin-top: 100px;
     }
 }
 
@@ -897,7 +891,7 @@ tr:hover:not(tr:nth-child(1)) {
 }
 
 .modal-body {
-    margin: 200px auto 0px auto;
+    margin: 180px auto 0px auto;
     width: 50%;
     display: flex;
 }
@@ -1110,10 +1104,9 @@ tr:hover:not(tr:nth-child(1)) {
 
     .form-container {
         margin: 110px auto 0px auto;
-        width: 50%;
+        width: 80%;
         animation: show-form 300ms;
     }
-
 
     .search {
         align-self: flex-end;
@@ -1136,23 +1129,22 @@ tr:hover:not(tr:nth-child(1)) {
         }
     }
 
-
+    #form-supplier {
+        display: grid;
+        grid-template-columns: auto auto;
+        padding: 0px 10px;
+        gap: 20px;
+        background: var(--black);
+        padding: 10px;
+        border-bottom-right-radius: 5px;
+        border-bottom-left-radius: 5px;
+        color: var(--white);
+    }
 
 }
 
 /* phone */
 @media (max-width: 767px) {
-
-    .supplier_add {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 20px;
-        padding: 10px;
-        gap: 20px;
-        background: #444444;
-        border-bottom-left-radius: 5px;
-        border-bottom-right-radius: 5px;
-    }
 
     #btn-supplier {
         grid-row: 4/4;
@@ -1199,17 +1191,16 @@ tr:hover:not(tr:nth-child(1)) {
     }
 
     .form-container {
-        width: 80%;
+        width: 90%;
     }
-
 
     .search {
         align-self: flex-end;
     }
 
     .alert-container {
-        margin: 130px auto 0px auto;
-        width: 50%;
+        margin: 100px auto 0px auto;
+        width: 65%;
         padding: 5px;
         animation: alertactive 300ms;
     }
@@ -1220,20 +1211,20 @@ tr:hover:not(tr:nth-child(1)) {
         }
 
         to {
-            margin-top: 130px;
+            margin-top: 100px;
         }
     }
 
     .alert-container p {
-        font-size: 1.3rem;
+        font-size: 1.1rem;
     }
 
     .alert-container img {
-        width: 100px;
+        width: 50%;
     }
 
     .form-container {
-        margin: 115px auto 0px auto;
+        margin: 100px auto 0px auto;
     }
 
     .edit-supplier {
@@ -1243,8 +1234,23 @@ tr:hover:not(tr:nth-child(1)) {
     .product-list {
         padding: 5px;
     }
-}
 
+    #form-supplier {
+        display: grid;
+        grid-template-columns: auto auto;
+        padding: 0px 10px;
+        gap: 20px;
+        background: var(--black);
+        padding: 10px;
+        border-bottom-right-radius: 5px;
+        border-bottom-left-radius: 5px;
+        color: var(--white);
+    }
+
+    .modal-body {
+        width: 90%;
+    }
+}
 
 @media (max-width: 476px) {
 
@@ -1257,8 +1263,8 @@ tr:hover:not(tr:nth-child(1)) {
 
 @media (max-width: 550px) {
 
-    .alert-container p {
-        font-size: 1.2rem;
+    .form-container {
+        width: 90%;
     }
 
     .left h2 {
@@ -1266,8 +1272,7 @@ tr:hover:not(tr:nth-child(1)) {
     }
 
     .alert-container {
-        margin: 120px auto 0px auto;
-        width: 70%;
+        width: 80%;
     }
 
     .modal-body {
@@ -1277,9 +1282,13 @@ tr:hover:not(tr:nth-child(1)) {
 
 @media (max-width: 375px) {
 
-
     .form-container {
-        margin: 115px auto 0px auto;
+        width: 90%;
+        margin: 100px auto 0px auto;
+    }
+
+    .alert-container p {
+        font-size: 1rem;
     }
 
 }
@@ -1287,16 +1296,19 @@ tr:hover:not(tr:nth-child(1)) {
 @media (max-width: 320px) {
 
     .alert-container {
-        margin: 120px auto 0px auto;
-        width: 80%;
+        width: 90%;
     }
 
     .alert-container p {
-        font-size: 1.1rem;
+        font-size: 1rem;
     }
 
     .form-container {
-        margin: 115px auto 0px auto;
+        margin: 100px auto 0px auto;
+    }
+
+    .header-form h2 {
+        font-size: 1.2rem;
     }
 
 }

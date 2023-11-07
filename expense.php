@@ -251,7 +251,7 @@ $total_pages = ceil($total_records / $number_per_page);
         </div>
 </body>
 
-<script src="javascript/admin.js"></script>
+<script src="javascript/navigation.js"></script>
 <script>
     let form = document.getElementById("form");
     let openform = document.getElementById("expenseadd");
@@ -270,6 +270,16 @@ $total_pages = ceil($total_records / $number_per_page);
     let update = document.getElementById("update");
     let search = document.getElementById("search");
 
+    function Checkboxes() {
+        let checkboxes = document.querySelectorAll(".checkbox");
+        for (box of checkboxes) {
+            if (box.checked == false) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     function AttachedEvents() {
         let selectall = document.getElementById('selectall');
         let checkboxes = document.querySelectorAll(".checkbox");
@@ -277,11 +287,15 @@ $total_pages = ceil($total_records / $number_per_page);
         let modal = document.querySelector(".modal-expense");
 
         selectall.addEventListener("click", () => {
-            checkboxes.forEach((element) => {
-                if (element.checked == false) {
+            if (Checkboxes()) {
+                checkboxes.forEach((element) => {
                     element.checked = true;
-                }
-            })
+                })
+            } else {
+                checkboxes.forEach((element) => {
+                    element.checked = false;
+                })
+            }
         })
 
         edit.forEach((element) => {

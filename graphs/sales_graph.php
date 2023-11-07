@@ -1,8 +1,6 @@
 <?php
 include 'openconn.php';
 
-$date = date("Y-m-d");
-
 $sql = "SELECT sum(sales.quantity * products.price) as sale, sales.sale_date
 from sales
 inner JOIN products on sales.product_id = products.product_id 
@@ -21,28 +19,28 @@ $result = mysqli_stmt_get_result($stmt);
 </div>
 
 <script>
-google.charts.load('current', {
-    'packages': ['corechart']
-});
-google.charts.setOnLoadCallback(drawChart);
+    google.charts.load('current', {
+        'packages': ['corechart']
+    });
+    google.charts.setOnLoadCallback(drawChart);
 
-function drawChart() {
+    function drawChart() {
 
-    const data = google.visualization.arrayToDataTable([
-        ['Sales', 'Total Sales'],
-        <?php
+        const data = google.visualization.arrayToDataTable([
+            ['Sales', 'Total Sales'],
+            <?php
             while ($row = mysqli_fetch_array($result)) {
                 echo "['" . $row['sale_date'] . "', " . $row['sale'] . "],";
             }
             ?>
-    ]);
+        ]);
 
-    const options = {
-        title: 'Total Sales Today',
-    };
+        const options = {
+            title: 'Total Sales Today',
+        };
 
-    const chart = new google.visualization.BarChart(document.getElementById('sale'));
-    chart.draw(data, options);
+        const chart = new google.visualization.BarChart(document.getElementById('sale'));
+        chart.draw(data, options);
 
-}
+    }
 </script>

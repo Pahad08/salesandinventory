@@ -57,13 +57,13 @@ mysqli_close($conn);
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="css/admin.css">
-        <link rel="shortcut icon" href="images/logo.png" type="image/x-icon">
+        <link rel="shortcut icon" href="images/logo.jpg" type="image/x-icon">
         <title>Suppliers List</title>
     </head>
 
     <body>
 
-        <div class="header">
+        <div class=" header">
 
             <div class="left">
 
@@ -131,7 +131,7 @@ mysqli_close($conn);
                             <p id="closebtn">&#10006;</p>
                         </div>
 
-                        <form action="add/addsupplier.php" method="post" id="form-body" class="supplier_add">
+                        <form action="add/addsupplier.php" method="post" id="form-supplier" class="supplier_add">
 
                             <div class="input-body">
                                 <label for="fname">First Name</label>
@@ -259,7 +259,7 @@ mysqli_close($conn);
                         <div class="alert-container">
                             <img src="images/warning.png">
                             <div class="text-warning">
-                                <p>Are you sure you want to delete?<br>(All transaction from supplier will also be
+                                <p>Are you sure you want to delete?(All transaction from supplier will also be
                                     deleted)
                             </div>
                             <div class="buttons-alert">
@@ -302,7 +302,7 @@ mysqli_close($conn);
         </div>
     </body>
 
-    <script src="javascript/admin.js"></script>
+    <script src="javascript/navigation.js"></script>
     <script>
     let form = document.getElementById("form");
     let openform = document.getElementById("supplieradd");
@@ -326,6 +326,16 @@ mysqli_close($conn);
     let search = document.getElementById("search");
     let update = document.getElementById("update");
 
+    function Checkboxes() {
+        let checkboxes = document.querySelectorAll(".checkbox");
+        for (box of checkboxes) {
+            if (box.checked == false) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     function AttachedEvents() {
         let selectall = document.getElementById('selectall');
         let checkboxes = document.querySelectorAll(".checkbox");
@@ -333,13 +343,16 @@ mysqli_close($conn);
         let modal = document.querySelector(".modal-supplier");
 
         selectall.addEventListener("click", () => {
-            checkboxes.forEach((element) => {
-                if (element.checked == false) {
+            if (Checkboxes()) {
+                checkboxes.forEach((element) => {
                     element.checked = true;
-                }
-            })
+                })
+            } else {
+                checkboxes.forEach((element) => {
+                    element.checked = false;
+                })
+            }
         })
-
 
         edit.forEach((element) => {
             element.addEventListener("click", (event) => {
