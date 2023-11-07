@@ -350,10 +350,22 @@ a {
 }
 
 #form-body,
-#form-stock,
-#form-supplier {
+#form-stock {
     display: flex;
     flex-direction: column;
+    padding: 0px 10px;
+    gap: 20px;
+    background: var(--black);
+    padding: 10px;
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+    color: var(--white);
+}
+
+#form-supplier,
+#form-sched {
+    display: grid;
+    grid-template-columns: auto auto;
     padding: 0px 10px;
     gap: 20px;
     background: var(--black);
@@ -1128,19 +1140,6 @@ tr:hover:not(tr:nth-child(1)) {
             margin-top: 100px;
         }
     }
-
-    #form-supplier {
-        display: grid;
-        grid-template-columns: auto auto;
-        padding: 0px 10px;
-        gap: 20px;
-        background: var(--black);
-        padding: 10px;
-        border-bottom-right-radius: 5px;
-        border-bottom-left-radius: 5px;
-        color: var(--white);
-    }
-
 }
 
 /* phone */
@@ -1233,18 +1232,6 @@ tr:hover:not(tr:nth-child(1)) {
 
     .product-list {
         padding: 5px;
-    }
-
-    #form-supplier {
-        display: grid;
-        grid-template-columns: auto auto;
-        padding: 0px 10px;
-        gap: 20px;
-        background: var(--black);
-        padding: 10px;
-        border-bottom-right-radius: 5px;
-        border-bottom-left-radius: 5px;
-        color: var(--white);
     }
 
     .modal-body {
