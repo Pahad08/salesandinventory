@@ -29,6 +29,10 @@ if (isset($_POST['edit'])) {
     mysqli_stmt_bind_param($stm, "iiiii", $curr_quantity, $quantity, $curr_quantity, $quantity, $prodid);
     mysqli_stmt_execute($stm);
 
+    $stmt_stock = mysqli_prepare($conn, "UPDATE stocks SET quantities =(quantities + ?)-?, stock_out = (stock_out - ?)+?  where product_id = ?");
+    mysqli_stmt_bind_param($stm, "iiiii", $curr_quantity, $quantity, $curr_quantity, $quantity, $prodid);
+    mysqli_stmt_execute($stm);
+
     $sql = "UPDATE sales SET product_id = ?, quantity = ? where sale_id = ?;";
     $stmt = mysqli_prepare($conn, $sql);
     mysqli_stmt_bind_param($stmt, "iii", $prodid, $quantity, $saleid);

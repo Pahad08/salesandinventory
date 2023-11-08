@@ -33,7 +33,6 @@ body {
 
 .container {
     display: flex;
-    height: 400px;
     box-shadow: 0px 0px 7px rgba(0, 0, 0, 0.9);
     border-radius: 5px;
     width: 70%;
@@ -47,11 +46,12 @@ body {
     flex-basis: 50%;
     border-bottom-left-radius: 5px;
     border-top-left-radius: 5px;
+    padding: 20px;
 }
 
 .picture img {
-    width: 200px;
-    height: 200px;
+    width: 70%;
+    /* height: 200px; */
     border-radius: 50%;
 }
 
@@ -65,12 +65,13 @@ body {
     flex-basis: 50%;
     border-bottom-right-radius: 5px;
     border-top-right-radius: 5px;
+    padding: 20px;
 }
 
 .login-body h1 {
     text-align: center;
     color: var(--white);
-    font-size: 1.8em;
+    font-size: 2rem;
 }
 
 #incorrect {
@@ -169,32 +170,32 @@ input:focus {
     .container {
         flex-direction: column;
         background: var(--black);
-        min-height: 550px;
     }
 
     .picture {
         background: none;
-        flex-basis: 0%;
-        padding-top: 20px;
+        padding: 0px;
+        padding-top: 10px;
         border-bottom-left-radius: 0px;
         border-top-left-radius: 0px;
     }
 
     .picture img {
         border-radius: 50%;
+        width: 30%;
     }
 
     .login-body {
         background: none;
-        padding: 20px;
-        flex-basis: 100%;
-        display: flex;
+        padding: 0px;
+        padding-bottom: 10px;
+        padding-top: 10px;
         border-bottom-right-radius: 0px;
         border-top-right-radius: 0px;
     }
 
     .login-body h1 {
-        font-size: 2.9em;
+        font-size: 2.7rem;
     }
 
     .username-body,
@@ -216,38 +217,44 @@ input:focus {
     .login-form {
         margin-top: 10px;
     }
+
+    #incorrect {
+        width: 95%;
+    }
+
+    #submit {
+        margin-top: 10px;
+    }
 }
 
 /* phone */
-@media (max-width: 770px) {
+@media (max-width: 767px) {
     .container {
         flex-direction: column;
         background: var(--black);
-        height: 490px;
     }
 
     .picture {
         background: none;
-        flex-basis: 0%;
-        padding-top: 20px;
+        padding: 0px;
+        padding-top: 10px;
+        padding-bottom: 10px;
         border-bottom-left-radius: 0px;
         border-top-left-radius: 0px;
     }
 
     .picture img {
-        height: 150px;
-        width: 150px;
-        border-radius: 50%;
+        width: 30%;
     }
 
     .login-body h1 {
-        font-size: 2em;
+        font-size: 2.3rem;
     }
 
     .login-body {
         background: none;
-        flex-basis: 100%;
-        display: flex;
+        padding: 0px;
+        padding-bottom: 10px;
         border-bottom-right-radius: 0px;
         border-top-right-radius: 0px;
     }
@@ -261,12 +268,43 @@ input:focus {
         margin-left: 15px;
         margin-top: 10px;
     }
+
+    #submit {
+        margin-top: 10px;
+    }
+}
+
+@media (max-width: 426px) {
+
+    .container {
+        width: 90%;
+    }
+
+    .picture img {
+        width: 40%;
+    }
+
+    .login-body h1 {
+        font-size: 1.5rem;
+    }
+}
+
+@media (max-width: 376px) {
+    .login-body h1 {
+        font-size: 1.4rem;
+    }
 }
 
 @media (max-width: 320px) {
     .container {
         width: 90%;
     }
-}
 
-@media (max-width: 767px) {}
+    .picture img {
+        width: 60%;
+    }
+
+    .login-body h1 {
+        font-size: 1.5rem;
+    }
+}

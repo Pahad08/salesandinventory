@@ -36,6 +36,69 @@ a {
     text-decoration: none;
 }
 
+/* PRINTING REPORT */
+
+.print-container {
+    position: fixed;
+    background: rgba(0, 0, 0, 0.5);
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+}
+
+.report-body {
+    background: var(--white);
+    box-shadow: 0px 0px 5px var(--black);
+    width: 50%;
+    margin: 65px auto 0px auto;
+    padding: 10px;
+}
+
+.print-button {
+    float: right;
+}
+
+#printbtn {
+    padding: 5px;
+    border-radius: 5px;
+    border: none;
+    background: var(--blue);
+    cursor: pointer;
+    display: flex;
+    gap: 10px;
+}
+
+#printbtn img {
+    width: 20px;
+}
+
+#printbtn:hover {
+    background: var(--lightblue);
+    outline: 4px solid var(--blue);
+}
+
+.upper {
+    display: flex;
+    justify-content: space-between;
+    clear: right;
+    padding-top: 5px
+}
+
+
+.upper img {
+    width: 150px;
+    border-radius: 50%;
+}
+
+.business-info {
+    margin-top: 10px;
+}
+
+.report-table {}
+
+/* END OF REPORT */
+
 /* start of dashboard */
 
 /* header */
@@ -187,6 +250,30 @@ a {
 
 .head {
     font-size: 1.3em;
+    display: flex;
+    justify-content: space-between;
+}
+
+.head button {
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+    align-self: flex-end;
+    background: var(--blue);
+    font-size: 1rem;
+    display: flex;
+    gap: 5px;
+    padding: 5px;
+}
+
+.head img {
+    width: 20px;
+}
+
+.head button:hover {
+    background: var(--lightblue);
+    outline: 4px solid var(--blue);
 }
 
 .boxes {
@@ -199,35 +286,20 @@ a {
     background: var(--blue);
 }
 
-#box1,
-#box2,
-#box3,
-#box4 {
-    flex-grow: 1;
-    border-radius: 5px;
-}
-
-#box1,
-#box2,
-#box3,
-#box4 {
+.box {
     display: flex;
     justify-content: space-between;
+    border-radius: 5px;
+    flex-basis: 25%;
 }
 
-#box1 img,
-#box2 img,
-#box3 img,
-#box4 img {
+.box img {
     width: 90px;
     height: 130px;
     margin-left: 5px;
 }
 
-#box1 div,
-#box2 div,
-#box3 div,
-#box4 div {
+.box div {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -237,17 +309,11 @@ a {
     font-size: 1.5em;
 }
 
-#box1 h3,
-#box2 h3,
-#box3 h3,
-#box4 h3 {
+.box h3 {
     font-size: 1em;
 }
 
-#box1 p,
-#box2 p,
-#box3 p,
-#box4 p {
+.box p {
     color: #EDEDED;
     align-self: flex-end;
 }
@@ -288,6 +354,16 @@ a {
     border-radius: 5px;
     box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5);
     padding: 10px;
+    overflow: auto;
+}
+
+.product,
+.sale,
+.profit,
+.per-sale {
+    width: 100%;
+    height: 100%;
+
 }
 
 /* end of  dashboard */
@@ -537,7 +613,7 @@ select {
 .stock-list {
     border-radius: 5px;
     box-shadow: 0px 0px 5px var(--black);
-    /* border: 1px solid var(--black); */
+
 }
 
 .stock-list {
@@ -648,7 +724,7 @@ select {
     padding: 7px;
     border: 1px solid var(--black);
     font-size: 0.9rem;
-    width: 25%;
+    width: 60%;
     position: absolute;
     right: 20px;
     top: -15px;
@@ -666,19 +742,14 @@ select {
     border-radius: 5px;
     padding: 7px;
     border: 1px solid var(--black);
-    overflow: hidden;
     font-size: 0.9rem;
-    width: 36%;
+    width: 60%;
     position: absolute;
     right: 20px;
     top: -15px;
     z-index: 3;
     opacity: 0;
     animation: fade 5s;
-}
-
-.exist {
-    width: 20%;
 }
 
 @keyframes fade {
@@ -752,9 +823,6 @@ td {
     border-top: 1px solid black;
 }
 
-tr:hover:not(tr:nth-child(1)) {
-    background: var(--white);
-}
 
 #sched-btns {
     display: flex;
@@ -995,15 +1063,10 @@ tr:hover:not(tr:nth-child(1)) {
         grid-template-columns: auto auto;
     }
 
-    .box {
-        height: 130px;
-    }
-
     #box1,
     #box2,
     #box3,
     #box4 {
-        width: 100%;
         border-radius: 5px;
     }
 
@@ -1185,10 +1248,6 @@ tr:hover:not(tr:nth-child(1)) {
         overflow: auto;
     }
 
-    .product-list {
-        padding: 5px;
-    }
-
     .form-container {
         width: 90%;
     }
@@ -1230,10 +1289,6 @@ tr:hover:not(tr:nth-child(1)) {
         gap: 7px;
     }
 
-    .product-list {
-        padding: 5px;
-    }
-
     .modal-body {
         width: 90%;
     }
@@ -1244,6 +1299,16 @@ tr:hover:not(tr:nth-child(1)) {
     .header-info {
         flex-direction: column;
         align-items: flex-start;
+    }
+
+    .added,
+    .deleted,
+    .exist,
+    .updated,
+    .prodreceive,
+    .emptystocks,
+    .lessquantity {
+        width: 87%;
     }
 
 }

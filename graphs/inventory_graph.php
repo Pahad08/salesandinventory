@@ -38,7 +38,23 @@ function drawChart() {
         title: 'Inventory',
     };
 
+    var size = {
+        chartArea: {
+            width: '80%',
+            height: '80%'
+        },
+    };
+
+
     const chart = new google.visualization.ColumnChart(document.getElementById('products'));
+    chart.draw(data, options);
+
+    function drawChart() {
+        chart.draw(data, options);
+    }
+
+    window.addEventListener('resize', drawChart);
+
     chart.draw(data, options);
 
 }

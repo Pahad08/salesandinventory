@@ -19,28 +19,43 @@ $result = mysqli_stmt_get_result($stmt);
 </div>
 
 <script>
-    google.charts.load('current', {
-        'packages': ['corechart']
-    });
-    google.charts.setOnLoadCallback(drawChart);
+google.charts.load('current', {
+    'packages': ['corechart']
+});
+google.charts.setOnLoadCallback(drawChart);
 
-    function drawChart() {
+function drawChart() {
 
-        const data = google.visualization.arrayToDataTable([
-            ['Sales', 'Total Sales'],
-            <?php
+    const data = google.visualization.arrayToDataTable([
+        ['Sales', 'Total Sales'],
+        <?php
             while ($row = mysqli_fetch_array($result)) {
                 echo "['" . $row['sale_date'] . "', " . $row['sale'] . "],";
             }
             ?>
-        ]);
+    ]);
 
-        const options = {
-            title: 'Total Sales Today',
-        };
+    const options = {
+        title: 'Total Sales Today',
+    };
 
-        const chart = new google.visualization.BarChart(document.getElementById('sale'));
+    var size = {
+        chartArea: {
+            width: '80%',
+            height: '80%'
+        },
+    };
+
+    const chart = new google.visualization.BarChart(document.getElementById('sale'));
+    chart.draw(data, options);
+
+    function drawChart() {
         chart.draw(data, options);
-
     }
+
+    window.addEventListener('resize', drawChart);
+
+    chart.draw(data, options);
+
+}
 </script>
