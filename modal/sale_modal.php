@@ -37,8 +37,8 @@ mysqli_close($conn);
                         }  ?>" method="post" class="edit-sales" id="form">
 
             <input type="number" value="" name="saleid" id="sale-id" hidden>
-            <input type="number" value="" name="currprod" id="currprod-id">
-            <input type="number" value="" name="curr_quantity" id="curr-quantity">
+            <input type="number" value="" name="currprod" id="currprod-id" hidden>
+            <input type="number" value="" name="curr_quantity" id="curr-quantity" hidden>
 
             <div class="input-edit">
                 <label for="prodselect">Product Name</label>

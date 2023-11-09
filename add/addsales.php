@@ -19,10 +19,11 @@ function CleanData($data)
 if (isset($_POST['add'])) {
     include '../openconn.php';
     $prod_id = CleanData($_POST['prodid']);
-    $date =  date("Y-m-d", strtotime($_POST['date']));
     $quantity = CleanData($_POST['quantity']);
 
-    $statement = mysqli_prepare($conn, "SELECT * from stocks where product_id = ?;");
+    $statement = mysqli_prepare($conn, "SELECT quantities, `name` from stocks 
+    left join products on stocks.product_id = products.product_id
+    where stocks.product_id = ?;");
     mysqli_stmt_bind_param($statement, "i", $prod_id);
     mysqli_stmt_execute($statement);
     $result = mysqli_stmt_get_result($statement);
@@ -31,7 +32,7 @@ if (isset($_POST['add'])) {
     if (mysqli_num_rows($result) > 0) {
 
         if ($row['quantities'] < $quantity) {
-            $_SESSION['lessquantity'] = "Quantity given is greater than the stock available";
+            $_SESSION['lessquantity'] = "Stock is lower than the entered quantity";
             mysqli_close($conn);
             header("location: ../sales.php");
             exit();
@@ -50,7 +51,7 @@ if (isset($_POST['add'])) {
         header("location: ../sales.php");
         exit();
     } else {
-        $_SESSION['emptystocks'] = "No Stocks Available";
+        $_SESSION['emptystocks'] = "No stocks available for the product";
         mysqli_close($conn);
         header("location: ../sales.php");
         exit();

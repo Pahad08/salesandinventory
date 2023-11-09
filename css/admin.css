@@ -21,6 +21,8 @@
     --low-blue: rgba(0, 149, 255, 0.5);
     --lightblue: #00D7FF;
     --yellow: #F4CE14;
+    --alertgreen: #04AA6D;
+    --alertred: #f44336;
 }
 
 body {
@@ -437,14 +439,14 @@ a {
     overflow: auto;
 }
 
-.product,
-.sale,
-.profit,
-.per-sale {
+#products,
+#sale,
+#profits,
+#product-sale {
     width: 100%;
     height: 100%;
-
 }
+
 
 /* end of  dashboard */
 
@@ -650,7 +652,7 @@ select {
 #del-sched {
     border: none;
     font-size: 1rem;
-    flex-basis: 60%;
+    flex-basis: 50%;
 }
 
 .buttons-alert #del {
@@ -659,6 +661,7 @@ select {
 
 .buttons-alert #del:hover {
     background: var(--red);
+    color: var(--white);
 }
 
 .buttons-alert button {
@@ -667,7 +670,8 @@ select {
     cursor: pointer;
 }
 
-.buttons-alert #close-deletion:hover {
+.buttons-alert #close-deletion:hover,
+#close-receive:hover {
     background: var(--black);
     color: var(--white);
 }
@@ -683,7 +687,8 @@ select {
 }
 
 #del-sched:hover {
-    outline: 4px solid var(--low-green);
+    background: var(--green);
+    color: var(--white);
 }
 
 /* end of delete product */
@@ -800,10 +805,8 @@ select {
 .updated,
 .prodreceive {
     margin-top: 5px;
-    background: var(--lightgreen);
-    border-radius: 5px;
-    padding: 7px;
-    border: 1px solid var(--black);
+    background: var(--alertgreen);
+    padding: 10px;
     font-size: 0.9rem;
     width: 60%;
     position: absolute;
@@ -819,10 +822,8 @@ select {
 .lessquantity,
 .exist {
     margin-top: 5px;
-    background: var(--lightred);
-    border-radius: 5px;
+    background: var(--alertred);
     padding: 7px;
-    border: 1px solid var(--black);
     font-size: 0.9rem;
     width: 60%;
     position: absolute;

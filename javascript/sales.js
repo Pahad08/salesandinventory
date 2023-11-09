@@ -135,13 +135,21 @@ if (document.querySelector(".updated")) {
     document.querySelector(".deleted").addEventListener("click", () => {
         document.querySelector(".deleted").style.display = "none";
     })
-} else if (document.querySelector(".exist")) {
-    document.querySelector(".exist").addEventListener("animationend", () => {
-        document.querySelector(".exist").style.display = "none";
+} else if (document.querySelector(".emptystocks")) {
+    document.querySelector(".emptystocks").addEventListener("animationend", () => {
+        document.querySelector(".emptystocks").style.display = "none";
     })
 
-    document.querySelector(".exist").addEventListener("click", () => {
-        document.querySelector(".exist").style.display = "none";
+    document.querySelector(".emptystocks").addEventListener("click", () => {
+        document.querySelector(".emptystocks").style.display = "none";
+    })
+} else if (document.querySelector(".lessquantity")) {
+    document.querySelector(".lessquantity").addEventListener("animationend", () => {
+        document.querySelector(".lessquantity").style.display = "none";
+    })
+
+    document.querySelector(".lessquantity").addEventListener("click", () => {
+        document.querySelector(".lessquantity").style.display = "none";
     })
 }
 

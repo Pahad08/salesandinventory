@@ -33,31 +33,27 @@ if ($row1['total_expense'] - $row2['sale'] < 0) {
 </div>
 
 <script>
-    google.charts.load('current', {
-        'packages': ['corechart']
-    });
-    google.charts.setOnLoadCallback(drawChart);
+google.charts.load('current', {
+    'packages': ['corechart']
+});
+google.charts.setOnLoadCallback(drawChart);
 
-    function drawChart() {
+function drawChart() {
 
-        const data = google.visualization.arrayToDataTable([
-            ['Profit in this month', 'Profit'],
-            <?php
+    const data = google.visualization.arrayToDataTable([
+        ['Profit in this month', 'Profit'],
+        <?php
             $month = date('F');
             echo "['" . "Profit In " . $month . "', " . $profit . "],";
             ?>
-        ]);
+    ]);
 
-        const options = {
-            title: 'Profits',
-            chartArea: {
-                width: '80%',
-                height: '80%'
-            }
-        };
+    const options = {
+        title: 'Profits'
+    };
 
-        const chart = new google.visualization.ColumnChart(document.getElementById('profits'));
-        chart.draw(data, options);
+    const chart = new google.visualization.ColumnChart(document.getElementById('profits'));
+    chart.draw(data, options);
 
-    }
+}
 </script>

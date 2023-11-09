@@ -28,6 +28,17 @@ function UpdateSales($conn, $prodid, $quantity, $saleid)
     exit();
 }
 
+function CheckQuantity($conn, $curr_prodid)
+{
+    $stmt = mysqli_prepare($conn, "SELECT quantities from stocks where product_id = ?");
+    mysqli_stmt_bind_param($stmt, "i", $curr_prodid);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+    $row = mysqli_fetch_array($result);
+
+    return $row['quantities'];
+}
+
 if (isset($_POST['edit'])) {
     include '../openconn.php';
     $saleid = CleanData($_POST['saleid']);
@@ -36,35 +47,59 @@ if (isset($_POST['edit'])) {
     $curr_quantity = CleanData($_POST['curr_quantity']);
     $curr_prodid = CleanData($_POST['currprod']);
 
-    echo $prodid . "<br>";
-    echo $curr_prodid . "<br>";
-
     if ($prodid == $curr_prodid) {
-        $stm = mysqli_prepare($conn, "UPDATE stocks SET quantities =(quantities + ?)-?, stock_out = (stock_out - ?)+?  where product_id = ?");
-        mysqli_stmt_bind_param($stm, "iiiii", $curr_quantity, $quantity, $curr_quantity, $quantity, $curr_prodid);
-        mysqli_stmt_execute($stm);
 
-        UpdateSales(
-            $conn,
-            $prodid,
-            $quantity,
-            $saleid
-        );
+        if (CheckQuantity($conn, $curr_prodid) === 0) {
+            $_SESSION['emptystocks'] = "Empty stock";
+            mysqli_close($conn);
+            header("location: ../sales.php");
+            exit();
+        } elseif (CheckQuantity($conn, $curr_prodid) < $quantity) {
+            $_SESSION['lessquantity'] = "Stock is lower than the entered quantity";
+            mysqli_close($conn);
+            header("location: ../sales.php");
+            exit();
+        } else {
+            $stm = mysqli_prepare($conn, "UPDATE stocks SET quantities =(quantities + ?)-?, stock_out = (stock_out - ?)+?  where product_id = ?");
+            mysqli_stmt_bind_param($stm, "iiiii", $curr_quantity, $quantity, $curr_quantity, $quantity, $curr_prodid);
+            mysqli_stmt_execute($stm);
+
+            UpdateSales(
+                $conn,
+                $prodid,
+                $quantity,
+                $saleid
+            );
+        }
     } else {
-        $stm = mysqli_prepare($conn, "UPDATE stocks SET quantities = quantities + ?, stock_out = stock_out - ?  where product_id = ?");
-        mysqli_stmt_bind_param($stm, "iii", $curr_quantity, $curr_quantity, $curr_prodid);
-        mysqli_stmt_execute($stm);
 
-        $statement = mysqli_prepare($conn, "UPDATE stocks SET quantities = quantities - ?, stock_out = stock_out + ?  where product_id = ?");
-        mysqli_stmt_bind_param($statement, "iii", $quantity, $quantity, $prodid);
-        mysqli_stmt_execute($statement);
+        if (CheckQuantity($conn, $prodid) === 0) {
+            $_SESSION['emptystocks'] = "Empty stock";
+            mysqli_close($conn);
+            header("location: ../sales.php");
+            exit();
+        } elseif (CheckQuantity($conn, $prodid) < $quantity) {
+            $_SESSION['lessquantity'] = "Stock is lower than the entered quantity";
+            mysqli_close($conn);
+            header("location: ../sales.php");
+            exit();
+        } else {
 
-        UpdateSales(
-            $conn,
-            $prodid,
-            $quantity,
-            $saleid
-        );
+            $stm = mysqli_prepare($conn, "UPDATE stocks SET quantities = quantities + ?, stock_out = stock_out - ?  where product_id = ?");
+            mysqli_stmt_bind_param($stm, "iii", $curr_quantity, $curr_quantity, $curr_prodid);
+            mysqli_stmt_execute($stm);
+
+            $statement = mysqli_prepare($conn, "UPDATE stocks SET quantities = quantities - ?, stock_out = stock_out + ?  where product_id = ?");
+            mysqli_stmt_bind_param($statement, "iii", $quantity, $quantity, $prodid);
+            mysqli_stmt_execute($statement);
+
+            UpdateSales(
+                $conn,
+                $prodid,
+                $quantity,
+                $saleid
+            );
+        }
     }
 } else {
     header("location: ../sales.php");

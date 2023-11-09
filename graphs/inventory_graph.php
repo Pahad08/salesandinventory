@@ -35,16 +35,10 @@ function drawChart() {
     ]);
 
     const options = {
-        title: 'Inventory',
-        chartArea: {
-            width: '80%',
-            height: '80%'
-        }
+        title: 'Inventory'
     };
 
-
-
-    const chart = new google.visualization.ColumnChart(document.getElementById('products'));
+    const chart = new google.visualization.PieChart(document.getElementById('products'));
     chart.draw(data, options);
 
 }

@@ -52,6 +52,8 @@ $Row = mysqli_fetch_array($result2);
 
 $total_records = $Row['total'];
 $total_pages = ceil($total_records / $number_per_page);
+$starting_page = max(1, $page_number - 2);
+$ending_page = min($total_pages, $starting_page + 4);
 
 $stmt_suppliers = mysqli_prepare($conn, "SELECT f_name, l_name, supplier_id from suppliers;");
 mysqli_stmt_execute($stmt_suppliers);
@@ -266,22 +268,22 @@ mysqli_close($conn);
 
                 <?php if (isset($_SESSION['added'])) { ?>
                     <div class="added">
-                        <p><span>&#10003;</span> <?php echo $_SESSION['added']; ?></p>
+                        <p><?php echo $_SESSION['added']; ?></p>
                     </div>
                 <?php unset($_SESSION['added']);
                 } else if (isset($_SESSION['deleted'])) { ?>
                     <div class="deleted">
-                        <p><span>&#10003;</span> <?php echo $_SESSION['deleted']; ?></p>
+                        <p><?php echo $_SESSION['deleted']; ?></p>
                     </div>
                 <?php unset($_SESSION['deleted']);
                 } else if (isset($_SESSION['updated'])) { ?>
                     <div class="updated">
-                        <p><span>&#10003;</span> <?php echo $_SESSION['updated']; ?></p>
+                        <p><?php echo $_SESSION['updated']; ?></p>
                     </div>
                 <?php unset($_SESSION['updated']);
                 } else if (isset($_SESSION['receive'])) { ?>
                     <div class="prodreceive">
-                        <p><span>&#10003;</span> <?php echo $_SESSION['receive']; ?></p>
+                        <p><?php echo $_SESSION['receive']; ?></p>
                     </div>
                 <?php unset($_SESSION['receive']);
                 } ?>
@@ -374,8 +376,8 @@ mysqli_close($conn);
                                     echo "href=schedules.php?page_number=" . $previouspage;
                                 } ?>>&laquo;</a></li>
 
-                        <?php for ($i = 0; $i < $total_pages; $i++) { ?>
-                            <li><a href="<?php echo "schedules.php?page_number=" . $i + 1; ?>"><?php echo $i + 1; ?></a>
+                        <?php for ($i = $starting_page; $i <= $ending_page; $i++) { ?>
+                            <li><a href="<?php echo "schedules.php?page_number=" . $i; ?>"><?php echo $i; ?></a>
                             </li>
                         <?php } ?>
 

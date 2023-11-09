@@ -36,11 +36,7 @@ function drawChart() {
     ]);
 
     const options = {
-        title: 'Total Sales Today',
-        chartArea: {
-            width: '80%',
-            height: '80%'
-        }
+        title: 'Total Sales Today'
     };
     const chart = new google.visualization.BarChart(document.getElementById('sale'));
     chart.draw(data, options);

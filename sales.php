@@ -39,6 +39,8 @@ $Row = mysqli_fetch_array($result2);
 
 $total_records = $Row['total'];
 $total_pages = ceil($total_records / $number_per_page);
+$starting_page = max(1, $page_number - 2);
+$ending_page = min($total_pages, $starting_page + 4);
 
 $prod_sql = "SELECT product_id, `name` from products;";
 $stmt_prod = mysqli_prepare($conn, $prod_sql);
@@ -54,7 +56,7 @@ mysqli_close($conn);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/admin.css">
-    <link rel="shortcut icon" href="images/logo.png" type="image/x-icon">
+    <link rel="shortcut icon" href="images/logo.jpg" type="image/x-icon">
     <title>Sales</title>
 </head>
 
@@ -163,7 +165,7 @@ mysqli_close($conn);
 
                         <div class="input-body">
                             <label for="quantity">Quantity</label>
-                            <input type="number" id="quantity" name="quantity">
+                            <input type="number" id="quantity" name="quantity" min="1">
                             <p class="emptyinput" id="quantityerr">Quantity cannot be blank</p>
                         </div>
 
@@ -201,27 +203,27 @@ mysqli_close($conn);
 
                 <?php if (isset($_SESSION['added'])) { ?>
                     <div class="added">
-                        <p><span>&#10003;</span> <?php echo $_SESSION['added']; ?></p>
+                        <p><?php echo $_SESSION['added']; ?></p>
                     </div>
                 <?php unset($_SESSION['added']);
                 } else if (isset($_SESSION['deleted'])) { ?>
                     <div class="deleted">
-                        <p><span>&#10003;</span> <?php echo $_SESSION['deleted']; ?></p>
+                        <p><?php echo $_SESSION['deleted']; ?></p>
                     </div>
                 <?php unset($_SESSION['deleted']);
                 } else if (isset($_SESSION['updated'])) { ?>
                     <div class="updated">
-                        <p><span>&#10003;</span> <?php echo $_SESSION['updated']; ?></p>
+                        <p><?php echo $_SESSION['updated']; ?></p>
                     </div>
                 <?php unset($_SESSION['updated']);
                 } else if (isset($_SESSION['emptystocks'])) { ?>
                     <div class="emptystocks">
-                        <p><span>&#10003;</span> <?php echo $_SESSION['emptystocks']; ?></p>
+                        <p><?php echo $_SESSION['emptystocks']; ?></p>
                     </div>
                 <?php unset($_SESSION['emptystocks']);
                 } else if (isset($_SESSION['lessquantity'])) { ?>
                     <div class="lessquantity">
-                        <p><span>&#10003;</span> <?php echo $_SESSION['lessquantity']; ?></p>
+                        <p><?php echo $_SESSION['lessquantity']; ?></p>
                     </div>
                 <?php unset($_SESSION['lessquantity']);
                 }
@@ -276,8 +278,8 @@ mysqli_close($conn);
                                     echo "href=sales.php?page_number=" . $previouspage;
                                 } ?>>&laquo;</a></li>
 
-                        <?php for ($i = 0; $i < $total_pages; $i++) { ?>
-                            <li><a href="<?php echo "sales.php?page_number=" . $i + 1; ?>"><?php echo $i + 1; ?></a>
+                        <?php for ($i = $starting_page; $i <= $ending_page; $i++) { ?>
+                            <li><a href="<?php echo "sales.php?page_number=" . $i; ?>"><?php echo $i; ?></a>
                             </li>
                         <?php } ?>
 
