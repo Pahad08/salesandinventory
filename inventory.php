@@ -288,7 +288,7 @@ mysqli_close($conn);
                     <div class="alert-container">
                         <img src="images/warning.png">
                         <div class="text-warning">
-                            <p>Are you sure you want to delete?(Stocks, sales and transactions will also be
+                            <p>Are you sure you want to delete?<br>(Stocks, sales and transactions will also be
                                 deleted)</p>
                         </div>
                         <div class="buttons-alert">

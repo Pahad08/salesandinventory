@@ -50,24 +50,13 @@ if ($row1['total_expense'] - $row2['sale'] < 0) {
 
         const options = {
             title: 'Profits',
-        };
-
-        var size = {
             chartArea: {
                 width: '80%',
                 height: '80%'
-            },
+            }
         };
 
         const chart = new google.visualization.ColumnChart(document.getElementById('profits'));
-        chart.draw(data, options);
-
-        function drawChart() {
-            chart.draw(data, options);
-        }
-
-        window.addEventListener('resize', drawChart);
-
         chart.draw(data, options);
 
     }

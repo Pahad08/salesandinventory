@@ -82,7 +82,7 @@ if (!isset($_SESSION["admin"]) && !isset($_SESSION["admin_username"])) {
     <div class="body">
         <div class="head">
             <h1>Dashboard</h1>
-            <button><img src="images/report.png" alt="">Generate Reports</button>
+            <button id="generate-btn"><img src="images/report.png">Generate Reports</button>
         </div>
 
         <div class="boxes">
@@ -178,86 +178,85 @@ if (!isset($_SESSION["admin"]) && !isset($_SESSION["admin_username"])) {
 
                 <div class="print-button">
                     <button id="printbtn"><img src="images/printing.png" alt="">Print</button>
+                    <button id="cancelbtn"><img src="images/cancel.png" alt="">Cancel</button>
                 </div>
 
                 <div class="print-body">
 
                     <div class="upper">
                         <img src="images/logo.jpg" alt="">
-                        <p class="date">Date: <?php echo date("M-t-Y"); ?></p>
+
+                        <div class="business-info">
+                            <p>Badong Lechon Manok</p>
+                            <p>Mr. and Mrs. Lamanero</p>
+                            <p>Poblacion, Tacurong City</p>
+                            <p class="date">Date: <?php echo date("M-t-Y"); ?></p>
+                        </div>
                     </div>
 
 
-                    <div class="business-info">
-                        <p>Badong Lechon Manok</p>
-                        <p>Mrs. and Mr. Lamanero</p>
-                        <p>Poblacion, Tacurong City</p>
-                    </div>
-                </div>
+                    <div class="report-table">
+                        <table>
+                            <tr>
+                                <th>Report</th>
+                                <th>Info</th>
+                            </tr>
 
-
-                <div class="report-table">
-                    <table>
-                        <tr>
-                            <th>Report</th>
-                            <th>Info</th>
-                        </tr>
-
-                        <tr>
-                            <td>Total Sales</td>
-                            <td> <?php
-                                    $sql = "SELECT sum(sales.quantity * products.price) as sale from sales
+                            <tr>
+                                <td>Total Sales</td>
+                                <td> <?php
+                                        $sql = "SELECT sum(sales.quantity * products.price) as sale from sales
                                             inner JOIN products on sales.product_id = products.product_id
                                             where DAY(sales.sale_date) = DAY(CURRENT_DATE);";
+                                        $stmt = mysqli_prepare($conn, $sql);
+                                        mysqli_stmt_execute($stmt);
+                                        $result = mysqli_stmt_get_result($stmt);
+                                        $row = mysqli_fetch_array($result);
+                                        echo "₱" . $row['sale'];
+                                        ?></td>
+                            </tr>
+
+                            <tr>
+                                <td>Remaining Stocks</td>
+                                <td><?php
+                                    $sql = "SELECT count(stock_id) as total FROM stocks;";
                                     $stmt = mysqli_prepare($conn, $sql);
                                     mysqli_stmt_execute($stmt);
                                     $result = mysqli_stmt_get_result($stmt);
                                     $row = mysqli_fetch_array($result);
-                                    echo "₱" . $row['sale'];
+                                    echo $row['total'] . " Stocks";
                                     ?></td>
-                        </tr>
+                            </tr>
 
-                        <tr>
-                            <td>Remaining Stocks</td>
-                            <td><?php
-                                $sql = "SELECT count(stock_id) as total FROM stocks;";
-                                $stmt = mysqli_prepare($conn, $sql);
-                                mysqli_stmt_execute($stmt);
-                                $result = mysqli_stmt_get_result($stmt);
-                                $row = mysqli_fetch_array($result);
-                                echo $row['total'] . " Stocks";
-                                ?></td>
-                        </tr>
+                            <tr>
+                                <td>Total expenses</td>
+                                <td><?php
+                                    $sql = "SELECT SUM(amount) as total FROM expenses;";
+                                    $stmt = mysqli_prepare($conn, $sql);
+                                    mysqli_stmt_execute($stmt);
+                                    $result = mysqli_stmt_get_result($stmt);
+                                    $row = mysqli_fetch_array($result);
+                                    echo "₱" . $row['total'];
+                                    ?></td>
+                            </tr>
 
-                        <tr>
-                            <td>Total expenses</td>
-                            <td><?php
-                                $sql = "SELECT SUM(amount) as total FROM expenses;";
-                                $stmt = mysqli_prepare($conn, $sql);
-                                mysqli_stmt_execute($stmt);
-                                $result = mysqli_stmt_get_result($stmt);
-                                $row = mysqli_fetch_array($result);
-                                echo "₱" . $row['total'];
-                                ?></td>
-                        </tr>
-
-                        <tr>
-                            <td>Most Sales Product</td>
-                            <td><?php $sql = "SELECT products.name, 
+                            <tr>
+                                <td>Most Sale Product</td>
+                                <td><?php $sql = "SELECT products.name, 
                                 MAX( products.price * sales.quantity) as total
                                 from sales
                                 inner JOIN products on sales.product_id = products.product_id;";
-                                $stmt = mysqli_prepare($conn, $sql);
-                                mysqli_stmt_execute($stmt);
-                                $result = mysqli_stmt_get_result($stmt);
-                                $row = mysqli_fetch_array($result);
-                                echo $row['name'] . "-" . "₱" . $row['total']; ?></td>
-                        </tr>
-                    </table>
+                                    $stmt = mysqli_prepare($conn, $sql);
+                                    mysqli_stmt_execute($stmt);
+                                    $result = mysqli_stmt_get_result($stmt);
+                                    $row = mysqli_fetch_array($result);
+                                    echo $row['name'] . "-" . "₱" . $row['total']; ?></td>
+                            </tr>
+                        </table>
+                    </div>
                 </div>
 
             </div>
-
 
         </div>
 
@@ -267,5 +266,18 @@ if (!isset($_SESSION["admin"]) && !isset($_SESSION["admin_username"])) {
 </body>
 
 <script src="javascript/navigation.js"></script>
+<script>
+    document.getElementById("generate-btn").addEventListener("click", () => {
+        document.querySelector(".print-container").style.display = "block";
+    })
+
+    document.getElementById("cancelbtn").addEventListener("click", () => {
+        document.querySelector(".print-container").style.display = "none";
+    })
+
+    document.getElementById("printbtn").addEventListener("click", () => {
+        window.print();
+    })
+</script>
 
 </html>

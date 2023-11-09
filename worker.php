@@ -152,7 +152,7 @@ $row = mysqli_fetch_array($result);
 
     </body>
 
-    <script src="javascript/admin.js"></script>
+    <script src="javascript/navigation.js"></script>
 
     <script src="javascript/worker.js"></script>
 

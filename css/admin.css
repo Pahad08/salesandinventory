@@ -45,18 +45,27 @@ a {
     height: 100%;
     left: 0;
     top: 0;
+    display: none;
+    overflow: auto;
 }
 
 .report-body {
+    margin: 65px auto 0px auto;
+    width: 50%;
+}
+
+.print-body {
     background: var(--white);
     box-shadow: 0px 0px 5px var(--black);
-    width: 50%;
-    margin: 65px auto 0px auto;
-    padding: 10px;
+    padding: 10px 20px;
+    clear: right;
 }
 
 .print-button {
     float: right;
+    display: flex;
+    gap: 10px;
+    margin-bottom: 5px;
 }
 
 #printbtn {
@@ -66,11 +75,28 @@ a {
     background: var(--blue);
     cursor: pointer;
     display: flex;
+    align-items: center;
     gap: 10px;
 }
 
-#printbtn img {
+#cancelbtn {
+    padding: 5px;
+    border-radius: 5px;
+    border: none;
+    background: var(--red);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.print-button img {
     width: 20px;
+}
+
+#cancelbtn:hover {
+    background: var(--lightred);
+    outline: 4px solid var(--low-red);
 }
 
 #printbtn:hover {
@@ -79,23 +105,77 @@ a {
 }
 
 .upper {
+    clear: right;
     display: flex;
     justify-content: space-between;
-    clear: right;
-    padding-top: 5px
 }
 
-
 .upper img {
-    width: 150px;
+    width: 130px;
     border-radius: 50%;
 }
 
-.business-info {
+.report-table {
     margin-top: 10px;
 }
 
-.report-table {}
+.business-info {
+    line-height: 25px;
+}
+
+@media print {
+    @page {
+        margin: 0;
+    }
+
+    .header {
+        display: none !important;
+    }
+
+    .nav-body,
+    #nav {
+        display: none !important;
+    }
+
+    .print-body {
+        box-shadow: none;
+        width: 100%;
+        height: 100%;
+    }
+
+    .print-container {
+        background: var(--white);
+        font-size: 2rem;
+        height: 100%;
+        width: 100%;
+    }
+
+    .print-button {
+        display: none;
+    }
+
+    .upper img {
+        width: 250px;
+    }
+
+    .business-info {
+        line-height: 45px;
+    }
+
+    .report-table {
+        margin-top: 20px;
+    }
+
+    .report-table table th,
+    .report-table table td {
+        padding-top: 30px;
+    }
+
+    .head,
+    .boxes {
+        display: none !important;
+    }
+}
 
 /* END OF REPORT */
 
@@ -560,43 +640,44 @@ select {
 }
 
 .buttons-alert {
-    margin: 20px 20px 10px 0px;
-    align-self: flex-end;
     display: flex;
-    gap: 7px;
+    width: 90%;
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
-.buttons-alert button {
-    border-radius: 5px;
-    border: 1px solid var(--black);
+.buttons-alert button,
+#del-sched {
+    border: none;
     font-size: 1rem;
+    flex-basis: 60%;
 }
 
 .buttons-alert #del {
-    background: var(--red);
+    background: var(--lightred);
 }
 
 .buttons-alert #del:hover {
-    outline: 4px solid var(--low-red);
+    background: var(--red);
 }
 
 .buttons-alert button {
     background: var(--gray);
-    padding: 5px;
+    padding: 10px;
     cursor: pointer;
 }
 
-.buttons-alert button:hover {
-    outline: 4px solid var(--lightgray);
+.buttons-alert #close-deletion:hover {
+    background: var(--black);
+    color: var(--white);
 }
 
 #del-sched {
     background: var(--lightgreen);
-    border-radius: 5px;
     padding: 5px;
-    border: 1px solid #000;
     font-size: 1rem;
     display: flex;
+    justify-content: center;
     align-items: center;
     color: var(--black);
 }
@@ -1203,6 +1284,10 @@ td {
             margin-top: 100px;
         }
     }
+
+    .report-body {
+        width: 90%;
+    }
 }
 
 /* phone */
@@ -1292,25 +1377,20 @@ td {
     .modal-body {
         width: 90%;
     }
-}
 
-@media (max-width: 476px) {
+    .report-body {
+        margin: 65px auto 0px auto;
+        width: 90%;
+    }
 
-    .header-info {
+    .head {
         flex-direction: column;
-        align-items: flex-start;
+        gap: 10px;
     }
 
-    .added,
-    .deleted,
-    .exist,
-    .updated,
-    .prodreceive,
-    .emptystocks,
-    .lessquantity {
-        width: 87%;
+    .head button {
+        align-self: flex-start;
     }
-
 }
 
 @media (max-width: 550px) {
@@ -1332,7 +1412,26 @@ td {
     }
 }
 
-@media (max-width: 375px) {
+@media (max-width: 476px) {
+
+    .header-info {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .added,
+    .deleted,
+    .exist,
+    .updated,
+    .prodreceive,
+    .emptystocks,
+    .lessquantity {
+        width: 87%;
+    }
+
+}
+
+@media (max-width: 376px) {
 
     .form-container {
         width: 90%;
@@ -1343,9 +1442,21 @@ td {
         font-size: 1rem;
     }
 
+    .upper {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .upper img {
+        align-self: center;
+    }
 }
 
 @media (max-width: 320px) {
+
+    .boxes {
+        margin-top: 10px;
+    }
 
     .alert-container {
         width: 90%;

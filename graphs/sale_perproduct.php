@@ -19,44 +19,33 @@ $result = mysqli_stmt_get_result($stmt);
 </div>
 
 <script>
-    let currentmonth = new Date();
-    google.charts.load('current', {
-        'packages': ['corechart']
-    });
-    google.charts.setOnLoadCallback(drawChart);
+let currentmonth = new Date();
+google.charts.load('current', {
+    'packages': ['corechart']
+});
+google.charts.setOnLoadCallback(drawChart);
 
-    function drawChart() {
+function drawChart() {
 
-        const data = google.visualization.arrayToDataTable([
-            ['Sale per Product', 'Product'],
-            <?php
+    const data = google.visualization.arrayToDataTable([
+        ['Sale per Product', 'Product'],
+        <?php
             while ($row = mysqli_fetch_array($result)) {
                 echo "['" . $row['name'] . "', " . $row['total'] . "],";
             }
             ?>
-        ]);
+    ]);
 
-        const options = {
-            title: 'Sale per Product This Day',
-        };
-
-        var size = {
-            chartArea: {
-                width: '80%',
-                height: '80%'
-            },
-        };
-
-        const chart = new google.visualization.ColumnChart(document.getElementById('product-sale'));
-        chart.draw(data, options);
-
-        function drawChart() {
-            chart.draw(data, options);
+    const options = {
+        title: 'Sale per Product This Day',
+        chartArea: {
+            width: '80%',
+            height: '80%'
         }
+    };
 
-        window.addEventListener('resize', drawChart);
+    const chart = new google.visualization.ColumnChart(document.getElementById('product-sale'));
+    chart.draw(data, options);
 
-        chart.draw(data, options);
-
-    }
+}
 </script>

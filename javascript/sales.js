@@ -55,17 +55,18 @@ function AttachedEvents() {
             let prodid = element.getAttribute("data-prodid");
             let prodname = element.getAttribute("data-prodname");
 
-            let name = document.getElementById("select-value");
             let quantity = document.getElementById("quantity-value");
             let sale_id = document.getElementById("sale-id");
             let currquantity = document.getElementById("curr-quantity");
             let selected = document.getElementById("selected");
+            let curr_prod = document.getElementById("currprod-id");
 
             sale_id.value = id;
             quantity.value = data_quantity;
             currquantity.value = data_currquantity;
             selected.value = prodid
             selected.innerHTML = prodname;
+            curr_prod.value = prodid;
 
             modal.classList.toggle("modal-sales");
             modal.classList.toggle("modal-sales-show");

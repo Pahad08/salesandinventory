@@ -37,24 +37,12 @@ function drawChart() {
 
     const options = {
         title: 'Total Sales Today',
-    };
-
-    var size = {
         chartArea: {
             width: '80%',
             height: '80%'
-        },
+        }
     };
-
     const chart = new google.visualization.BarChart(document.getElementById('sale'));
-    chart.draw(data, options);
-
-    function drawChart() {
-        chart.draw(data, options);
-    }
-
-    window.addEventListener('resize', drawChart);
-
     chart.draw(data, options);
 
 }

@@ -541,6 +541,10 @@ a {
     .modal-body {
         width: 80%;
     }
+
+    .info {
+        grid-template-columns: auto;
+    }
 }
 
 @media (max-width: 555px) {
