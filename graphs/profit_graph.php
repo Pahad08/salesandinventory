@@ -1,7 +1,7 @@
 <?php
 include 'openconn.php';
 
-$sql1 = "SELECT sum(amount) as total_expense, month(CURRENT_DATE) as month FROM `expenses` where MONTH(CURRENT_DATE);";
+$sql1 = "SELECT sum(amount) as total_expense FROM `expenses` where MONTH(CURRENT_DATE);";
 $stmt1 = mysqli_prepare($conn, $sql1);
 mysqli_stmt_execute($stmt1);
 $result1 = mysqli_stmt_get_result($stmt1);
@@ -27,7 +27,7 @@ if ($row1['total_expense'] - $row2['sale'] < 0) {
 
 <div id="profit">
     <div class="title">
-        <h3>Profits</h3>
+        <h3>Profit</h3>
     </div>
     <div id="profits"></div>
 </div>
@@ -48,12 +48,8 @@ function drawChart() {
             ?>
     ]);
 
-    const options = {
-        title: 'Profits'
-    };
-
     const chart = new google.visualization.ColumnChart(document.getElementById('profits'));
-    chart.draw(data, options);
+    chart.draw(data);
 
 }
 </script>

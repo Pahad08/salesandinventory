@@ -73,7 +73,7 @@ if (isset($_POST['edit'])) {
         }
     } else {
 
-        if (CheckQuantity($conn, $prodid) === 0) {
+        if (!CheckQuantity($conn, $prodid)) {
             $_SESSION['emptystocks'] = "Empty stock";
             mysqli_close($conn);
             header("location: ../sales.php");

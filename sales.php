@@ -24,7 +24,7 @@ $previouspage = $page_number - 1;
 
 $sql = "SELECT sales.sale_id,sales.product_id ,sales.sale_date, products.name, sales.quantity * products.price as sale, sales.quantity
 from sales join products on sales.product_id = products.product_id
-order by sales.sale_date desc
+order by sales.sale_date desc, sales.sale_id DESC
 LIMIT $number_per_page OFFSET $offset;";
 $stmt = mysqli_prepare($conn, $sql);
 mysqli_stmt_execute($stmt);
@@ -178,10 +178,37 @@ mysqli_close($conn);
 
                 </div>
 
-
             </div>
 
-            <div class="product-list">
+            <?php if (isset($_SESSION['added'])) { ?>
+                <div class="added">
+                    <p><?php echo $_SESSION['added']; ?></p>
+                </div>
+            <?php unset($_SESSION['added']);
+            } else if (isset($_SESSION['deleted'])) { ?>
+                <div class="deleted">
+                    <p><?php echo $_SESSION['deleted']; ?></p>
+                </div>
+            <?php unset($_SESSION['deleted']);
+            } else if (isset($_SESSION['updated'])) { ?>
+                <div class="updated">
+                    <p><?php echo $_SESSION['updated']; ?></p>
+                </div>
+            <?php unset($_SESSION['updated']);
+            } else if (isset($_SESSION['emptystocks'])) { ?>
+                <div class="emptystocks">
+                    <p><?php echo $_SESSION['emptystocks']; ?></p>
+                </div>
+            <?php unset($_SESSION['emptystocks']);
+            } else if (isset($_SESSION['lessquantity'])) { ?>
+                <div class="lessquantity">
+                    <p><?php echo $_SESSION['lessquantity']; ?></p>
+                </div>
+            <?php unset($_SESSION['lessquantity']);
+            }
+            ?>
+
+            <div class="data-body">
 
                 <div class="table-header">
 
@@ -200,34 +227,6 @@ mysqli_close($conn);
                     </div>
 
                 </div>
-
-                <?php if (isset($_SESSION['added'])) { ?>
-                    <div class="added">
-                        <p><?php echo $_SESSION['added']; ?></p>
-                    </div>
-                <?php unset($_SESSION['added']);
-                } else if (isset($_SESSION['deleted'])) { ?>
-                    <div class="deleted">
-                        <p><?php echo $_SESSION['deleted']; ?></p>
-                    </div>
-                <?php unset($_SESSION['deleted']);
-                } else if (isset($_SESSION['updated'])) { ?>
-                    <div class="updated">
-                        <p><?php echo $_SESSION['updated']; ?></p>
-                    </div>
-                <?php unset($_SESSION['updated']);
-                } else if (isset($_SESSION['emptystocks'])) { ?>
-                    <div class="emptystocks">
-                        <p><?php echo $_SESSION['emptystocks']; ?></p>
-                    </div>
-                <?php unset($_SESSION['emptystocks']);
-                } else if (isset($_SESSION['lessquantity'])) { ?>
-                    <div class="lessquantity">
-                        <p><?php echo $_SESSION['lessquantity']; ?></p>
-                    </div>
-                <?php unset($_SESSION['lessquantity']);
-                }
-                ?>
 
                 <form action="delete/deletesales.php" id="deletesales" method="post" class="form-table">
                     <table id="table">

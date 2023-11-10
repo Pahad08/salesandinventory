@@ -1,10 +1,9 @@
 <?php
 include 'openconn.php';
 
-$sql = "SELECT products.name, products.price * sales.quantity as total
+$sql = "SELECT products.name, SUM(products.price * sales.quantity) as total
 from sales
-inner JOIN products on sales.product_id = products.product_id
-where day(sales.sale_date) = day(CURRENT_DATE);";
+inner JOIN products on sales.product_id = products.product_id";
 $stmt = mysqli_prepare($conn, $sql);
 mysqli_stmt_execute($stmt);
 $result = mysqli_stmt_get_result($stmt);
@@ -19,7 +18,6 @@ $result = mysqli_stmt_get_result($stmt);
 </div>
 
 <script>
-    let currentmonth = new Date();
     google.charts.load('current', {
         'packages': ['corechart']
     });
@@ -28,20 +26,16 @@ $result = mysqli_stmt_get_result($stmt);
     function drawChart() {
 
         const data = google.visualization.arrayToDataTable([
-            ['Sale per Product', 'Product'],
+            ['Product Name', 'Total'],
             <?php
             while ($row = mysqli_fetch_array($result)) {
-                echo "['" . $row['name'] . "', " . $row['total'] . "],";
+                echo "['" . $row['name'] . "', " . $row['total'] . "], ";
             }
             ?>
         ]);
 
-        const options = {
-            title: 'Sale per Product This Day'
-        };
-
         const chart = new google.visualization.ColumnChart(document.getElementById('product-sale'));
-        chart.draw(data, options);
+        chart.draw(data);
 
     }
 </script>

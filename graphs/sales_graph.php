@@ -30,7 +30,7 @@ function drawChart() {
         ['Sales', 'Total Sales'],
         <?php
             while ($row = mysqli_fetch_array($result)) {
-                echo "['" . $row['sale_date'] . "', " . $row['sale'] . "],";
+                echo "['" . $row['sale_date'] . "', " . $row['sale'] . "], ";
             }
             ?>
     ]);

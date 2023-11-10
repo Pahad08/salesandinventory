@@ -178,7 +178,24 @@ mysqli_close($conn);
 
                 </div>
 
-                <div class="product-list">
+                <?php if (isset($_SESSION['added'])) { ?>
+                <div class="added">
+                    <p><?php echo $_SESSION['added']; ?></p>
+                </div>
+                <?php unset($_SESSION['added']);
+            } else if (isset($_SESSION['deleted'])) { ?>
+                <div class="deleted">
+                    <p><?php echo $_SESSION['deleted']; ?></p>
+                </div>
+                <?php unset($_SESSION['deleted']);
+            } else if (isset($_SESSION['updated'])) { ?>
+                <div class="updated">
+                    <p><?php echo $_SESSION['updated']; ?></p>
+                </div>
+                <?php unset($_SESSION['updated']);
+            } ?>
+
+                <div class="data-body">
 
                     <div class="table-header">
 
@@ -198,23 +215,6 @@ mysqli_close($conn);
                         </div>
 
                     </div>
-
-                    <?php if (isset($_SESSION['added'])) { ?>
-                    <div class="added">
-                        <p><?php echo $_SESSION['added']; ?></p>
-                    </div>
-                    <?php unset($_SESSION['added']);
-                } else if (isset($_SESSION['deleted'])) { ?>
-                    <div class="deleted">
-                        <p><?php echo $_SESSION['deleted']; ?></p>
-                    </div>
-                    <?php unset($_SESSION['deleted']);
-                } else if (isset($_SESSION['updated'])) { ?>
-                    <div class="updated">
-                        <p><?php echo $_SESSION['updated']; ?></p>
-                    </div>
-                    <?php unset($_SESSION['updated']);
-                } ?>
 
                     <form action="delete/deleteworker.php" id="deleteworker" method="post" class="form-table">
                         <table id="table">

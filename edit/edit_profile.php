@@ -38,7 +38,7 @@ if (isset($_POST['edit'])) {
         $stmt = mysqli_prepare($conn, $sql);
         mysqli_stmt_bind_param($stmt, "sssi", $fname, $lname, $number, $id);
         mysqli_stmt_execute($stmt);
-        $_SESSION['updated'] = "Account Updated Successfully";
+        $_SESSION['updated'] = "Profile Updated Successfully";
         mysqli_close($conn);
         header("location: ../worker.php");
         exit();
@@ -50,7 +50,7 @@ if (isset($_POST['edit'])) {
         $stmt = mysqli_prepare($conn, $sql);
         mysqli_stmt_bind_param($stmt, "ssssi", $fname, $lname, $number, $company, $id);
         mysqli_stmt_execute($stmt);
-        $_SESSION['updated'] = "Account Updated Successfully";
+        $_SESSION['updated'] = "Profile Updated Successfully";
         mysqli_close($conn);
         header("location: ../worker.php");
         exit();

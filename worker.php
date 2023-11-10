@@ -80,19 +80,21 @@ $row = mysqli_fetch_array($result);
         <div class="body">
             <div class="head">
                 <h1>Account</h1>
+
+                <?php if (isset($_SESSION['updated'])) { ?>
+                <div class="updated">
+                    <p><?php echo $_SESSION['updated']; ?></p>
+                </div>
+                <?php unset($_SESSION['updated']);
+        } else if (isset($_SESSION['exist'])) { ?>
+                <div class="exist">
+                    <p><?php echo $_SESSION['exist']; ?></p>
+                </div>
+                <?php unset($_SESSION['exist']);
+        } ?>
             </div>
 
-            <?php if (isset($_SESSION['updated'])) { ?>
-            <div class="updated">
-                <p><span>&#10003;</span> <?php echo $_SESSION['updated']; ?></p>
-            </div>
-            <?php unset($_SESSION['updated']);
-        } else if (isset($_SESSION['exist'])) { ?>
-            <div class="exist">
-                <p><span>&#10003;</span> <?php echo $_SESSION['exist']; ?></p>
-            </div>
-            <?php unset($_SESSION['exist']);
-        } ?>
+
 
             <div class="acc-body">
                 <div class="left-side">

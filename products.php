@@ -170,10 +170,32 @@ $ending_page = min($total_pages, $starting_page + 3);
 
                     </div>
 
-
                 </div>
 
-                <div class="product-list">
+                <?php if (isset($_SESSION['added'])) { ?>
+                <div class="added">
+                    <p><?php echo $_SESSION['added']; ?></p>
+
+                </div>
+                <?php unset($_SESSION['added']);
+            } else if (isset($_SESSION['deleted'])) { ?>
+                <div class="deleted">
+                    <p><?php echo $_SESSION['deleted']; ?></p>
+                </div>
+                <?php unset($_SESSION['deleted']);
+            } else if (isset($_SESSION['updated'])) { ?>
+                <div class="updated">
+                    <p><?php echo $_SESSION['updated']; ?></p>
+                </div>
+                <?php unset($_SESSION['updated']);
+            } else if (isset($_SESSION['exist'])) { ?>
+                <div class="exist">
+                    <p><?php echo $_SESSION['exist']; ?></p>
+                </div>
+                <?php unset($_SESSION['exist']);
+            } ?>
+
+                <div class="data-body">
 
                     <div class="table-header">
 
@@ -185,6 +207,7 @@ $ending_page = min($total_pages, $starting_page + 3);
                                 <button id="delete"><img src="images/delete.png">Delete</button>
                                 <button id="selectall"><img src="images/selectall.png" alt="">Select All</button>
                             </div>
+
                         </div>
 
                         <div class="search">
@@ -192,28 +215,6 @@ $ending_page = min($total_pages, $starting_page + 3);
                         </div>
                     </div>
 
-                    <?php if (isset($_SESSION['added'])) { ?>
-                    <div class="added">
-                        <p><?php echo $_SESSION['added']; ?></p>
-
-                    </div>
-                    <?php unset($_SESSION['added']);
-                } else if (isset($_SESSION['deleted'])) { ?>
-                    <div class="deleted">
-                        <p><?php echo $_SESSION['deleted']; ?></p>
-                    </div>
-                    <?php unset($_SESSION['deleted']);
-                } else if (isset($_SESSION['updated'])) { ?>
-                    <div class="updated">
-                        <p><?php echo $_SESSION['updated']; ?></p>
-                    </div>
-                    <?php unset($_SESSION['updated']);
-                } else if (isset($_SESSION['exist'])) { ?>
-                    <div class="exist">
-                        <p><?php echo $_SESSION['exist']; ?></p>
-                    </div>
-                    <?php unset($_SESSION['exist']);
-                } ?>
                     <form action="delete/deleteproduct.php" id="deleteproduct" method="post" class="form-table">
                         <table id="table">
                             <tr>

@@ -21,8 +21,6 @@
     --low-blue: rgba(0, 149, 255, 0.5);
     --lightblue: #00D7FF;
     --yellow: #F4CE14;
-    --alertgreen: #04AA6D;
-    --alertred: #f44336;
 }
 
 body {
@@ -316,16 +314,15 @@ a {
 .body {
     position: relative;
     top: 54px;
-    margin-left: 230px;
-    padding: 20px;
+    margin-left: 210px;
+    padding: 15px;
     transition: margin-left 300ms;
 }
 
 .body-move {
     position: relative;
     top: 54px;
-    margin-left: 230px;
-    padding: 20px;
+    padding: 15px;
     margin-left: 0px;
     transition: margin-left 300ms;
 }
@@ -372,7 +369,7 @@ a {
     display: flex;
     justify-content: space-between;
     border-radius: 5px;
-    flex-basis: 25%;
+    flex-grow: 1;
 }
 
 .box img {
@@ -695,17 +692,11 @@ select {
 
 /* products info */
 
-.product-list,
-.stock-list {
+.data-body {
     border-radius: 5px;
     box-shadow: 0px 0px 5px var(--black);
 
 }
-
-.stock-list {
-    flex-basis: 100%;
-}
-
 
 .header-info {
     display: flex;
@@ -804,34 +795,28 @@ select {
 .added,
 .updated,
 .prodreceive {
-    margin-top: 5px;
-    background: var(--alertgreen);
+    margin-bottom: 5px;
+    background: var(--low-green);
+    border: 1px solid var(--black);
     padding: 10px;
     font-size: 0.9rem;
-    width: 60%;
-    position: absolute;
-    right: 20px;
-    top: -15px;
-    z-index: 3;
-    opacity: 0;
-    animation: fade 5s;
+    width: 35%;
+    opacity: 1;
+    animation: fade 4s;
 }
 
 .deleted,
 .emptystocks,
 .lessquantity,
 .exist {
-    margin-top: 5px;
-    background: var(--alertred);
-    padding: 7px;
+    margin-bottom: 5px;
+    border: 1px solid var(--black);
+    background: var(--low-red);
+    padding: 10px;
     font-size: 0.9rem;
-    width: 60%;
-    position: absolute;
-    right: 20px;
-    top: -15px;
-    z-index: 3;
-    opacity: 0;
-    animation: fade 5s;
+    width: 35%;
+    opacity: 1;
+    animation: fade 4s;
 }
 
 @keyframes fade {
@@ -1331,7 +1316,6 @@ td {
     .product-list,
     .stock-list {
         flex-basis: 100%;
-        overflow: auto;
     }
 
     .form-container {
@@ -1392,6 +1376,16 @@ td {
     .head button {
         align-self: flex-start;
     }
+
+    .added,
+    .deleted,
+    .exist,
+    .updated,
+    .prodreceive,
+    .emptystocks,
+    .lessquantity {
+        width: 45%;
+    }
 }
 
 @media (max-width: 550px) {
@@ -1411,14 +1405,6 @@ td {
     .modal-body {
         width: 90%;
     }
-}
-
-@media (max-width: 476px) {
-
-    .header-info {
-        flex-direction: column;
-        align-items: flex-start;
-    }
 
     .added,
     .deleted,
@@ -1427,7 +1413,15 @@ td {
     .prodreceive,
     .emptystocks,
     .lessquantity {
-        width: 87%;
+        width: 100%;
+    }
+}
+
+@media (max-width: 476px) {
+
+    .header-info {
+        flex-direction: column;
+        align-items: flex-start;
     }
 
 }
