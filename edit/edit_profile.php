@@ -9,20 +9,22 @@ if (
     exit();
 }
 
-function CleanData($data)
+function CleanData($conn, $data)
 {
     $data = stripslashes($data);
     $data = trim($data);
+    $data = htmlspecialchars($data);
+    $data = mysqli_real_escape_string($conn, $data);
     return $data;
 }
 
 if (isset($_POST['edit'])) {
     include '../openconn.php';
 
-    $id = CleanData($_POST['id']);
-    $fname = CleanData($_POST['fname']);
-    $lname = CleanData($_POST['lname']);
-    $number = CleanData($_POST['number']);
+    $id = $_POST['id'];
+    $fname = CleanData($conn, $_POST['fname']);
+    $lname = CleanData($conn, $_POST['lname']);
+    $number = $_POST['number'];
 
     $stmt_role = mysqli_prepare($conn, "SELECT accounts.role from accounts
     LEFT join workers on accounts.account_id = workers.account_id

@@ -7,19 +7,20 @@ if (!isset($_SESSION["admin"]) && !isset($_SESSION["admin_username"])) {
     exit();
 }
 
-function CleanData($data)
+function CleanData($conn, $data)
 {
     $data = stripslashes($data);
     $data = trim($data);
+    $data = htmlspecialchars($data);
+    $data = mysqli_real_escape_string($conn, $data);
     return $data;
 }
 
-
 if (isset($_POST['edit'])) {
 
-    $id = CleanData($_POST['id']);
-    $description = CleanData($_POST['description']);
-    $amount = CleanData($_POST['amount']);
+    $id = $_POST['id'];
+    $description = CleanData($conn, $_POST['description']);
+    $amount = $_POST['amount'];
 
     $sql = "UPDATE expenses SET `description`=?, amount = ? where expense_id = ?;";
     $stmt = mysqli_prepare($conn, $sql);

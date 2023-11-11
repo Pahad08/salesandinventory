@@ -7,10 +7,12 @@ if (!isset($_SESSION["admin"]) && !isset($_SESSION["admin_username"])) {
     exit();
 }
 
-function CleanData($data)
+function CleanData($conn, $data)
 {
     $data = stripslashes($data);
     $data = trim($data);
+    $data = htmlspecialchars($data);
+    $data = mysqli_real_escape_string($conn, $data);
     return $data;
 }
 
@@ -18,9 +20,9 @@ function CleanData($data)
 if (isset($_POST['add'])) {
     include '../openconn.php';
 
-    $username = CleanData($_POST['username']);
-    $password = password_hash(CleanData($_POST['password']), PASSWORD_BCRYPT);
-    $role = CleanData($_POST['role']);
+    $username = CleanData($conn, $_POST['username']);
+    $password = password_hash($_POST['password'], PASSWORD_BCRYPT);
+    $role = $_POST['role'];
 
     $stmt_exist = mysqli_prepare($conn, "SELECT account_id, username FROM accounts where username = ?");
     mysqli_stmt_bind_param($stmt_exist, "s", $username);

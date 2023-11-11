@@ -9,18 +9,11 @@ if (
     exit();
 }
 
-function CleanData($data)
-{
-    $data = stripslashes($data);
-    $data = trim($data);
-    return $data;
-}
-
 
 if (isset($_POST['add'])) {
     include '../openconn.php';
-    $name = CleanData($_POST['prodid']);
-    $quantity = CleanData($_POST['quantities']);
+    $name = $_POST['prodid'];
+    $quantity = $_POST['quantities'];
     $stock_out = 0;
 
     $statement = mysqli_prepare($conn, "SELECT product_id from stocks where product_id = ?");

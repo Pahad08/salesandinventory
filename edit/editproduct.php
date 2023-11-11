@@ -10,20 +10,21 @@ if (
     exit();
 }
 
-function CleanData($data)
+function CleanData($conn, $data)
 {
     $data = stripslashes($data);
     $data = trim($data);
+    $data = htmlspecialchars($data);
+    $data = mysqli_real_escape_string($conn, $data);
     return $data;
 }
 
-
 if (isset($_POST['edit'])) {
 
-    $id = CleanData($_POST['id']);
-    $name = CleanData($_POST['product']);
-    $kilogram = CleanData($_POST['kilogram']);
-    $price = CleanData($_POST['price']);
+    $id = $_POST['id'];
+    $name = CleanData($conn, $_POST['product']);
+    $kilogram = $_POST['kilogram'];
+    $price = $_POST['price'];
 
     $sql = "UPDATE products SET `name`=?, kilogram = ?, price = ? where product_id = ?;";
     $stmt = mysqli_prepare($conn, $sql);

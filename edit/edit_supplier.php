@@ -7,21 +7,22 @@ if (!isset($_SESSION["admin"]) && !isset($_SESSION["admin_username"])) {
     exit();
 }
 
-function CleanData($data)
+function CleanData($conn, $data)
 {
     $data = stripslashes($data);
     $data = trim($data);
+    $data = htmlspecialchars($data);
+    $data = mysqli_real_escape_string($conn, $data);
     return $data;
 }
 
-
 if (isset($_POST['edit'])) {
 
-    $id = CleanData($_POST['supplier_id']);
-    $fname = CleanData($_POST['fname']);
-    $lname = CleanData($_POST['lname']);
-    $number = CleanData($_POST['number']);
-    $company = CleanData($_POST['company']);
+    $id = $_POST['supplier_id'];
+    $fname = CleanData($conn, $_POST['fname']);
+    $lname = CleanData($conn, $_POST['lname']);
+    $number = $_POST['number'];
+    $company = CleanData($conn, $_POST['company']);
 
     if (empty($_POST['account-id'])) {
         $account_id = null;

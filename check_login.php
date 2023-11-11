@@ -2,10 +2,21 @@
 
 session_start();
 
+
+function CleanData($conn, $data)
+{
+    $data = stripslashes($data);
+    $data = trim($data);
+    $data = htmlspecialchars($data);
+    $data = mysqli_real_escape_string($conn, $data);
+    return $data;
+}
+
+
 if (isset($_POST["submit"])) {
     include 'openconn.php';
 
-    $username = trim(stripslashes($_POST["username"]));
+    $username = CleanData($conn, $_POST["username"]);
     $password = $_POST["password"];
 
     $sql = "SELECT accounts.account_id, accounts.username, accounts.password, accounts.role, accounts.username

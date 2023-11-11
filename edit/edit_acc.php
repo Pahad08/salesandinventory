@@ -10,21 +10,23 @@ if (
     exit();
 }
 
-function CleanData($data)
+function CleanData($conn, $data)
 {
     $data = stripslashes($data);
     $data = trim($data);
+    $data = htmlspecialchars($data);
+    $data = mysqli_real_escape_string($conn, $data);
     return $data;
 }
 
 if (isset($_POST['edit'])) {
     include '../openconn.php';
 
-    $id = CleanData($_POST['id']);
-    $username = CleanData($_POST['username']);
+    $id = $_POST['id'];
+    $username = CleanData($conn, $_POST['username']);
     $password = $_POST['password'];
     if (!empty($_POST['role'])) {
-        $role = CleanData($_POST['role']);
+        $role = $_POST['role'];
     } else {
         $role = "";
     }

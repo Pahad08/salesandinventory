@@ -9,17 +9,10 @@ if (
     exit();
 }
 
-function CleanData($data)
-{
-    $data = stripslashes($data);
-    $data = trim($data);
-    return $data;
-}
-
 if (isset($_POST['add'])) {
     include '../openconn.php';
-    $prod_id = CleanData($_POST['prodid']);
-    $quantity = CleanData($_POST['quantity']);
+    $prod_id = $_POST['prodid'];
+    $quantity = $_POST['quantity'];
 
     $statement = mysqli_prepare($conn, "SELECT quantities, `name` from stocks 
     left join products on stocks.product_id = products.product_id

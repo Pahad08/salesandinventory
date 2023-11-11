@@ -24,7 +24,7 @@ $previouspage = $page_number - 1;
 
 $sql = "SELECT sales.sale_id,sales.product_id ,sales.sale_date, products.name, sales.quantity * products.price as sale, sales.quantity
 from sales join products on sales.product_id = products.product_id
-order by sales.sale_date desc, sales.sale_id DESC
+order by sales.sale_id DESC
 LIMIT $number_per_page OFFSET $offset;";
 $stmt = mysqli_prepare($conn, $sql);
 mysqli_stmt_execute($stmt);

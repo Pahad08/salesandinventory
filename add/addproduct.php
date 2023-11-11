@@ -9,19 +9,21 @@ if (
     exit();
 }
 
-function CleanData($data)
+function CleanData($conn, $data)
 {
     $data = stripslashes($data);
     $data = trim($data);
+    $data = htmlspecialchars($data);
+    $data = mysqli_real_escape_string($conn, $data);
     return $data;
 }
 
 
 if (isset($_POST['add'])) {
     include '../openconn.php';
-    $name = CleanData($_POST['product']);
-    $kilogram = CleanData($_POST['kilogram']);
-    $price = CleanData($_POST['price']);
+    $name = CleanData($conn, $_POST['product']);
+    $kilogram = $_POST['kilogram'];
+    $price = $_POST['price'];
 
     $stmt_name = mysqli_prepare($conn, "SELECT `name` from products where `name` = ?");
     mysqli_stmt_bind_param($stmt_name, "s", $name);

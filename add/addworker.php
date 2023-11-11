@@ -6,19 +6,20 @@ if (!isset($_SESSION["admin"]) && !isset($_SESSION["admin_username"])) {
     exit();
 }
 
-function CleanData($data)
+function CleanData($conn, $data)
 {
     $data = stripslashes($data);
     $data = trim($data);
+    $data = htmlspecialchars($data);
+    $data = mysqli_real_escape_string($conn, $data);
     return $data;
 }
-
 
 if (isset($_POST['add'])) {
     include '../openconn.php';
 
-    $fname = CleanData($_POST['fname']);
-    $lname = CleanData($_POST['lname']);
+    $fname = CleanData($conn, $_POST['fname']);
+    $lname = CleanData($conn, $_POST['lname']);
     $number = $_POST['number'];
 
     if (empty($_POST['account-id'])) {

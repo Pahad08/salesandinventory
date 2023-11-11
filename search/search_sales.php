@@ -7,7 +7,7 @@ if (!empty($_GET['name'])) {
     $sql = "SELECT sales.sale_id,sales.product_id ,sales.sale_date, products.name, sales.quantity * products.price as sale, sales.quantity
     from sales join products on sales.product_id = products.product_id
     where products.name like ?
-    order by sales.sale_date desc
+    order by sales.sale_id DESC
     LIMIT 5 OFFSET 0;";
     $stmt = mysqli_prepare($conn, $sql);
     mysqli_stmt_bind_param($stmt, "s", $name);
@@ -17,7 +17,7 @@ if (!empty($_GET['name'])) {
 } else {
     $sql = "SELECT sales.sale_id,sales.product_id ,sales.sale_date, products.name, sales.quantity * products.price as sale, sales.quantity
     from sales join products on sales.product_id = products.product_id
-    order by sales.sale_date desc
+    order by sales.sale_id DESC
     LIMIT 5 OFFSET 0;";
     $stmt = mysqli_prepare($conn, $sql);
     mysqli_stmt_execute($stmt);
