@@ -428,7 +428,9 @@ a {
 .sale-body,
 .inventory-body,
 .profit-body,
-.sale-product {
+.sale-product,
+.sale-permonth,
+.expense-body {
     background: var(--white);
     border-radius: 5px;
     box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5);
@@ -439,7 +441,9 @@ a {
 #products,
 #sale,
 #profits,
-#product-sale {
+#product-sale,
+#product-month,
+#expenses {
     width: 100%;
     height: 100%;
 }

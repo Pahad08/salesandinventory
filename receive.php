@@ -15,7 +15,9 @@ function DeleteSched($conn, $id)
 if (isset($_GET['id'])) {
     include 'openconn.php';
     $id = $_GET['id'];
-    $stmt_transaction = mysqli_prepare($conn, "SELECT quantity, product_id from `transaction` 
+    $stmt_transaction = mysqli_prepare($conn, "SELECT transaction.quantity, transaction.product_id, products.name
+    from `transaction` 
+    left join products on  transaction.product_id = products.product_id
     where transaction_id = ?");
     mysqli_stmt_bind_param($stmt_transaction, "i", $id);
     mysqli_stmt_execute($stmt_transaction);

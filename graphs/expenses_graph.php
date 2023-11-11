@@ -1,22 +1,19 @@
 <?php
 include 'openconn.php';
 
-$sql = "SELECT products.name, SUM(products.price * sales.quantity) as total
-from sales
-inner JOIN products on sales.product_id = products.product_id
-where DAY(sales.sale_date) = DAY(CURRENT_DATE)
-GROUP by sales.product_id";
+$sql = "SELECT `description`, amount 
+from expenses where MONTH(expense_date) = MONTH(CURRENT_TIME);";
 $stmt = mysqli_prepare($conn, $sql);
 mysqli_stmt_execute($stmt);
 $result = mysqli_stmt_get_result($stmt);
 
 ?>
 
-<div id="per-product">
+<div id="expense">
     <div class="title">
-        <h3>Sale per Product This Day</h3>
+        <h3>Expenses This Month</h3>
     </div>
-    <div id="product-sale"></div>
+    <div id="expenses"></div>
 </div>
 
 <script>
@@ -28,15 +25,15 @@ $result = mysqli_stmt_get_result($stmt);
     function drawChart() {
 
         const data = google.visualization.arrayToDataTable([
-            ['Product Name', 'Total'],
+            ['Available Products', 'Stocks'],
             <?php
             while ($row = mysqli_fetch_array($result)) {
-                echo "['" . $row['name'] . "', " . $row['total'] . "], ";
+                echo "['" . $row['description'] . "', " . $row['amount'] . "],";
             }
             ?>
         ]);
 
-        const chart = new google.visualization.ColumnChart(document.getElementById('product-sale'));
+        const chart = new google.visualization.PieChart(document.getElementById('expenses'));
         chart.draw(data);
 
     }
