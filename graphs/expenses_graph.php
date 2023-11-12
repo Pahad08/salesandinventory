@@ -17,24 +17,24 @@ $result = mysqli_stmt_get_result($stmt);
 </div>
 
 <script>
-    google.charts.load('current', {
-        'packages': ['corechart']
-    });
-    google.charts.setOnLoadCallback(drawChart);
+google.charts.load('current', {
+    'packages': ['corechart']
+});
+google.charts.setOnLoadCallback(drawChart);
 
-    function drawChart() {
+function drawChart() {
 
-        const data = google.visualization.arrayToDataTable([
-            ['Available Products', 'Stocks'],
-            <?php
+    const data = google.visualization.arrayToDataTable([
+        ['Available Products', 'Stocks'],
+        <?php
             while ($row = mysqli_fetch_array($result)) {
                 echo "['" . $row['description'] . "', " . $row['amount'] . "],";
             }
             ?>
-        ]);
+    ]);
 
-        const chart = new google.visualization.PieChart(document.getElementById('expenses'));
-        chart.draw(data);
+    const chart = new google.visualization.PieChart(document.getElementById('expenses'));
+    chart.draw(data);
 
-    }
+}
 </script>
