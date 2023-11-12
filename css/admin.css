@@ -124,6 +124,11 @@ a {
 }
 
 @media print {
+
+    * {
+        page-break-inside: avoid;
+    }
+
     @page {
         margin: 0;
     }
@@ -134,6 +139,10 @@ a {
 
     .nav-body,
     #nav {
+        display: none !important;
+    }
+
+    .dashboard {
         display: none !important;
     }
 
@@ -148,6 +157,7 @@ a {
         font-size: 2rem;
         height: 100%;
         width: 100%;
+        position: static;
     }
 
     .print-button {

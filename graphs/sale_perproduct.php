@@ -20,24 +20,24 @@ $result = mysqli_stmt_get_result($stmt);
 </div>
 
 <script>
-    google.charts.load('current', {
-        'packages': ['corechart']
-    });
-    google.charts.setOnLoadCallback(drawChart);
+google.charts.load('current', {
+    'packages': ['corechart']
+});
+google.charts.setOnLoadCallback(drawChart);
 
-    function drawChart() {
+function drawChart() {
 
-        const data = google.visualization.arrayToDataTable([
-            ['Product Name', 'Total'],
-            <?php
+    const data = google.visualization.arrayToDataTable([
+        ['Product Name', 'Total'],
+        <?php
             while ($row = mysqli_fetch_array($result)) {
                 echo "['" . $row['name'] . "', " . $row['total'] . "], ";
             }
             ?>
-        ]);
+    ]);
 
-        const chart = new google.visualization.ColumnChart(document.getElementById('product-sale'));
-        chart.draw(data);
+    const chart = new google.visualization.ColumnChart(document.getElementById('product-sale'));
+    chart.draw(data);
 
-    }
+}
 </script>

@@ -17,7 +17,7 @@ if (isset($_POST["submit"])) {
     include 'openconn.php';
 
     $username = CleanData($conn, $_POST["username"]);
-    $password = $_POST["password"];
+    $password = mysqli_real_escape_string($conn, $_POST["password"]);
 
     $sql = "SELECT accounts.account_id, accounts.username, accounts.password, accounts.role, accounts.username
     FROM accounts
