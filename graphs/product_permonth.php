@@ -35,8 +35,16 @@ function drawChart() {
             ?>
     ]);
 
+    const options = {
+        animation: {
+            duration: 1500,
+            easing: 'out',
+            startup: true
+        }
+    };
+
     const chart = new google.visualization.ColumnChart(document.getElementById('product-month'));
-    chart.draw(data);
+    chart.draw(data, options);
 
 }
 </script>
