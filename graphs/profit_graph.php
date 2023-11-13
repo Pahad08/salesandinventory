@@ -48,8 +48,16 @@ if ($row1['total_expense'] - $row2['sale'] < 0) {
             ?>
         ]);
 
+        const options = {
+            animation: {
+                duration: 1500,
+                easing: 'out',
+                startup: true
+            }
+        };
+
         const chart = new google.visualization.BarChart(document.getElementById('profits'));
-        chart.draw(data);
+        chart.draw(data, options);
 
     }
 </script>
