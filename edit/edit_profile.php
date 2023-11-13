@@ -45,7 +45,7 @@ if (isset($_POST['edit'])) {
         header("location: ../worker.php");
         exit();
     } else {
-        $company = CleanData($_POST['company']);
+        $company = CleanData($conn, $_POST['company']);
 
         $sql = "UPDATE suppliers SET f_name=?, l_name= ?, contact_number = ?, company_name = ? 
         where supplier_id = ?;";

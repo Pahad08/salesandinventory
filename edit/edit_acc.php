@@ -24,7 +24,7 @@ if (isset($_POST['edit'])) {
 
     $id = $_POST['id'];
     $username = CleanData($conn, $_POST['username']);
-    $password = $_POST['password'];
+    $password = mysqli_real_escape_string($conn, $_POST['password']);
     if (!empty($_POST['role'])) {
         $role = $_POST['role'];
     } else {
