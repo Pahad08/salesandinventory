@@ -51,17 +51,20 @@ function AttachedEvents() {
         })
     }
 
-    selectall.addEventListener("click", () => {
-        if (Checkboxes()) {
-            checkboxes.forEach((element) => {
-                element.checked = true;
-            })
-        } else {
-            checkboxes.forEach((element) => {
-                element.checked = false;
-            })
-        }
-    })
+    if (selectall) {
+        selectall.addEventListener("click", () => {
+            if (Checkboxes()) {
+                checkboxes.forEach((element) => {
+                    element.checked = true;
+                })
+            } else {
+                checkboxes.forEach((element) => {
+                    element.checked = false;
+                })
+            }
+        })
+    }
+
 
     edit.forEach((element) => {
         element.addEventListener("click", (event) => {

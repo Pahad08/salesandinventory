@@ -32,7 +32,12 @@ echo "<tr>
 
 while ($row) {
     echo "<tr>";
-    echo "<td><input type='checkbox' name='stock_id[]' value=" . $row['stock_id'] . " class='checkbox'></td>";
+    if (
+        isset($_SESSION['admin']) || isset($_SESSION['admin_username']) &&
+        isset($_SESSION['worker']) || isset($_SESSION['worker_username'])
+    ) {
+        echo "<td><input type='checkbox' name='stock_id[]' value=" . $row['stock_id'] . " class='checkbox'></td>";
+    }
     echo " <td>" . $row['name'] . "</td>
 <td>" .  $row['quantities'] . "</td>
 <td>" . $row['stock_in'] . "</td>
