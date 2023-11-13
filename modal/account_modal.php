@@ -15,7 +15,7 @@ if (isset($_SESSION["admin"]) && isset($_SESSION["admin_username"])) {
     <div class="form-modal">
 
         <div class="header-modal">
-            <h2>Edit Product</h2>
+            <h2>Edit Account</h2>
         </div>
 
 

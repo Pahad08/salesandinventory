@@ -24,7 +24,7 @@ mysqli_close($conn);
     <div class="form-modal">
 
         <div class="header-modal">
-            <h2>Edit Supplier</h2>
+            <h2>Edit Schedule</h2>
         </div>
 
         <form action="edit/edittransaction.php" method="post" class="edit-transaction" id="form">

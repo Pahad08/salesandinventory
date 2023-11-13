@@ -19,7 +19,7 @@ if (isset($_POST["submit"])) {
     $username = CleanData($conn, $_POST["username"]);
     $password = mysqli_real_escape_string($conn, $_POST["password"]);
 
-    $sql = "SELECT accounts.account_id, accounts.username, accounts.password, accounts.role, accounts.username
+    $sql = "SELECT accounts.account_id, accounts.username, accounts.password, accounts.role
     FROM accounts
     LEFT JOIN workers on accounts.account_id = workers.account_id
     LEFT JOIN suppliers on accounts.account_id = suppliers.account_id
