@@ -45,7 +45,7 @@ $ending_page = min($total_pages, $starting_page + 4);
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="css/admin.css">
-        <link rel="shortcut icon" href="images/logo.png" type="image/x-icon">
+        <link rel="shortcut icon" href="images/logo.jpg" type="image/x-icon">
         <title>Accounts</title>
     </head>
 
