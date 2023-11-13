@@ -50,7 +50,7 @@ if (isset($_POST["submit"])) {
             $_SESSION["worker"] = $row["account_id"];
             $_SESSION["worker_username"] = $row["username"];
             mysqli_close($conn);
-            header("location:admin.php");
+            header("location:worker.php");
             exit();
         } else {
             $_SESSION["supplier"] = $row["account_id"];
