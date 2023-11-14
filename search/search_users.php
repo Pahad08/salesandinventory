@@ -1,5 +1,5 @@
 <?php
-session_start();
+
 include '../openconn.php';
 
 if (!empty($_GET['username'])) {

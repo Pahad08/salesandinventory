@@ -256,7 +256,7 @@ mysqli_close($conn);
                         <table id="table">
                             <tr id="head">
                                 <?php if (
-                                isset($_SESSION['admin']) || isset($_SESSION['admin_username']) &&
+                                isset($_SESSION['admin']) || isset($_SESSION['admin_username']) ||
                                 isset($_SESSION['worker']) || isset($_SESSION['worker_username'])
                             ) { ?>
                                 <th></th>
@@ -270,7 +270,7 @@ mysqli_close($conn);
                             <?php while ($row) { ?>
                             <tr>
                                 <?php if (
-                                    isset($_SESSION['admin']) || isset($_SESSION['admin_username']) &&
+                                    isset($_SESSION['admin']) || isset($_SESSION['admin_username']) ||
                                     isset($_SESSION['worker']) || isset($_SESSION['worker_username'])
                                 ) { ?>
                                 <td><input type="checkbox" name="stock_id[]" value="<?php echo $row['stock_id']; ?>"

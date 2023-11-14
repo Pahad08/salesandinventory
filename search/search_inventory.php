@@ -1,5 +1,6 @@
 <?php
 include '../openconn.php';
+session_start();
 
 if (empty($_GET['name'])) {
     $sql = "SELECT products.name, stocks.stock_id, stocks.quantities, stocks.stock_in, stocks.stock_out
@@ -22,9 +23,14 @@ if (empty($_GET['name'])) {
     $row = mysqli_fetch_array($result);
 }
 mysqli_close($conn);
-echo "<tr>
-<th></th>
-<th>Product Name</th>
+echo "<tr>";
+if (
+    isset($_SESSION['admin']) || isset($_SESSION['admin_username']) ||
+    isset($_SESSION['worker']) || isset($_SESSION['worker_username'])
+) {
+    echo "<th></th>";
+}
+echo " <th>Product Name</th>
 <th>Quantities</th>
 <th>Stock In</th>
 <th>Stock Out</th>
@@ -33,7 +39,7 @@ echo "<tr>
 while ($row) {
     echo "<tr>";
     if (
-        isset($_SESSION['admin']) || isset($_SESSION['admin_username']) &&
+        isset($_SESSION['admin']) || isset($_SESSION['admin_username']) ||
         isset($_SESSION['worker']) || isset($_SESSION['worker_username'])
     ) {
         echo "<td><input type='checkbox' name='stock_id[]' value=" . $row['stock_id'] . " class='checkbox'></td>";
