@@ -36,16 +36,16 @@ if (
             </div>
 
             <?php if (isset($_SESSION["supplier"]) && isset($_SESSION["supplier_username"])) { ?>
-            <div class="input-edit">
-                <label for="company">Company Name</label>
-                <input type="text" id="company" name="company" value="">
-                <p class="empty" id="companyerr">Company Name cannot be blank</p>
-            </div>
+                <div class="input-edit">
+                    <label for="company">Company Name</label>
+                    <input type="text" id="company" name="company" value="">
+                    <p class="empty" id="companyerr">Company Name cannot be blank</p>
+                </div>
             <?php } ?>
 
             <div class="input-edit">
                 <label for="number">Contact Number</label>
-                <input type="number" id="number" name="number" value="">
+                <input type="number" id="number" name="number" value="" inputmode="numeric">
                 <p class="empty" id="numbererr"></p>
             </div>
 

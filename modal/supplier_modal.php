@@ -56,7 +56,7 @@ mysqli_close($conn);
 
             <div class=" input-edit">
                 <label for="supplier-number">Contact Number</label>
-                <input type="number" id="supplier-number" name="number">
+                <input type="number" id="supplier-number" name="number" inputmode="numeric">
                 <p class="empty" id="numerr"></p>
             </div>
 
@@ -71,8 +71,8 @@ mysqli_close($conn);
                 <select name="account-id" id="supplier-accountid">
                     <option value="" id="selected"></option>
                     <?php while ($row_acc) { ?>
-                    <option value="<?php echo $row_acc['account_id']; ?>">
-                        <?php echo $row_acc['username']; ?></option>
+                        <option value="<?php echo $row_acc['account_id']; ?>">
+                            <?php echo $row_acc['username']; ?></option>
                     <?php $row_acc = mysqli_fetch_array($result_acc);
                     } ?>
                 </select>

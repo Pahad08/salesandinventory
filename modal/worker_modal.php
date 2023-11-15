@@ -56,7 +56,7 @@ mysqli_close($conn);
 
             <div class=" input-edit">
                 <label for="worker-number">Contact Number</label>
-                <input type="number" id="worker-number" name="number">
+                <input type="number" id="worker-number" name="number" inputmode="numeric">
                 <p class="empty" id="numerr"></p>
             </div>
 

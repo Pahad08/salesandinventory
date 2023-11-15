@@ -39,7 +39,7 @@ mysqli_close($conn);
 
             <div class=" input-edit">
                 <label for="quant">Quantity</label>
-                <input type="number" id="quant" name="quantity">
+                <input type="number" id="quant" name="quantity" inputmode="numeric">
                 <p class="empty" id="quanterr">Quantity cannot be blank</p>
             </div>
 

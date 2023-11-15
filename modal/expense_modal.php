@@ -39,7 +39,7 @@ if (!isset($_SESSION["admin"]) && !isset($_SESSION["admin_username"])) {
 
             <div class="input-edit">
                 <label for="expense-amount">Amount</label>
-                <input type="number" id="expense-amount" name="amount" value="">
+                <input type="number" id="expense-amount" name="amount" value="" inputmode="numeric">
                 <p class="empty" id="amount-err">Product cannot be blank</p>
             </div>
 

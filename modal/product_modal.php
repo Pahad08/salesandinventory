@@ -41,13 +41,13 @@ if (
 
             <div class="input-edit">
                 <label for="prod-kilo">Kilogram</label>
-                <input type="number" id="prod-kilo" name="kilogram" value="">
+                <input type="number" id="prod-kilo" name="kilogram" value="" inputmode="numeric">
                 <p class="empty" id="kiloerr">Product cannot be blank</p>
             </div>
 
             <div class="input-edit">
                 <label for="prod-price">Price</label>
-                <input type="number" id="prod-price" name="price" value="">
+                <input type="number" id="prod-price" name="price" value="" inputmode="numeric">
                 <p class="empty" id="Priceerr">Product cannot be blank</p>
             </div>
 
