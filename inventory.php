@@ -119,13 +119,7 @@ mysqli_close($conn);
 
                     <ul class="menu">
                         <p>Products</p>
-                        <?php if (
-                        isset($_SESSION["admin"]) || isset($_SESSION["admin_username"])
-                        || isset($_SESSION["worker"]) || isset($_SESSION["worker_username"])
-                        || isset($_SESSION["supplier"]) || isset($_SESSION["supplier_username"])
-                    ) { ?>
                         <li><a href="inventory.php">Inventory</a></li>
-                        <?php } ?>
 
                         <?php if (
                         isset($_SESSION["admin"]) || isset($_SESSION["admin_username"])
@@ -143,7 +137,7 @@ mysqli_close($conn);
 
                     <?php if (
                     isset($_SESSION["supplier"]) || isset($_SESSION["supplier_username"])
-                    || isset($_SESSION["admin"]) && isset($_SESSION["admin_username"])
+                    || isset($_SESSION["admin"]) || isset($_SESSION["admin_username"])
                 ) { ?>
                     <ul class="menu">
                         <p>Suppliers/Workers</p>
@@ -235,7 +229,7 @@ mysqli_close($conn);
                         <div class="header-info">
                             <h2>Inventory</h2>
                             <?php if (
-                            isset($_SESSION['admin']) || isset($_SESSION['admin_username']) &&
+                            isset($_SESSION['admin']) || isset($_SESSION['admin_username']) ||
                             isset($_SESSION['worker']) || isset($_SESSION['worker_username'])
                         ) { ?>
                             <div class="btns">

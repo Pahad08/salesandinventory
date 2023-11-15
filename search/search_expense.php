@@ -25,7 +25,7 @@ echo " <tr>
 <th>Description</th>
 <th>Amount</th>
 <th>Date</th>
-<th>Action</th>
+<th>Edit</th>
 </tr>";
 
 while ($row) {

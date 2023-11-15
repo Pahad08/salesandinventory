@@ -95,20 +95,15 @@ $ending_page = min($total_pages, $starting_page + 3);
                     </ul>
                 <?php } ?>
 
-                <?php if (
-                    isset($_SESSION["admin"]) || isset($_SESSION["admin_username"])
-                    || isset($_SESSION["worker"]) || isset($_SESSION["worker_username"])
-                ) { ?>
-                    <ul class="menu">
-                        <p>Products</p>
-                        <li><a href="inventory.php">Inventory</a></li>
-                        <li><a href="products.php">Product List</a></li>
-                        <li><a href="sales.php">Sales</a></li>
-                        <?php if (isset($_SESSION["admin"]) && isset($_SESSION["admin_username"])) { ?>
-                            <li><a href="expense.php">Expenses</a></li>
-                        <?php } ?>
-                    </ul>
-                <?php } ?>
+                <ul class="menu">
+                    <p>Products</p>
+                    <li><a href="inventory.php">Inventory</a></li>
+                    <li><a href="products.php">Product List</a></li>
+                    <li><a href="sales.php">Sales</a></li>
+                    <?php if (isset($_SESSION["admin"]) && isset($_SESSION["admin_username"])) { ?>
+                        <li><a href="expense.php">Expenses</a></li>
+                    <?php } ?>
+                </ul>
 
                 <?php if (isset($_SESSION["admin"]) && isset($_SESSION["admin_username"])) { ?>
                     <ul class="menu">

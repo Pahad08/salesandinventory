@@ -22,7 +22,6 @@ mysqli_close($conn);
 echo "  <tr >
 <th></th>
 <th>Username</th>
-<th>Password</th>
 <th>Role</th>
 <th>Action</th>
 </tr>";
@@ -31,8 +30,8 @@ while ($row) {
     echo "<tr>";
     echo "<td><input type='checkbox' name='account_id[]' value=" . $row['account_id'] . " class='checkbox'></td>";
     echo " <td>" . $row['username'] . "</td>
-    <td>" .  $row['password'] . "</td>
-    <td>" . $row['role'] . "</td>";
+    <td>" . $role = ($row['role'] == 1) ? 'Admin' : (($row['role'] == 2) ?
+        'Worker' :  'Supplier') . "</td>";
     echo "<td id='action'> <button class='edit' data-accid=" . $row['account_id'] .
         " data-username=" . $row['username'] . " data-password=" . $row['password'] .
         " data-role=" .   $row['role'] . "><img src='images/edit.png'>Edit</button>

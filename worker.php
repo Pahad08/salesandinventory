@@ -28,7 +28,7 @@ $row = mysqli_fetch_array($result);
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="css/suppwork.css">
-        <link rel="shortcut icon" href="images/logo.png" type="image/x-icon">
+        <link rel="shortcut icon" href="images/logo.jpg" type="image/x-icon">
         <title>Worker</title>
     </head>
 
@@ -86,12 +86,17 @@ $row = mysqli_fetch_array($result);
                     <p><?php echo $_SESSION['updated']; ?></p>
                 </div>
                 <?php unset($_SESSION['updated']);
-        } else if (isset($_SESSION['exist'])) { ?>
+            } else if (isset($_SESSION['exist'])) { ?>
                 <div class="exist">
                     <p><?php echo $_SESSION['exist']; ?></p>
                 </div>
                 <?php unset($_SESSION['exist']);
-        } ?>
+            } else if (isset($_SESSION['err-pass'])) { ?>
+                <div class="pass-err">
+                    <p><?php echo $_SESSION['err-pass']; ?></p>
+                </div>
+                <?php unset($_SESSION['err-pass']);
+            } ?>
             </div>
 
 

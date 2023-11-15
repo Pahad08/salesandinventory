@@ -57,7 +57,6 @@ cancel.forEach((element) => {
     })
 })
 
-
 window.addEventListener("click", (event) => {
     if (event.target.className == "modal-acc-show" && acc.classList.contains("modal-acc-show")) {
         acc.classList.toggle("modal-acc-show");
@@ -73,14 +72,17 @@ window.addEventListener("click", (event) => {
 
 update_acc.addEventListener("click", (event) => {
     let usernameerr = document.getElementById("usernameerr");
-    let passworderror = document.getElementById("passworderr");
+    let curr_passworderr = document.getElementById("curr-passworderr");
+    let new_passworderr = document.getElementById("new-passworderr");
     let username = document.getElementById("username");
-    let password = document.getElementById("password");
+    let curr_password = document.getElementById("curr-pass");
+    let new_password = document.getElementById("new-pass");
 
-    if (username.value == "" && password.value == "") {
+    if (username.value == "" && curr_password.value == "" && new_password.value == "") {
         event.preventDefault();
         usernameerr.style.display = "block";
-        passworderror.style.display = "block";
+        curr_passworderr.style.display = "block";
+        new_passworderr.style.display = "block";
     }
 
     if (username.value == "") {
@@ -90,12 +92,22 @@ update_acc.addEventListener("click", (event) => {
         usernameerr.style.display = "none";
     }
 
-    if (password.value == "") {
+    if (curr_password.value == "") {
         event.preventDefault();
-        passworderror.style.display = "block";
-    } else {
-        passworderror.style.display = "none";
+        curr_passworderr.style.display = "block";
     }
+    else {
+        curr_passworderr.style.display = "none";
+    }
+
+    if (new_password.value == "") {
+        event.preventDefault();
+        new_passworderr.style.display = "block";
+    }
+    else {
+        new_passworderr.style.display = "none";
+    }
+
 })
 
 update_profile.addEventListener("click", (event) => {
@@ -160,5 +172,13 @@ if (document.querySelector(".updated")) {
 
     document.querySelector(".exist").addEventListener("click", () => {
         document.querySelector(".exist").style.display = "none";
+    })
+} else if (document.querySelector(".pass-err")) {
+    document.querySelector(".pass-err").addEventListener("animationend", () => {
+        document.querySelector(".pass-err").style.display = "none";
+    })
+
+    document.querySelector(".pass-err").addEventListener("click", () => {
+        document.querySelector(".pass-err").style.display = "none";
     })
 }

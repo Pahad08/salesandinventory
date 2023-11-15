@@ -409,7 +409,8 @@ a {
     animation: fade 5s;
 }
 
-.exist {
+.exist,
+.pass-err {
     align-self: flex-end;
     background: var(--low-red);
     padding: 10px;
@@ -440,7 +441,8 @@ a {
 }
 
 .updated p,
-.exist p {
+.exist p,
+.pass-err p {
     font-weight: bold;
 }
 
@@ -510,7 +512,8 @@ a {
     }
 
     .updated,
-    .exist {
+    .exist,
+    .pass-err {
         width: 40%;
     }
 }
@@ -547,7 +550,8 @@ a {
     }
 
     .updated,
-    .exist {
+    .exist,
+    .pass-err {
         align-self: flex-start;
         width: 100%;
     }

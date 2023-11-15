@@ -113,57 +113,35 @@ mysqli_close($conn);
                         <p>Data Dashboard</p>
                         <li><a href="admin.php">Dashboard</a></li>
                     </ul>
-                <?php } elseif (isset($_SESSION["worker"]) && isset($_SESSION["worker_username"])) { ?>
+                <?php } else { ?>
                     <ul class="menu">
                         <p>Account Details</p>
-                        <li><a href="worker.php">Account</a></li>
-                    </ul>
-                <?php } else if (isset($_SESSION["supplier"]) && isset($_SESSION["supplier_username"])) { ?>
-                    <ul class="menu">
-                        <p>Account Details</p>
-                        <li><a href="worker.php">Account</a></li>
+                        <li><a href="supplier.php">Account</a></li>
                     </ul>
                 <?php } ?>
 
                 <ul class="menu">
                     <p>Products</p>
-                    <?php if (
-                        isset($_SESSION["admin"]) || isset($_SESSION["admin_username"])
-                        || isset($_SESSION["worker"]) || isset($_SESSION["worker_username"])
-                        || isset($_SESSION["supplier"]) || isset($_SESSION["supplier_username"])
-                    ) { ?>
-                        <li><a href="inventory.php">Inventory</a></li>
-                    <?php } ?>
+                    <li><a href="inventory.php">Inventory</a></li>
 
                     <?php if (
-                        isset($_SESSION["admin"]) || isset($_SESSION["admin_username"])
-                        || isset($_SESSION["worker"]) || isset($_SESSION["worker_username"])
+                        isset($_SESSION["admin"]) && isset($_SESSION["admin_username"])
                     ) { ?>
                         <li><a href="products.php">Product List</a></li>
                         <li><a href="sales.php">Sales</a></li>
-                    <?php } ?>
-
-                    <?php if (isset($_SESSION["admin"]) && isset($_SESSION["admin_username"])) { ?>
                         <li><a href="expense.php">Expenses</a></li>
                     <?php } ?>
                 </ul>
 
+                <ul class="menu">
+                    <p>Suppliers/Workers</p>
+                    <?php if (isset($_SESSION["admin"]) && isset($_SESSION["admin_username"])) { ?>
+                        <li><a href="supplier_list.php">List of Suppliers</a></li>
+                        <li><a href="workers_list.php">List of Workers</a></li>
+                    <?php } ?>
 
-                <?php if (
-                    isset($_SESSION["supplier"]) || isset($_SESSION["supplier_username"])
-                    || isset($_SESSION["admin"]) && isset($_SESSION["admin_username"])
-                ) { ?>
-                    <ul class="menu">
-                        <p>Suppliers/Workers</p>
-                        <?php if (isset($_SESSION["admin"]) && isset($_SESSION["admin_username"])) { ?>
-                            <li><a href="supplier_list.php">List of Suppliers</a></li>
-                            <li><a href="workers_list.php">List of Workers</a></li>
-                        <?php } ?>
-
-                        <li><a href="schedules.php">Schedule of Deliveries</a></li>
-                    </ul>
-
-                <?php } ?>
+                    <li><a href="schedules.php">Schedule of Deliveries</a></li>
+                </ul>
 
                 <?php if (isset($_SESSION["admin"]) && isset($_SESSION["admin_username"])) { ?>
                     <ul class="menu">

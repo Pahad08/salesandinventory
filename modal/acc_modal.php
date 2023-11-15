@@ -31,9 +31,15 @@ if (
             </div>
 
             <div class="input-edit">
+                <label for="password">Current Password</label>
+                <input type="password" id="curr-pass" name="curr-pass" value="">
+                <p class="empty" id="curr-passworderr">Current Password cannot be blank</p>
+            </div>
+
+            <div class="input-edit">
                 <label for="password">New Password</label>
-                <input type="password" id="password" name="password" value="">
-                <p class="empty" id="passworderr">Password cannot be blank</p>
+                <input type="password" id="new-pass" name="new-pass" value="">
+                <p class="empty" id="new-passworderr">New Password cannot be blank</p>
             </div>
 
             <div class="buttons">

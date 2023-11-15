@@ -24,12 +24,7 @@ if (isset($_POST['edit'])) {
 
     $id = $_POST['id'];
     $username = CleanData($conn, $_POST['username']);
-    $password = mysqli_real_escape_string($conn, $_POST['password']);
-    if (!empty($_POST['role'])) {
-        $role = $_POST['role'];
-    } else {
-        $role = "";
-    }
+    $destination = (isset($_SESSION["worker"])) ? "../worker.php" : "../supplier.php";
 
     $stmt = mysqli_prepare($conn, "SELECT username, `password`  FROM accounts where account_id = ?");
     mysqli_stmt_bind_param($stmt, "i", $id);
@@ -43,32 +38,50 @@ if (isset($_POST['edit'])) {
     $result2 = mysqli_stmt_get_result($stmt2);
     $row2 = mysqli_fetch_array($result2);
 
-    if ($row['password'] == $password) {
-        $new_password = $row['password'];
+
+    if (isset($_POST['role']) && isset($_POST['password'])) {
+        $role = $_POST['role'];
+        $password = mysqli_real_escape_string($conn, $_POST['password']);
     } else {
-        $new_password = password_hash($password, PASSWORD_BCRYPT);
+        $role = "";
+        $curr_password = mysqli_real_escape_string($conn, $_POST['curr-pass']);
+        $new_pass = password_hash(mysqli_real_escape_string($conn, $_POST['new-pass']), PASSWORD_BCRYPT);
     }
 
     if (empty($role)) {
 
-        if ($row['username'] != $username && $row2['total'] != 0) {
-            $_SESSION['exist'] = "Username Already Exist";
-            mysqli_close($conn);
-            header("location: ../users.php");
-            exit();
+        if (password_verify($curr_password, $row['password'])) {
+            if ($row['username'] != $username && $row2['total'] != 0) {
+                $_SESSION['exist'] = "Username Already Exist";
+                mysqli_close($conn);
+                header("location:" . $destination);
+                exit();
+            } else {
+                $sql = "UPDATE accounts SET username=?, `password`= ? where account_id = ?;";
+                $stmt = mysqli_prepare($conn, $sql);
+                mysqli_stmt_bind_param($stmt, "ssi", $username, $new_pass, $id);
+                mysqli_stmt_execute($stmt);
+                $_SESSION['updated'] = "Account Updated Successfully";
+                mysqli_close($conn);
+                header("location:" . $destination);
+                exit();
+            }
         } else {
-            $sql = "UPDATE accounts SET username=?, `password`= ? where account_id = ?;";
-            $stmt = mysqli_prepare($conn, $sql);
-            mysqli_stmt_bind_param($stmt, "ssi", $username, $new_password, $id);
-            mysqli_stmt_execute($stmt);
-            $_SESSION['updated'] = "Account Updated Successfully";
+            $_SESSION['err-pass'] = "Password is not equal to the entered password";
             mysqli_close($conn);
-            header("location: ../users.php");
+            header("location:" . $destination);
             exit();
         }
     }
 
     if ($row['username'] == $username || $row2['total'] == 0) {
+
+        if ($row['password'] == $password) {
+            $new_password = $row['password'];
+        } else {
+            $new_password = password_hash($password, PASSWORD_BCRYPT);
+        }
+
         $sql = "UPDATE accounts SET username=?, `password`= ?, `role` = ? where account_id = ?;";
         $stmt = mysqli_prepare($conn, $sql);
         mysqli_stmt_bind_param($stmt, "ssii", $username, $new_password, $role, $id);

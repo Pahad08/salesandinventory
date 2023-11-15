@@ -232,7 +232,7 @@ mysqli_close($conn);
                                         class="checkbox"></td>
                                 <td><?php echo $row['f_name'] . " " . $row['l_name']; ?></td>
                                 <td><?php echo $row['contact_number']; ?></td>
-                                <td><?php echo $row['account_id']; ?></td>
+                                <td><?php echo $row['username']; ?></td>
                                 <td id="action"> <button class="edit" data-workerid="<?php echo $row['worker_id']; ?>"
                                         data-fname="<?php echo $row['f_name']; ?>"
                                         data-lname="<?php echo $row['l_name']; ?>"
