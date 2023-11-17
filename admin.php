@@ -110,7 +110,7 @@ where DAY(expense_date) = DAY(CURRENT_DATE);");
                 <img src="images/sales.png" alt="">
                 <div class="info">
                     <p class="sale-text"><?php echo "₱" . $total_sales; ?></p>
-                    <h3>Sales</h3>
+                    <h3>Daily Sales</h3>
                 </div>
             </div>
 

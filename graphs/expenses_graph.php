@@ -11,30 +11,30 @@ $result = mysqli_stmt_get_result($stmt);
 
 <div id="expense">
     <div class="title">
-        <h3>Expenses This Month</h3>
+        <h3>Monthly Expenses</h3>
     </div>
     <div id="expenses"></div>
 </div>
 
 <script>
-google.charts.load('current', {
-    'packages': ['corechart']
-});
-google.charts.setOnLoadCallback(drawChart);
+    google.charts.load('current', {
+        'packages': ['corechart']
+    });
+    google.charts.setOnLoadCallback(drawChart);
 
-function drawChart() {
+    function drawChart() {
 
-    const data = google.visualization.arrayToDataTable([
-        ['Available Products', 'Stocks'],
-        <?php
+        const data = google.visualization.arrayToDataTable([
+            ['Available Products', 'Stocks'],
+            <?php
             while ($row = mysqli_fetch_array($result)) {
                 echo "['" . $row['description'] . "', " . $row['amount'] . "],";
             }
             ?>
-    ]);
+        ]);
 
-    const chart = new google.visualization.PieChart(document.getElementById('expenses'));
-    chart.draw(data);
+        const chart = new google.visualization.PieChart(document.getElementById('expenses'));
+        chart.draw(data);
 
-}
+    }
 </script>

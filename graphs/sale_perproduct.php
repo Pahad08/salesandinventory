@@ -14,7 +14,7 @@ $result = mysqli_stmt_get_result($stmt);
 
 <div id="per-product">
     <div class="title">
-        <h3>Sale per Product This Day</h3>
+        <h3>Daily Products Sales</h3>
     </div>
     <div id="product-sale"></div>
 </div>

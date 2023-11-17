@@ -12,30 +12,30 @@ $result = mysqli_stmt_get_result($stmt);
 
 <div id="product">
     <div class="title">
-        <h3>Inventory</h3>
+        <h3>Remaining Stock</h3>
     </div>
     <div id="products"></div>
 </div>
 
 <script>
-    google.charts.load('current', {
-        'packages': ['corechart']
-    });
-    google.charts.setOnLoadCallback(drawChart);
+google.charts.load('current', {
+    'packages': ['corechart']
+});
+google.charts.setOnLoadCallback(drawChart);
 
-    function drawChart() {
+function drawChart() {
 
-        const data = google.visualization.arrayToDataTable([
-            ['Available Products', 'Stocks'],
-            <?php
+    const data = google.visualization.arrayToDataTable([
+        ['Available Products', 'Stocks'],
+        <?php
             while ($row = mysqli_fetch_array($result)) {
                 echo "['" . $row['name'] . "', " . $row['quantities'] . "],";
             }
             ?>
-        ]);
+    ]);
 
-        const chart = new google.visualization.PieChart(document.getElementById('products'));
-        chart.draw(data);
+    const chart = new google.visualization.ColumnChart(document.getElementById('products'));
+    chart.draw(data);
 
-    }
+}
 </script>

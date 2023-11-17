@@ -13,38 +13,38 @@ $result = mysqli_stmt_get_result($stmt);
 
 <div id="per-product">
     <div class="title">
-        <h3>Sale Per Product This Month</h3>
+        <h3>Monthly Product Sales</h3>
     </div>
     <div id="product-month"></div>
 </div>
 
 <script>
-google.charts.load('current', {
-    'packages': ['corechart']
-});
-google.charts.setOnLoadCallback(drawChart);
+    google.charts.load('current', {
+        'packages': ['corechart']
+    });
+    google.charts.setOnLoadCallback(drawChart);
 
-function drawChart() {
+    function drawChart() {
 
-    const data = google.visualization.arrayToDataTable([
-        ['Product Name', 'Total'],
-        <?php
+        const data = google.visualization.arrayToDataTable([
+            ['Product Name', 'Total'],
+            <?php
             while ($row = mysqli_fetch_array($result)) {
                 echo "['" . $row['name'] . "', " . $row['total'] . "], ";
             }
             ?>
-    ]);
+        ]);
 
-    const options = {
-        animation: {
-            duration: 1500,
-            easing: 'out',
-            startup: true
-        }
-    };
+        const options = {
+            animation: {
+                duration: 1500,
+                easing: 'out',
+                startup: true
+            }
+        };
 
-    const chart = new google.visualization.ColumnChart(document.getElementById('product-month'));
-    chart.draw(data, options);
+        const chart = new google.visualization.ColumnChart(document.getElementById('product-month'));
+        chart.draw(data, options);
 
-}
+    }
 </script>
