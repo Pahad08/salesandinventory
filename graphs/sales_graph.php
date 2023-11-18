@@ -1,10 +1,11 @@
 <?php
 include 'openconn.php';
 
-$sql = "SELECT (sales.quantity * products.price) as sale, sales.sale_date
+$sql = "SELECT sum(sales.quantity * products.price) as sale, sales.sale_date
 from sales
 inner JOIN products on sales.product_id = products.product_id 
 where WEEK(sales.sale_date) = WEEK(CURRENT_DATE)
+GROUP by DAY(sale_date)
 ORDER by DAY(sales.sale_date);";
 $stmt = mysqli_prepare($conn, $sql);
 mysqli_stmt_execute($stmt);
