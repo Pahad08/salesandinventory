@@ -520,7 +520,8 @@ a {
 }
 
 #form-body,
-#form-stock {
+#form-stock,
+#form-sched {
     display: flex;
     flex-direction: column;
     padding: 0px 10px;
@@ -532,8 +533,7 @@ a {
     color: var(--white);
 }
 
-#form-supplier,
-#form-sched {
+#form-supplier {
     display: grid;
     grid-template-columns: auto auto;
     padding: 0px 10px;
@@ -1076,18 +1076,6 @@ td {
     color: var(--white);
 }
 
-.edit-worker {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
-    padding: 10px;
-    gap: 20px;
-    background: var(--black);
-    border-bottom-left-radius: 5px;
-    border-bottom-right-radius: 5px;
-    color: var(--white);
-}
-
 .edit-supplier {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -1260,8 +1248,8 @@ td {
 
 
     .form-container {
-        margin: 110px auto 0px auto;
-        width: 80%;
+        margin: 100px auto 0px auto;
+        width: 50%;
         animation: show-form 300ms;
     }
 
