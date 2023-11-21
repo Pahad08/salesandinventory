@@ -533,7 +533,8 @@ a {
     color: var(--white);
 }
 
-#form-supplier {
+#form-supplier,
+#form-worker {
     display: grid;
     grid-template-columns: auto auto;
     padding: 0px 10px;

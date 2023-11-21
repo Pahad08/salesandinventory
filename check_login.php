@@ -19,11 +19,7 @@ if (isset($_POST["submit"])) {
     $username = CleanData($conn, $_POST["username"]);
     $password = mysqli_real_escape_string($conn, $_POST["password"]);
 
-    $sql = "SELECT accounts.account_id, accounts.username, accounts.password, accounts.role
-    FROM accounts
-    LEFT JOIN workers on accounts.account_id = workers.account_id
-    LEFT JOIN suppliers on accounts.account_id = suppliers.account_id
-    WHERE accounts.username = ?";
+    $sql = "SELECT * from accounts WHERE username = ?";
     $stmt = mysqli_prepare($conn, $sql);
     mysqli_stmt_bind_param($stmt, "s", $username);
     mysqli_stmt_execute($stmt);
@@ -47,21 +43,45 @@ if (isset($_POST["submit"])) {
             header("location:admin.php");
             exit();
         } elseif ($row["role"] == "2") {
-            $_SESSION["worker"] = $row["account_id"];
-            $_SESSION["worker_username"] = $row["username"];
-            mysqli_close($conn);
-            header("location:worker.php");
-            exit();
+
+            $statement = mysqli_prepare($conn, "SELECT * FROM workers WHERE account_id = ?");
+            mysqli_stmt_bind_param($statement, "i", $row['account_id']);
+            mysqli_stmt_execute($statement);
+            $result2 = mysqli_stmt_get_result($statement);
+            if (mysqli_num_rows($result2) > 0) {
+                $_SESSION["worker"] = $row["account_id"];
+                $_SESSION["worker_username"] = $row["username"];
+                mysqli_close($conn);
+                header("location:worker.php");
+                exit();
+            } else {
+                mysqli_close($conn);
+                $_SESSION["missing"] = "Account not found!";
+                header("location: login.php");
+                exit();
+            }
         } else {
-            $_SESSION["supplier"] = $row["account_id"];
-            $_SESSION["supplier_username"] = $row["username"];
-            mysqli_close($conn);
-            header("location:supplier.php");
-            exit();
+
+            $statement = mysqli_prepare($conn, "SELECT * FROM suppliers WHERE account_id = ?");
+            mysqli_stmt_bind_param($statement, "i", $row['account_id']);
+            mysqli_stmt_execute($statement);
+            $result2 = mysqli_stmt_get_result($statement);
+            if (mysqli_num_rows($result2) > 0) {
+                $_SESSION["supplier"] = $row["account_id"];
+                $_SESSION["supplier_username"] = $row["username"];
+                mysqli_close($conn);
+                header("location:supplier.php");
+                exit();
+            } else {
+                mysqli_close($conn);
+                $_SESSION["missing"] = "Account not found!";
+                header("location: login.php");
+                exit();
+            }
         }
     } else {
         mysqli_close($conn);
-        $_SESSION["missing"] = "Account not found!";
+        $_SESSION["missing"] = "Wrong Password!";
         header("location: login.php");
         exit();
     }

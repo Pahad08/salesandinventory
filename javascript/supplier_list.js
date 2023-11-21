@@ -10,11 +10,14 @@ let fname = document.getElementById("fname");
 let lname = document.getElementById("lname");
 let number = document.getElementById("number");
 let company = document.getElementById("company");
-let accid = document.getElementById("account-id");
+let username = document.getElementById("username");
+let password = document.getElementById("password");
 let fnameerr = document.getElementById("fnameerr");
 let lnameerr = document.getElementById("lnameerr");
 let numbererr = document.getElementById("numbererr");
 let companyerr = document.getElementById("companyerr");
+let usernameerr = document.getElementById("usernameerr");
+let passworderr = document.getElementById("passworderr");
 let del = document.getElementById("del");
 let cancel = document.getElementById("cancel");
 let search = document.getElementById("search");
@@ -158,11 +161,14 @@ reset.addEventListener("click", (event) => {
     lname.value = "";
     number.value = "";
     company.value = "";
-    accid.value = "";
+    username.value = "";
+    password.value = "";
     fnameerr.style.display = "none";
     lnameerr.style.display = "none";
     numbererr.style.display = "none";
     companyerr.style.display = "none";
+    usernameerr.style.display = "none";
+    passworderr.style.display = "none";
 })
 
 
@@ -203,12 +209,15 @@ closebtn.addEventListener("click", () => {
 
 add.addEventListener("click", (event) => {
 
-    if (fname.value == "" && lname.value == "" && company.value == "" && number.value == "") {
+    if (fname.value == "" && lname.value == "" && company.value == "" && number.value == ""
+        && username.value == "" && password.value == "") {
         event.preventDefault();
         fnameerr.style.display = "block";
         lnameerr.style.display = "block";
         companyerr.style.display = "block";
         numbererr.style.display = "block";
+        usernameerr.style.display = "block";
+        passworderr.style.display = "block";
     }
 
     if (fname.value == "") {
@@ -247,6 +256,20 @@ add.addEventListener("click", (event) => {
         companyerr.style.display = "block";
     } else {
         companyerr.style.display = "none";
+    }
+
+    if (username.value == "") {
+        event.preventDefault();
+        usernameerr.style.display = "block";
+    } else {
+        usernameerr.style.display = "none";
+    }
+
+    if (password.value == "") {
+        event.preventDefault();
+        passworderr.style.display = "block";
+    } else {
+        passworderr.style.display = "none";
     }
 
 })

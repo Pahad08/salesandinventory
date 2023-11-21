@@ -37,7 +37,7 @@ echo " <tr>
 
 while ($row) {
     echo "<tr>";
-    echo "<td><input type='checkbox' name='worker_id[]' value=" . $row['worker_id'] . " class='checkbox'></td>";
+    echo "<td><input type='checkbox' name='account_id[]' value=" . "'" . $row['account_id'] . "'" . " class='checkbox'></td>";
     echo " <td>" . $row['f_name'] . " " . $row['l_name'] . "</td>
     <td>" .  $row['contact_number'] . "</td>
     <td>" . $row['username'] . "</td>";
