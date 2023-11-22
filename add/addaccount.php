@@ -21,7 +21,7 @@ if (isset($_POST['add'])) {
     include '../openconn.php';
 
     $username = CleanData($conn, $_POST['username']);
-    $password = mysqli_real_escape_string($conn, password_hash($_POST['password'], PASSWORD_BCRYPT));
+    $password = password_hash(mysqli_real_escape_string($conn, $_POST['password']), PASSWORD_BCRYPT);
     $role = $_POST['role'];
 
     $stmt_exist = mysqli_prepare($conn, "SELECT account_id, username FROM accounts where username = ?");
@@ -35,7 +35,7 @@ if (isset($_POST['add'])) {
         header("location: ../users.php");
         exit();
     } else {
-        $stmt = mysqli_prepare($conn, "INSERT INTO accounts(username, `password`, role) VALUES(?,?,?);");
+        $stmt = mysqli_prepare($conn, "INSERT INTO accounts(username, `password`, `role`) VALUES(?,?,?);");
         mysqli_stmt_bind_param($stmt, "ssi", $username, $password, $role);
         mysqli_stmt_execute($stmt);
         $_SESSION['added'] = "Username Added Successfully";

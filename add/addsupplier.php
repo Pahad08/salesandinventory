@@ -23,7 +23,7 @@ if (isset($_POST['add'])) {
     $number = $_POST['number'];
     $company = CleanData($conn, $_POST['company']);
     $username = CleanData($conn, $_POST['username']);
-    $password = mysqli_real_escape_string($conn, $_POST['password']);
+    $password = password_hash(mysqli_real_escape_string($conn, $_POST['password']), PASSWORD_BCRYPT);
     $role = 3;
 
     $stmt_exist = mysqli_prepare($conn, "SELECT account_id, username FROM accounts where username = ?");
