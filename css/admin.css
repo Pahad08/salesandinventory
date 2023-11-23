@@ -477,14 +477,14 @@ a {
     height: 100%;
     top: 0;
     left: 0;
-    z-index: 1;
+    z-index: 2;
+    overflow: auto;
 }
 
 .form-container {
-    margin: 100px auto 0px auto;
+    margin: 100px auto 20px auto;
     width: 50%;
     animation: show-form 300ms;
-    display: grid;
 }
 
 @keyframes show-form {
@@ -521,22 +521,11 @@ a {
 
 #form-body,
 #form-stock,
-#form-sched {
-    display: flex;
-    flex-direction: column;
-    padding: 0px 10px;
-    gap: 20px;
-    background: var(--black);
-    padding: 10px;
-    border-bottom-right-radius: 5px;
-    border-bottom-left-radius: 5px;
-    color: var(--white);
-}
-
+#form-sched,
 #form-supplier,
 #form-worker {
-    display: grid;
-    grid-template-columns: auto auto;
+    display: flex;
+    flex-direction: column;
     padding: 0px 10px;
     gap: 20px;
     background: var(--black);
@@ -727,7 +716,9 @@ select {
 
 .add img,
 #delete img,
-#selectall img {
+#selectall img,
+#delete-acc img,
+#selectall-acc img {
     width: 20px;
 }
 
@@ -745,6 +736,26 @@ select {
 .btns {
     display: flex;
     gap: 8px;
+}
+
+#delete-acc {
+    background: var(--red);
+}
+
+#delete-acc:hover,
+#delete-acc:focus {
+    background: var(--lightred);
+    outline: 4px solid var(--low-red);
+}
+
+#selectall-acc {
+    background: var(--blue);
+}
+
+#selectall-acc:hover,
+#selectall-acc:focus {
+    background: var(--lightblue);
+    outline: 4px solid var(--low-blue);
 }
 
 .btns button:nth-of-type(3) {
@@ -1027,12 +1038,15 @@ td {
     height: 100%;
     top: 0;
     left: 0;
+    overflow: auto;
+    z-index: 2;
 }
 
 .form-modal {
     width: 100%;
     animation: showmodal 300ms;
     margin-top: -80px;
+    margin-bottom: 20px;
 }
 
 @keyframes showmodal {
@@ -1066,24 +1080,13 @@ td {
 .edit-worker,
 .edit-transaction,
 .edit-account,
-.edit-stock {
+.edit-stock,
+.edit-supplier {
     display: flex;
     flex-direction: column;
     gap: 20px;
     background: var(--black);
     padding: 10px;
-    border-bottom-left-radius: 5px;
-    border-bottom-right-radius: 5px;
-    color: var(--white);
-}
-
-.edit-supplier {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
-    padding: 10px;
-    gap: 20px;
-    background: var(--black);
     border-bottom-left-radius: 5px;
     border-bottom-right-radius: 5px;
     color: var(--white);
@@ -1247,11 +1250,11 @@ td {
         flex-basis: 100%;
     }
 
-
     .form-container {
-        margin: 100px auto 0px auto;
+        margin: 100px auto 20px auto;
         width: 50%;
-        animation: show-form 300ms;
+        overflow: auto;
+        z-index: 2;
     }
 
     .search {
@@ -1323,6 +1326,7 @@ td {
     }
 
     .form-container {
+        margin: 100px auto 20px auto;
         width: 90%;
     }
 
@@ -1353,14 +1357,6 @@ td {
 
     .alert-container img {
         width: 50%;
-    }
-
-    .form-container {
-        margin: 100px auto 0px auto;
-    }
-
-    .edit-supplier {
-        gap: 7px;
     }
 
     .modal-body {
@@ -1395,6 +1391,7 @@ td {
 @media (max-width: 550px) {
 
     .form-container {
+        margin: 100px auto 20px auto;
         width: 90%;
     }
 
@@ -1434,7 +1431,7 @@ td {
 
     .form-container {
         width: 90%;
-        margin: 100px auto 0px auto;
+        margin: 100px auto 20px auto;
     }
 
     .alert-container p {
@@ -1466,7 +1463,7 @@ td {
     }
 
     .form-container {
-        margin: 100px auto 0px auto;
+        margin: 100px auto 20px auto;
     }
 
     .header-form h2 {

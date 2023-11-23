@@ -57,21 +57,16 @@ function AttachedEvents() {
             let f_name = element.getAttribute("data-fname");
             let l_name = element.getAttribute("data-lname");
             let number = element.getAttribute("data-number");
-            let username = element.getAttribute("data-username");
-            let acc_id = element.getAttribute("data-accid");
 
             let worker_id = document.getElementById("worker-id");
             let fname = document.getElementById("worker-fname");
             let lname = document.getElementById("worker-lname");
             let worker_num = document.getElementById("worker-number");
-            let selected = document.getElementById("selected");
 
             worker_id.value = workerid;
             fname.value = f_name;
             lname.value = l_name;
             worker_num.value = number;
-            selected.value = acc_id;
-            selected.innerHTML = username;
 
             modal.classList.toggle("modal-worker");
             modal.classList.toggle("modal-worker-show");
@@ -163,7 +158,6 @@ reset.addEventListener("click", (event) => {
     passworderr.style.display = "none";
 })
 
-
 openform.addEventListener("click", () => {
     form.classList.toggle("form");
     form.classList.toggle("show-form");
@@ -242,7 +236,6 @@ add.addEventListener("click", (event) => {
         numbererr.style.display = "none";
     }
 
-
     if (username.value == "") {
         event.preventDefault();
         usernameerr.style.display = "block";
@@ -256,7 +249,6 @@ add.addEventListener("click", (event) => {
     } else {
         passworderr.style.display = "none";
     }
-
 
 })
 

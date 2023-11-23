@@ -43,8 +43,7 @@ while ($row) {
     <td>" . $row['username'] . "</td>";
     echo "<td id='action'> <button class='edit' data-workerid=" . $row['worker_id'] .
         " data-fname=" . $row['f_name'] . " data-lname=" . $row['l_name'] .
-        " data-number= " . $row['contact_number'] .
-        ' data-accid="' . $row['account_id'] . '"  data-username=' . $row['username'] .  "><img src='images/edit.png'>Edit</button>
+        " data-number= " . $row['contact_number'] .  "><img src='images/edit.png'>Edit</button>
 </td>";
     echo "</tr>";
     $row = mysqli_fetch_array($result);

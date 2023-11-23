@@ -1,17 +1,7 @@
 let form = document.getElementById("form");
-let openform = document.getElementById("accadd");
-let closebtn = document.getElementById("closebtn");
-let reset = document.getElementById("reset");
-let deletebtn = document.querySelector("#delete");
+let deletebtn = document.querySelector("#delete-acc");
 let canceldelete = document.getElementById("close-deletion");
 let alertbody = document.getElementById("alert-body");
-let add = document.getElementById("add");
-let username = document.getElementById("username");
-let password = document.getElementById("password");
-let role = document.getElementById("role");
-let usernameerr = document.getElementById("usernameerr");
-let passworderr = document.getElementById("passworderr");
-let roleerr = document.getElementById("roleerr");
 let del = document.getElementById("del");
 let cancel = document.getElementById("cancel");
 let search = document.getElementById("search");
@@ -29,7 +19,7 @@ function Checkboxes() {
 }
 
 function AttachedEvents() {
-    let selectall = document.getElementById('selectall');
+    let selectall = document.getElementById('selectall-acc');
     let checkboxes = document.querySelectorAll(".checkbox");
     const edit = document.querySelectorAll(".edit");
 
@@ -126,14 +116,6 @@ if (document.querySelector(".updated")) {
     document.querySelector(".updated").addEventListener("click", () => {
         document.querySelector(".updated").style.display = "none";
     })
-} else if (document.querySelector(".added")) {
-    document.querySelector(".added").addEventListener("animationend", () => {
-        document.querySelector(".added").style.display = "none";
-    })
-
-    document.querySelector(".added").addEventListener("click", () => {
-        document.querySelector(".added").style.display = "none";
-    })
 } else if (document.querySelector(".deleted")) {
     document.querySelector(".deleted").addEventListener("animationend", () => {
         document.querySelector(".deleted").style.display = "none";
@@ -151,22 +133,6 @@ if (document.querySelector(".updated")) {
         document.querySelector(".exist").style.display = "none";
     })
 }
-
-reset.addEventListener("click", (event) => {
-    event.preventDefault();
-    username.value = "";
-    password.value = "";
-    role.value = "";
-    usernameerr.style.display = "none";
-    passworderr.style.display = "none";
-    roleerr.style.display = "none";
-})
-
-
-openform.addEventListener("click", () => {
-    form.classList.toggle("form");
-    form.classList.toggle("show-form");
-})
 
 window.addEventListener("resize", () => {
     if (window.innerWidth > 1022 && form.classList.contains("show-form")) {
@@ -191,43 +157,6 @@ window.addEventListener("click", (event) => {
         modal.classList.toggle("modal-account-show");
         modal.classList.toggle("modal-account");
     }
-})
-
-closebtn.addEventListener("click", () => {
-    form.classList.toggle("show-form");
-    form.classList.toggle("form");
-})
-
-add.addEventListener("click", (event) => {
-
-    if (username.value == "" && password.value == "" && role.value == "") {
-        event.preventDefault();
-        usernameerr.style.display = "block";
-        passworderr.style.display = "block";
-        roleerr.style.display = "block";
-    }
-
-    if (username.value == "") {
-        event.preventDefault();
-        usernameerr.style.display = "block";
-    } else {
-        usernameerr.style.display = "none";
-    }
-
-    if (password.value == "") {
-        event.preventDefault();
-        passworderr.style.display = "block";
-    } else {
-        passworderr.style.display = "none";
-    }
-
-    if (role.value == "") {
-        event.preventDefault();
-        roleerr.style.display = "block";
-    } else {
-        roleerr.style.display = "none";
-    }
-
 })
 
 update.addEventListener("click", (event) => {

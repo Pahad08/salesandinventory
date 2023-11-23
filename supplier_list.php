@@ -248,9 +248,7 @@ mysqli_close($conn);
                                         data-fname="<?php echo $row['f_name']; ?>"
                                         data-lname="<?php echo $row['l_name']; ?>"
                                         data-number="<?php echo $row['contact_number']; ?>"
-                                        data-company="<?php echo $row['company_name']; ?>"
-                                        data-accid="<?php echo $acc_id = (empty($row['account_id'])) ? null : $row['account_id']; ?>"
-                                        data-username="<?php echo  $row['username']; ?>"><img src="images/edit.png"
+                                        data-company="<?php echo $row['company_name']; ?>"><img src="images/edit.png"
                                             alt="">Edit</button>
                                 </td>
                             </tr>

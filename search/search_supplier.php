@@ -46,7 +46,7 @@ while ($row) {
     echo "<td id='action'> <button class='edit' data-supplierid=" . $row['supplier_id'] .
         " data-fname=" . $row['f_name'] . " data-lname=" . $row['l_name'] .
         " data-number= " . $row['contact_number'] . " data-company=" . $row['company_name'] .
-        ' data-accid="' . $row['account_id'] . '"  data-username=' . $row['username'] .  "><img src='images/edit.png'>Edit</button>
+        "><img src='images/edit.png'>Edit</button>
 </td>";
     echo "</tr>";
     $row = mysqli_fetch_array($result);

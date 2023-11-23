@@ -239,9 +239,7 @@ mysqli_close($conn);
                                 <td id="action"> <button class="edit" data-workerid="<?php echo $row['worker_id']; ?>"
                                         data-fname="<?php echo $row['f_name']; ?>"
                                         data-lname="<?php echo $row['l_name']; ?>"
-                                        data-number="<?php echo $row['contact_number']; ?>"
-                                        data-accid="<?php echo $row['account_id']; ?>"
-                                        data-username="<?php echo $row['username']; ?>"><img src="images/edit.png"
+                                        data-number="<?php echo $row['contact_number']; ?>"><img src="images/edit.png"
                                             alt="">Edit</button>
                                 </td>
                             </tr>

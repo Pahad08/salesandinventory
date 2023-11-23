@@ -24,15 +24,9 @@ if (isset($_POST['edit'])) {
     $lname = CleanData($conn, $_POST['lname']);
     $number = $_POST['number'];
 
-    if (empty($_POST['account-id'])) {
-        $account_id = null;
-    } else {
-        $account_id = $_POST['account-id'];
-    }
-
-    $sql = "UPDATE workers SET f_name=?, l_name=?, contact_number = ?, account_id = ? where worker_id = ?;";
+    $sql = "UPDATE workers SET f_name=?, l_name=?, contact_number = ? where worker_id = ?;";
     $stmt = mysqli_prepare($conn, $sql);
-    mysqli_stmt_bind_param($stmt, "sssii", $fname, $lname, $number, $account_id, $id);
+    mysqli_stmt_bind_param($stmt, "sssi", $fname, $lname, $number, $id);
     mysqli_stmt_execute($stmt);
     $_SESSION['updated'] = "Worker Updated Successfully";
     mysqli_close($conn);

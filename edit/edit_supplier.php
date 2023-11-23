@@ -24,15 +24,9 @@ if (isset($_POST['edit'])) {
     $number = $_POST['number'];
     $company = CleanData($conn, $_POST['company']);
 
-    if (empty($_POST['account-id'])) {
-        $account_id = null;
-    } else {
-        $account_id = $_POST['account-id'];
-    }
-
-    $sql = "UPDATE suppliers SET f_name=?, l_name=?, contact_number = ?, company_name=?, account_id = ? where supplier_id = ?;";
+    $sql = "UPDATE suppliers SET f_name=?, l_name=?, contact_number = ?, company_name=? where supplier_id = ?;";
     $stmt = mysqli_prepare($conn, $sql);
-    mysqli_stmt_bind_param($stmt, "ssssii", $fname, $lname, $number, $company, $account_id, $id);
+    mysqli_stmt_bind_param($stmt, "ssssi", $fname, $lname, $number, $company, $id);
     mysqli_stmt_execute($stmt);
     $_SESSION['updated'] = "Supplier Updated Successfully";
     mysqli_close($conn);

@@ -60,23 +60,18 @@ function AttachedEvents() {
             let l_name = element.getAttribute("data-lname");
             let number = element.getAttribute("data-number");
             let company = element.getAttribute("data-company");
-            let username = element.getAttribute("data-username");
-            let acc_id = element.getAttribute("data-accid");
 
             let suppid = document.getElementById("supplier-id");
             let fname = document.getElementById("supplier-fname");
             let lname = document.getElementById("supplier-lname");
             let supplier_num = document.getElementById("supplier-number");
             let supplier_company = document.getElementById("supplier-company");
-            let selected = document.getElementById("selected");
 
             suppid.value = supplierid;
             fname.value = f_name;
             lname.value = l_name;
             supplier_num.value = number;
             supplier_company.value = company;
-            selected.value = acc_id;
-            selected.innerHTML = username;
 
             modal.classList.toggle("modal-supplier");
             modal.classList.toggle("modal-supplier-show");
