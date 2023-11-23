@@ -47,21 +47,11 @@ function AttachedEvents() {
             let password = document.getElementById("curr_password");
             let role = document.getElementById("curr_role");
             let id = document.getElementById("acc-id");
-            let role_description;
-
-            if (data_role == 1) {
-                role_description = "Admin";
-            } else if (data_role == 2) {
-                role_description = "Worker";
-            } else {
-                role_description = "Supplier";
-            }
 
             id.value = data_id;
             username.value = data_username;
             password.value = data_password;
             role.value = data_role;
-            role.innerHTML = role_description;
 
             modal.classList.toggle("modal-account");
             modal.classList.toggle("modal-account-show");

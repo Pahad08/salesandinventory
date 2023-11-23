@@ -35,15 +35,7 @@ if (isset($_SESSION["admin"]) && isset($_SESSION["admin_username"])) {
                 <p class="empty" id="passworderror">Password cannot be blank</p>
             </div>
 
-            <div class="input-edit">
-                <label for="role">Role</label>
-                <select name="role">
-                    <option value="" id="curr_role"></option>
-                    <option value="1">Admin</option>
-                    <option value="2">Worker</option>
-                    <option value="3">Supplier</option>
-                </select>
-            </div>
+            <input type="number" id="curr_role" value="" name="role" hidden>
 
             <div class="buttons">
                 <button type="submit" id="update" name="edit" value="edit">Update</button>
