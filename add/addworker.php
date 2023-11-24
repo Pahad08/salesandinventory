@@ -41,11 +41,7 @@ if (isset($_POST['add'])) {
         mysqli_stmt_bind_param($stmt, "ssi", $username, $password, $role);
         mysqli_stmt_execute($stmt);
 
-        $stmt2 = mysqli_prepare($conn, "SELECT account_id FROM accounts order by account_id desc LIMIT 1");
-        mysqli_stmt_execute($stmt2);
-        $result2 = mysqli_stmt_get_result($stmt2);
-        $row2 = mysqli_fetch_array($result2);
-        $account_id = $row2['account_id'];
+        $account_id = mysqli_insert_id($conn);
 
         $sql = "INSERT INTO workers(f_name, l_name, contact_number, account_id) VALUES(?,?,?,?);";
         $stmt = mysqli_prepare($conn, $sql);
