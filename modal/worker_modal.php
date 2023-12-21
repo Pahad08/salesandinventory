@@ -8,7 +8,7 @@ if (isset($_GET['name'])) {
 if (isset($_SESSION["admin"]) && isset($_SESSION["admin_username"])) {
     $admin_id = $_SESSION["admin"];
 } else {
-    header("location: ../login.php");
+    header("location: ../index.php");
     exit();
 }
 ?>

@@ -31,7 +31,7 @@ if (isset($_POST["submit"])) {
     } else {
         $_SESSION["missing"] = "Account not found!";
         mysqli_close($conn);
-        header("location: login.php");
+        header("location: index.php");
         exit();
     }
 
@@ -57,7 +57,7 @@ if (isset($_POST["submit"])) {
             } else {
                 mysqli_close($conn);
                 $_SESSION["missing"] = "Account not found!";
-                header("location: login.php");
+                header("location: index.php");
                 exit();
             }
         } else {
@@ -75,18 +75,18 @@ if (isset($_POST["submit"])) {
             } else {
                 mysqli_close($conn);
                 $_SESSION["missing"] = "Account not found!";
-                header("location: login.php");
+                header("location: index.php");
                 exit();
             }
         }
     } else {
         mysqli_close($conn);
         $_SESSION["missing"] = "Wrong Password!";
-        header("location: login.php");
+        header("location: index.php");
         exit();
     }
 } else {
     mysqli_close($conn);
-    header("location: login.php");
+    header("location: index.php");
     exit();
 }

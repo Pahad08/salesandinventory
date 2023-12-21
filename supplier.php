@@ -6,7 +6,7 @@ include 'openconn.php';
 if (isset($_SESSION["supplier"]) && isset($_SESSION["supplier_username"])) {
     $supplier_id = $_SESSION["supplier"];
 } else {
-    header("location: login.php");
+    header("location: index.php");
     exit();
 }
 

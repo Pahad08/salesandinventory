@@ -5,7 +5,7 @@ if (
     !isset($_SESSION["supplier"]) && !isset($_SESSION["supplier_username"])
     && !isset($_SESSION["worker"]) && !isset($_SESSION["worker_username"])
 ) {
-    header("location: ../login.php");
+    header("location: ../index.php");
     exit();
 }
 
