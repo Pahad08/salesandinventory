@@ -9,7 +9,7 @@ if (
     !isset($_SESSION["admin"]) && !isset($_SESSION["admin_username"])
     && !isset($_SESSION["worker"]) && !isset($_SESSION["worker_username"])
 ) {
-    header("location: ../login.php");
+    header("location: ../index.php");
     exit();
 }
 $prod_sql = "SELECT product_id, `name` from products;";
@@ -45,8 +45,8 @@ mysqli_close($conn);
                 <select name="prodid" id="prodselect">
                     <option value="" id="selected"></option>
                     <?php while ($row_prod) { ?>
-                    <option value="<?php echo $row_prod['product_id']; ?>">
-                        <?php echo $row_prod['name']; ?></option>
+                        <option value="<?php echo $row_prod['product_id']; ?>">
+                            <?php echo $row_prod['name']; ?></option>
                     <?php $row_prod = mysqli_fetch_array($result_prod);
                     } ?>
                 </select>

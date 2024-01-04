@@ -4,7 +4,7 @@ session_start();
 include 'openconn.php';
 
 if (!isset($_SESSION["admin"]) && !isset($_SESSION["admin_username"])) {
-    header("location: login.php");
+    header("location: index.php");
     exit();
 }
 
