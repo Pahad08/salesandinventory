@@ -9,7 +9,7 @@ if (!empty($_GET['name'])) {
     LEFT JOIN suppliers on `transaction`.supplier_id = suppliers.supplier_id
     LEFT JOIN products on `transaction`.`product_id` = products.product_id
     where suppliers.f_name LIKE ? or suppliers.l_name LIKE ? or products.name LIKE ?
-    LIMIT 5 OFFSET 0;";
+    LIMIT 5;";
     $stmt = mysqli_prepare($conn, $sql);
     mysqli_stmt_bind_param($stmt, "sss", $name, $name, $name);
     mysqli_stmt_execute($stmt);
@@ -21,7 +21,7 @@ if (!empty($_GET['name'])) {
     LEFT JOIN suppliers on `transaction`.supplier_id = suppliers.supplier_id
     LEFT JOIN products on `transaction`.`product_id` = products.product_id
     where suppliers.account_id = ? and products.name LIKE ?
-    LIMIT 5 OFFSET 0;");
+    LIMIT 5;");
     mysqli_stmt_bind_param($stmt_sched, "is", $_SESSION["supplier"], $name);
     mysqli_stmt_execute($stmt_sched);
     $result_sched = mysqli_stmt_get_result($stmt_sched);

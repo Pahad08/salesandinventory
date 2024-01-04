@@ -4,14 +4,14 @@ include '../openconn.php';
 
 if (!empty($_GET['description'])) {
     $description = "%" . $_GET['description'] . "%";
-    $sql = "SELECT * from expenses where `description` like ? LIMIT 5 OFFSET 0;";
+    $sql = "SELECT * from expenses where `description` like ? LIMIT 5;";
     $stmt = mysqli_prepare($conn, $sql);
     mysqli_stmt_bind_param($stmt, "s", $description);
     mysqli_stmt_execute($stmt);
     $result = mysqli_stmt_get_result($stmt);
     $row = mysqli_fetch_array($result);
 } else {
-    $sql = "SELECT * from expenses LIMIT 5 OFFSET 0;";
+    $sql = "SELECT * from expenses LIMIT 5;";
     $stmt = mysqli_prepare($conn, $sql);
     mysqli_stmt_execute($stmt);
     $result = mysqli_stmt_get_result($stmt);

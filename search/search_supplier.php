@@ -8,7 +8,7 @@ if (!empty($_GET['name'])) {
     FROM suppliers
     LEFT join accounts on suppliers.account_id = accounts.account_id
     where suppliers.f_name LIKE ? or suppliers.l_name LIKE ?
-    LIMIT 5 OFFSET 0;";
+    LIMIT 5;";
     $stmt = mysqli_prepare($conn, $sql);
     mysqli_stmt_bind_param($stmt, "ss", $name, $name);
     mysqli_stmt_execute($stmt);
@@ -18,7 +18,7 @@ if (!empty($_GET['name'])) {
     $sql = "SELECT suppliers.*, accounts.username
     FROM suppliers
     LEFT join accounts on suppliers.account_id = accounts.account_id
-    LIMIT 5 OFFSET 0;";
+    LIMIT 5;";
     $stmt = mysqli_prepare($conn, $sql);
     mysqli_stmt_execute($stmt);
     $result = mysqli_stmt_get_result($stmt);

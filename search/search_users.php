@@ -4,14 +4,14 @@ include '../openconn.php';
 
 if (!empty($_GET['username'])) {
     $username = "%" . $_GET['username'] . "%";
-    $sql = "SELECT * from accounts where username LIKE ? LIMIT 5 OFFSET 0;";
+    $sql = "SELECT * from accounts where username LIKE ? LIMIT 5;";
     $stmt = mysqli_prepare($conn, $sql);
     mysqli_stmt_bind_param($stmt, "s", $username);
     mysqli_stmt_execute($stmt);
     $result = mysqli_stmt_get_result($stmt);
     $row = mysqli_fetch_array($result);
 } else {
-    $sql = "SELECT * from accounts LIMIT 5 OFFSET 0;";
+    $sql = "SELECT * from accounts LIMIT 5;";
     $stmt = mysqli_prepare($conn, $sql);
     mysqli_stmt_execute($stmt);
     $result = mysqli_stmt_get_result($stmt);
